@@ -45,21 +45,15 @@ function App() {
   const dispatch = useDispatch()
 
   const auth = getAuth();
-  console.log("after calling getTToken ttoken=", auth)
+  //console.log("after calling getTToken ttoken=", auth)
 
 
   useEffect(() => {
-    //const userAuthenticated = sessionStorage.getItem("auth");
-    //if (userAuthenticated) {
-      //const foundUser = JSON.parse(loggedInUser);
-      //setUser(foundUser);
       mounted.current = true;
       if (!auth) return
       
-      console.log("userwww Authenticated!")
       newGetCategories()
       .then ( response => {
-        //console.log("QQQQQMMMMMMM", response)
         if(mounted.current) {
           setCategories(response.data);    
           let all_sub_categories = []
@@ -87,36 +81,7 @@ function App() {
     }
   }, [dispatch])
 
-  /*
-  useEffect(() => {
-    mounted.current = true;
-    if (!token) return
-     newGetCategories()
-    .then ( response => {
-      //console.log("QQQQQMMMMMMM", response)
-      if(mounted.current) {
-        setCategories(response.data);    
-        let all_sub_categories = []
-        response.data.forEach( category => {
-          category.sub_categories.forEach( sub_cat => {
-            all_sub_categories.push(sub_cat)
-          })
-        })
-        setSubcategories(all_sub_categories)
-      }
-    })
-    return () => mounted.current = false;
-  }, [token])
-  */
-
- /*
-  if(!token) { 
-    return <Login setToken={setToken} setAuth={setAuth} />
-  }
-  */
- 
   if(!auth) { 
-    //console.log("nnnnswwwwwwwww")
     return <Login setToken={setToken} setAuth={setAuth} />
   }
   return (

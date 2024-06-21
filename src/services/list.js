@@ -13,13 +13,15 @@ console.log("invalid NODE_ENV ")
 }
 
 export async function newGetCategories() {
-    //console.log(process.env.NODE_ENV)
-    //console.log("here in getCategories")
-     //let url = `${rootpath}/api/categories`
      let url = `${newrootpath}/api/categories` 
-     
      const response = await axios.get(url)
-     
      return response
   
+}
+
+export async function login(credentials) {
+   let url = `${newrootpath}/sessions` 
+   const response = await axios.post(url, credentials )
+   //response is a promise
+   return response
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import CEditor from './codeeditor/CEditor'
+import CEditor from './code_editor/CEditor.js'
 import io from "socket.io-client";
 import { clear } from  '../redux/subcategory.js';
 
