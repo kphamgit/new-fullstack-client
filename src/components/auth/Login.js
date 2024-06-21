@@ -10,7 +10,20 @@ import { setUser } from '../../redux/user';
 import { setLiveQuizFlag } from '../../redux/livequizflag';
 import { clearQuestion } from '../../redux/livequestion';
 //import { faLinesLeaning } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
+
+async function loginUser(rootpath, credentials) {
+  let url =  `${rootpath}/sessions`
+  const response = await axios.post(url,credentials )
+  //console.log(response.data)
+  //programming note: response is a promise. So handle it appropriately in caller 
+  //function:  handleSubmit
+  return response.data
+}
+  
+
+/*
 async function loginUser(rootpath, credentials) {
 
  let url =  `${rootpath}/sessions`
@@ -21,10 +34,19 @@ async function loginUser(rootpath, credentials) {
    },
    body: JSON.stringify(credentials)
  })
-   .then(data => data.json())
+   .then(data => { 
+    //console.log("OOOOOOOOOOOOO", data)
+    let test = data.json();
+    console.log("IIIIIII", test)
+    //return data.json()
+    return test
+   } )
 }
+   */
+
+
  
-export default function Login({setToken}) {
+export default function Login({setToken, setAuth}) {
   const [showPassword, setShowPassword] = useState(false);
   const rootpath = useSelector((state) => state.rootpath.value)
 
@@ -35,24 +57,38 @@ export default function Login({setToken}) {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const data = await loginUser(rootpath, {
+    let url =  `${rootpath}/sessions`
+    const credentials =  {
       username: username,
       password
-    });
-    
-    if(!data.token) { 
-      console.log("Login.js token returned UNDEFINED (error)")
     }
-    else {
-      console.log("TOKENNNN"+data.token)
+    const response = await axios.post(url,credentials )
+    setToken(response.data.token);
+    setAuth({auth: response.data.token})
+
+    /*
+    const data = loginUser(rootpath, {
+      username: username,
+      password
+    })
+    .then ((data) => {
+      console.log("in handleSubmit data = "+data)
       setToken(data.token);
+      setTToken({token: data.token})
      // dispatch(setUserName(inputusername))
-      console.log("MMMM  user = ", data.user)
       dispatch(setUser(data.user))
       //dispatch(setLiveQuizFlag(false))
+    })
+    */
+    
+    //if(!data.token) { 
+      //console.log("Login.js token returned UNDEFINED (error)")
+    //}
+    //else {
+     
       //dispatch(clearQuestion())
       //sessionStorage.setItem('user', username)
-    }
+    //}
   }
   return(
     <div className="login-wrapper">

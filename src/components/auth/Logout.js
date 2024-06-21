@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 //import "bootstrap/dist/css/bootstrap.min.css"
 import { SocketContext } from '../Home';
 
-export default function Logout ({setToken}) {
+export default function Logout ({setToken, setAuth}) {
     //const socket = useContext(SocketContext);
     //const rootpath = useSelector((state) => state.rootpath.value)
     //const dispatch = useDispatch()
@@ -28,6 +28,8 @@ export default function Logout ({setToken}) {
         //console.log("in logout")
         //dispatch(clearUserName())
         setToken(null)
+        //setAuth(null)
+        sessionStorage.clear()
         //fetch(`${rootpath}/logout`)
         navigate('/')
       }
