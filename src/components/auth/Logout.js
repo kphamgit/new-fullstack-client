@@ -34,10 +34,8 @@ export default function Logout ({setToken, setAuth}) {
         navigate('/')
       }
       logout()
-    },[])
+    },[navigate, setToken])
       
-    
-
 return (
     <>
     </>

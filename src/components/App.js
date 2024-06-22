@@ -7,6 +7,7 @@ import Logout from './auth/Logout';
 import Home from './Home';
 import NavBarComponent from './NavBarComponent';
 import Subcategory from './Subcategory';
+import QuizAttempt from './QuizAttempt';
 //import axios from 'axios';
 import {newGetCategories } from '../services/list'
 
@@ -38,7 +39,7 @@ function App() {
   
   const [categories, setCategories] = useState([])
   const [subcategories, setSubcategories] = useState([])
-  //const rootpath = useSelector((state) => state.rootpath.value)
+  const user = useSelector((state) => state.user.value)
   const [games, setGames] = useState(null)
   const mounted = useRef(true);
 
@@ -95,6 +96,7 @@ function App() {
                 <Route key={subcat.id} path={`/sub_categories/${subcat.id}/*`} element={<Subcategory id = {subcat.id} name={subcat.name}/>} />
               ))
              }
+               <Route path="/quiz_attempts/take_quiz/:quiz_id" element = {<QuizAttempt username={user.username} />} />
             </Routes>
             </BrowserRouter>
         </>
