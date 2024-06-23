@@ -9,7 +9,7 @@ import NavBarComponent from './NavBarComponent';
 import Subcategory from './Subcategory';
 import QuizAttempt from './QuizAttempt';
 //import axios from 'axios';
-import {newGetCategories } from '../services/list'
+import {newGetCategories } from './services/list'
 
 
 //const token = getToken();
@@ -72,7 +72,7 @@ function App() {
 
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-        dispatch(setRootPath('http://localhost:5000'))
+        dispatch(setRootPath('http://localhost:5001'))
     }
     else if (process.env.NODE_ENV === "production") {
         dispatch(setRootPath('https://fullstack-kp-f6a689f4a15c.herokuapp.com'))

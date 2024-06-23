@@ -11,12 +11,12 @@ import { setLiveQuizFlag } from '../../redux/livequizflag';
 import { clearQuestion } from '../../redux/livequestion';
 //import { faLinesLeaning } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import {login} from '../../services/list'
+import {login} from '../services/list'
   
 export default function Login({setToken, setAuth}) {
   const [showPassword, setShowPassword] = useState(false);
   const rootpath = useSelector((state) => state.rootpath.value)
-
+  const dispatch = useDispatch()
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
 
@@ -40,6 +40,7 @@ export default function Login({setToken, setAuth}) {
     .then (response => {
       setToken(response.data.token);
       setAuth({auth: response.data.token})
+      dispatch(setUser(response.data.user))
     })
   }
 
