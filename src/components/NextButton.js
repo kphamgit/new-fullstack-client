@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios';
 import { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +16,8 @@ padding:5px 15px;
 function NextButton({ next_question_number, setNextQuestion, setShowQuestion,setQuestionAttemptId  }) {
     const rootpath = useSelector((state) => state.rootpath.value)
     const quiz_attempt_id = useSelector((state) => state.quiz_attempt_id.value)
+    const nextButtonFlag = useSelector(state => state.nextbuttonflag.value)
+    const livequizflag = useSelector(state => state.livequizflag.value)
     const dispatch = useDispatch()
     const [endofquiz, setEndofquiz] = useState(false)
     const get_next_question = () => {
@@ -45,11 +47,18 @@ function NextButton({ next_question_number, setNextQuestion, setShowQuestion,set
     if (endofquiz) {
         return <h3>END OF QUIZ</h3>
     }
+
+    if (livequizflag) {
+        return (
+           <>
+             { nextButtonFlag &&
+                <Button onClick={() => get_next_question()}>Next</Button>
+            }
+           </>
+        )
+    }
     return ( 
-        <>
-        <pre></pre>
-        <Button onClick={() => get_next_question()}>Next</Button>
-        </>
+             <Button onClick={() => get_next_question()}>Next</Button>
     )
 }
 

@@ -10,6 +10,7 @@ import Subcategory from './Subcategory';
 import QuizAttempt from './QuizAttempt';
 //import axios from 'axios';
 import {newGetCategories } from './services/list'
+import io from "socket.io-client";
 
 
 //const token = getToken();
@@ -29,6 +30,13 @@ function getAuth() {
   return userToken?.auth
   //return userToken
 }
+export const SocketContext = React.createContext();
+const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:5001';
+//the following code DOES NOT make a connection. It just prevents
+//an immediate connection
+const socket = io.connect(URL, {
+   autoConnect: false
+});
 
 function App() {
 
@@ -48,6 +56,18 @@ function App() {
   const auth = getAuth();
   //console.log("after calling getTToken ttoken=", auth)
 
+  useEffect(() => {
+    // no-op if the socket is already connected
+    //console.log(" ChatPage connecting to server")
+    socket.connect();
+    /* comment this out so that when the Home component dismounts, i.e, user
+        go to another link, socket won't get disconnected.
+        Leave to code here just for reference/learning
+    return () => {
+      socket.disconnect();
+    };
+    */
+},[]);
 
   useEffect(() => {
       mounted.current = true;
@@ -87,8 +107,10 @@ function App() {
   }
   return (
     <>
+    <SocketContext.Provider value={socket}>
           <BrowserRouter>
             <NavBarComponent categories={categories} />
+            
             <Routes>
               <Route path="/" element = {<Home />} />
               <Route path="/logout" element = {<Logout setToken={setToken} setAuth = {setAuth} />} />
@@ -98,7 +120,9 @@ function App() {
              }
                <Route path="/quiz_attempts/take_quiz/:quiz_id" element = {<QuizAttempt username={user.username} />} />
             </Routes>
+           
             </BrowserRouter>
+            </SocketContext.Provider>
         </>
   );
 }

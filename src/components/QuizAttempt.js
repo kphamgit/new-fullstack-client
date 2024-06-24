@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import QuestionAttempt from './QuestionAttempt.js'
 import { useLocation } from "react-router-dom";
@@ -11,6 +11,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import useExitPrompt from './useExitPrompt.js'
 import axios from "axios";
+//import { SocketContext } from './Home';
+//import { SocketContext } from "./Home.js";
+import { SocketContext } from "./App.js";
+import { setNextButtonFlag } from "../redux/nextbuttonflag.js";
 
 export default function QuizAttempt(props) {
   const rootpath = useSelector((state) => state.rootpath.value)  
@@ -25,10 +29,17 @@ export default function QuizAttempt(props) {
     const [attemptResponse, setAttemptResponse] = useState(null)
     const [showExitPrompt, setShowExitPrompt] = useExitPrompt(true);
   
+    const socket = useContext(SocketContext);
+
+    const nextButtonFlag = useSelector(state => state.nextbuttonflag.value)
     const location = useLocation()
+    //console.log("MMMMMM location",location)
     const parts = location.pathname.split('/')
+    //console.log("NNNNNNNN parts",parts)
     const quizid = parts[parts.length-1]
+    //console.log("UUUUUUUUU quizid"+quizid)
     const url = rootpath + "/api/quiz_attempts/find_create/" + quizid + '/' + user.user_name
+    //console.log("YYYYYY quizid"+quizid)
    //const url = rootpath + "/api/quiz_attempts/find_create/" + quizid + '/' + "basic2"
 
    /*
@@ -39,6 +50,10 @@ export default function QuizAttempt(props) {
   //use a Button to toggle showExitPrompt. For now, showExitPrompt is always set to true
   https://dev.to/eons/detect-page-refresh-tab-close-and-route-change-with-react-router-v5-3pd
   */
+
+  useEffect(() => {
+    socket.on('enable_next_button', (data) => dispatch(setNextButtonFlag(data.enable_flag)));
+  }, [socket]);
 
   //NOTE: this similar to componentWillUnmount()
   useEffect(() => {
@@ -64,11 +79,9 @@ export default function QuizAttempt(props) {
    }
 
   useEffect(() => {
-    
-
     //console.log(" 3) in QuizAttempt useEffect.About to call axios to find/create quiz attempt url ="+url)
     axios.get(url).then((response) => {
-      console.log('  QuizAtt in useEffect server response data=',response.data)
+      //console.log('  QuizAtt in useEffect server response data=',response.data)
       //first, disable live quiz flag. This is important (See SubmitButton.js and LiveSubmitButton.js)
       //dispatch(setLiveQuizFlag(false))
       setTheNextQuestion(response.data.question)

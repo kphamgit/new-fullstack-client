@@ -60,7 +60,7 @@ export default function Login({setToken, setAuth}) {
           }
           onChange={e => setPassword(e.target.value)} />
         </label>
-        <label for="check">&nbsp;Show Password&nbsp;</label>
+        <label htmlFor="check">&nbsp;Show Password&nbsp;</label>
                 <input
                     id="check"
                     type="checkbox"

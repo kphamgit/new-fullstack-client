@@ -83,9 +83,8 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
           <CEditor questionAttemptId={questionAttemptId}/>
       }</div>
      
-      <TextareaAutosize id="prompt" cols="70" style={{ color:'#ebe7d8', backgroundColor:'#21043d'}}>
-          {question.prompt}
-      </TextareaAutosize>
+      <TextareaAutosize id="prompt" cols="70" style={{ color:'#ebe7d8', backgroundColor:'#21043d'}} value={question.prompt} />
+       
       <div>
       {question.audio_src && <audio src={question.audio_src} controls />}
       </div> 

@@ -2,14 +2,15 @@ import React, { useContext } from 'react'
 import ChatBody from './ChatBody'
 import ChatFooter from './ChatFooter'
 import { useEffect, useState } from 'react';
-import { SocketContext } from '../Home';
+//import { SocketContext } from '../Home';
+import { SocketContext } from '../App';
 import { useSelector } from 'react-redux';
 
 
 const ChatPage = () => {
 
     const socket = useContext(SocketContext);
-    console.log("in CeeehatPage socket id"+ socket.id)
+    
     const [messages, setMessages] = useState([]);
     const user = useSelector((state) => state.user.value)
 
