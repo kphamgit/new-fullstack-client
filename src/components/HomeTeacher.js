@@ -1,18 +1,56 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {SocketContext}  from './App.js';
 import ChatPage from './chat/ChatPage'
 
+//const students_list = ["linhdan", "lockim", "khanhyen", "giabinh", "bichphuong", "basic3", "quocminh", "nhatminh"]
 export function HomeTeacher(props) {
     const socket = useContext(SocketContext);
+    const [studentsList, setStudentsList] = useState([])
+    const [studentsLisFromServer, setStudentsListFromServer] = useState([])
     const enableNextButton = () => {   
           socket.emit('enable_next_button', {
             enable_flag: 1
           });
-      }
+    }
+    //{new_user: user, userlist: users} )
+    
+    //io.emit("user_disconnected", {userlist: users})
+    //
+    useEffect(() => {
+        socket.on('new_user', arg => {
+            console.log(" new user. arg: ",arg)
+            setStudentsList([...studentsList, arg.new_user])
+            //for testing only
+            setStudentsListFromServer(arg.userlist)
+        })
+        
+        return () => {
+            socket.off("new_user")
+        }   
+        //eslint-disable-next-line 
+    }, [studentsList])
 
+    useEffect(() => {
+        socket.on('user_disconnected', arg => {
+            console.log(" disconnected user :",arg.disconnected_user)
+            console.log(" current studentsList=", studentsList)
+            //let user_index = studentsList.findIndex(e => e.id === arg.disconnected_user.id )
+            //console.log(" disconnect user index in studentsList = "+user_index)
+            const filtered_list = studentsList.filter((user) => user.id !== arg.disconnected_user.id)
+            //console.log(" filterd list = ", filtered_list)
+            setStudentsList(filtered_list)
+            setStudentsListFromServer(arg.userlist)
+        })
+        
+        return () => {
+            socket.off("user_disconnected")
+        }   
+        //eslint-disable-next-line 
+    }, [studentsList])
+    
     return (
         <>
         <h3>Teacher</h3>
@@ -25,8 +63,22 @@ export function HomeTeacher(props) {
         <br />
         </Col>
       </Row>
+      <Row>
+        <div>Logged-in students:</div>
+      {
+      studentsList.map((student, index) =>
+        <li style={{color:"yellow"}} key={ index }>{ student.username }, {student.id }</li>
+      )
+    }
+      <div>Students list from server:</div>
+      {
+      studentsLisFromServer.map((student, index) =>
+        <li style={{color:"yellow"}} key={ index }>{ student.username }, {student.id }</li>
+      )
+    }
+      </Row>
         <Row>
-            <button onClick={enableNextButton} >Send question number</button>
+            <button onClick={enableNextButton} >Enable Next Button</button>
            <div>Recordingss</div>
         </Row>
     </Container>

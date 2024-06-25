@@ -8,15 +8,16 @@ import { useNavigate } from 'react-router-dom';
 //import { clearUserName } from '../../redux/username';
 //import Button from 'react-bootstrap/Button'
 //import "bootstrap/dist/css/bootstrap.min.css"
-import { SocketContext } from '../Home';
+import { SocketContext } from '../App.js';
 
 export default function Logout ({setToken, setAuth}) {
-    //const socket = useContext(SocketContext);
+    const socket = useContext(SocketContext);
     //const rootpath = useSelector((state) => state.rootpath.value)
     //const dispatch = useDispatch()
 /*
     useEffect(() => {
         return () => {
+          console.log("Socket disconnecting")
             socket.disconnect();
           };
         //socket.disconnect();
@@ -31,6 +32,7 @@ export default function Logout ({setToken, setAuth}) {
         //setAuth(null)
         sessionStorage.clear()
         //fetch(`${rootpath}/logout`)
+        socket.disconnect();
         navigate('/')
       }
       logout()

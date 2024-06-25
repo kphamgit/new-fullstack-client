@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import ButtonSelectQuestionAttempt from './ButtonSelectQA';
-
+import { SocketContext } from "./App.js";
 import ClozeQuestionAttempt from './ClozeQA';
 import { Radio } from './Radio';
 import WordsScrambler from './WordsScrambler';
@@ -19,12 +19,27 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
    const [user_answer, setUserAnswer] = useState(null)
   const [elapsedTime, setElapsedTime] = useState(null)
   const rootpath = useSelector((state) => state.rootpath.value)
+  const livequizflag = useSelector((state) => state.livequizflag.value)
+  const user = useSelector((state) => state.user.value)
+
+  const socket = useContext(SocketContext);
   
   const setTheUserAnswer = (value) => {
     //console.log("QUestionAttempt setTheUserAnswer value=", value)
     setUserAnswer(value)
   }
 
+  useEffect(() => {
+      console.log("Starting question attempt")
+      
+      if(livequizflag) {
+        socket.emit('question_attempt_started', {
+          user_name: user.user_name,
+          question_number: question.question_number
+        })
+      }
+      
+  },[])
 
   useEffect(() => {
     if (user_answer != null) {
@@ -39,11 +54,20 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
       var url1 = rootpath + '/api/question_attempts/' + questionAttemptId + '/process_attempt'
       const firstRequest = await axios.post(url1,{user_answer: user_answer})
       const data1 = firstRequest.data
-      //console.log("UUUUUUUUUUUUUUUUU", data1)
-      //setAttemptResponse(data1)
-
-   
-
+      if(livequizflag) {
+        socket.emit('live_score', {
+          livequestionnumber: 1, 
+          score: 5, 
+          total_score: 100, user: user.user_name
+        })
+      }
+      /*
+      socket.emit('live_score', {
+        livequestionnumber: question.question_number, 
+         score: response_data.question_attempt_results.score, 
+         total_score: my_current_total, user: user.user_name
+      })
+      */
       setAttemptResponse({...data1, elapsed_time: elapsedTime})
   }
 

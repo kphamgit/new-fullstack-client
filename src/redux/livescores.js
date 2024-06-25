@@ -8,10 +8,10 @@ export const scoreSlice = createSlice({
   name: 'livescores',
   initialState,
   reducers: {
-    addScore: (state, action) => {
+    addLiveScore: (state, action) => {
       state.value.push(action.payload)
     },
-    resetScoreBoard: (state) => {
+    resetLiveScores: (state) => {
       state.value = []
     },
     clearScores: (state) => {
@@ -61,6 +61,6 @@ export const scoreSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addScore, getScore, resetScoreBoard, clearScores, setQuestionNumber, setScores} = scoreSlice.actions
+export const { addLiveScore, getScore, resetLiveScores, clearScores, setQuestionNumber, setScores} = scoreSlice.actions
 
 export default scoreSlice.reducer

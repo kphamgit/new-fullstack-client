@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 
 function ButtonSelectQuestionAttempt({question,setUserAnswer}) {
     const [selectedItem, setSelectedItem] = useState(null)
-    const livequizflag = useSelector((state) => state.livequizflag.value)
+    //const livequizflag = useSelector((state) => state.livequizflag.value)
  
     const handleClick = () => {
         //console.log("in handleClick")

@@ -17,7 +17,7 @@ import { SocketContext } from "./App.js";
 import { setNextButtonFlag } from "../redux/nextbuttonflag.js";
 import LiveScoreBoard from "./LiveScoreBoard.js";
 
-export default function QuizAttempt(props) {
+export default function QuizAttemptSave(props) {
   const rootpath = useSelector((state) => state.rootpath.value)  
   const user = useSelector((state) => state.user.value) 
   const livequizflag = useSelector((state) => state.livequizflag.value) 
@@ -31,8 +31,7 @@ export default function QuizAttempt(props) {
     const [attemptResponse, setAttemptResponse] = useState(null)
     const [showExitPrompt, setShowExitPrompt] = useExitPrompt(true);
     
-    const [livequizready, setLiveQuizReady] = useState(false)
-
+  
     const socket = useContext(SocketContext);
 
     const nextButtonFlag = useSelector(state => state.nextbuttonflag.value)
@@ -106,55 +105,38 @@ const setShowQuestionFlag = (value) => {
       //from the server
        setQuestionAttemptId(value)
     }
-
-    if ((livequizflag && livequizready) || (livequizflag === false ) ) {
-      return ( 
+      return(
+        <>
         <Container>
-        <Row>
-        <Col style={{backgroundColor:'#e6d3c3'}} xs={10}>
-          {(showQuestion) ?
-            <QuestionAttempt 
-              question={question} 
+      <Row>
+      <Col style={{backgroundColor:'#e6d3c3'}} xs={10}>
+        {(showQuestion) ?
+          <QuestionAttempt 
+            question={question} 
+            setShowQuestion={setShowQuestionFlag}
+            setAttemptResponse={setTheAttemptResponse}
+            questionAttemptId={questionAttemptId}
+          />
+          :
+          <>
+            {showAttemptResponse && <QuestionResponse question={question} response_content={attemptResponse} />}
+            <NextButton 
+              next_question_number={currentquestionnumber +1} 
+              setNextQuestion={setTheNextQuestion}
               setShowQuestion={setShowQuestionFlag}
-              setAttemptResponse={setTheAttemptResponse}
-              questionAttemptId={questionAttemptId}
+              setQuestionAttemptId={setTheQuestionAttemptId}
             />
-            :
-            <>
-              {showAttemptResponse && <QuestionResponse question={question} response_content={attemptResponse} />}
-              <NextButton 
-                next_question_number={currentquestionnumber +1} 
-                setNextQuestion={setTheNextQuestion}
-                setShowQuestion={setShowQuestionFlag}
-                setQuestionAttemptId={setTheQuestionAttemptId}
-              />
-            </>
+          </>
+        }
+        </Col>
+        <Col style={{backgroundColor:'#92cfd6'}} xs={2}>
+          { livequizflag &&
+            <LiveScoreBoard />
           }
-          </Col>
-          <Col style={{backgroundColor:'#92cfd6'}} xs={2}>
-            { livequizflag &&
-              <LiveScoreBoard />
-            }
-          </Col>
-        </Row>
-      </Container>   
-       )
-    }
-    else {
-      return ( 
-        <Container>
-        <Row>
-        <Col style={{backgroundColor:'#e6d3c3'}} xs={10}>
-            Please Wait....wwww
-          </Col>
-          <Col style={{backgroundColor:'#92cfd6'}} xs={2}>
-            { livequizflag &&
-              <LiveScoreBoard />
-            }
-          </Col>
-        </Row>
-      </Container>   
-       )
-    }
+        </Col>
+      </Row>
+    </Container>   
+       </>
+    )
 }
 

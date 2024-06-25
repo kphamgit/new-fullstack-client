@@ -56,19 +56,19 @@ function App() {
   const auth = getAuth();
   //console.log("after calling getTToken ttoken=", auth)
 
+  /*
   useEffect(() => {
     // no-op if the socket is already connected
     //console.log(" ChatPage connecting to server")
     socket.connect();
-    /* comment this out so that when the Home component dismounts, i.e, user
-        go to another link, socket won't get disconnected.
-        Leave to code here just for reference/learning
-    return () => {
-      socket.disconnect();
-    };
-    */
+    // comment this out so that when the Home component dismounts, i.e, user
+    //    go to another link, socket won't get disconnected.
+    //    Leave to code here just for reference/learning
+    //return () => {
+    //  socket.disconnect();
+    //};
 },[]);
-
+*/
   useEffect(() => {
       mounted.current = true;
       if (!auth) return
@@ -112,7 +112,7 @@ function App() {
             <NavBarComponent categories={categories} />
             
             <Routes>
-              <Route path="/" element = {<Home />} />
+              <Route path="/" element = {<Home socket={socket}/>} />
               <Route path="/logout" element = {<Logout setToken={setToken} setAuth = {setAuth} />} />
              { subcategories.map(subcat => (
                 <Route key={subcat.id} path={`/sub_categories/${subcat.id}/*`} element={<Subcategory id = {subcat.id} name={subcat.name}/>} />
