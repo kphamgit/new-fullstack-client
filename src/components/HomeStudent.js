@@ -9,39 +9,46 @@ import RecordViewStudent from './RecordViewStudent.js'
 import { setLiveQuizFlag } from '../redux/livequizflag.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { addLiveScore } from '../redux/livescores';
-import ScoreRow from './ScoreRow.js';
+import { addScore } from '../redux/livescores.js';
+import { clearLiveQuizId, setLiveQuizId } from '../redux/livequizid.js';
+//import ScoreRow from './ScoreRow.js';
 
 export function HomeStudent(props) {
     const socket = useContext(SocketContext);
     const dispatch = useDispatch()
     const [showRecordView, setShowRecordView] = useState(false)
     const livequizflag = useSelector(state => state.livequizflag.value)
-    //const [loggedInStudentsList, setLoggedInStudentsList] = useState([])
+    const livequizid = useSelector(state => state.livequizid.value)
     const livescores = useSelector((state) => state.livescore.value)
 
- /*
-  useEffect(() => {
-    loggedInStudentsList.forEach( (student) => {
-      console.log(" new student is: "+student.username)
-      console.log(" search in livescores for this student")
-      const index = livescores.findIndex(person => person.student_name === student.username);
-      console.log("MMMMMMMM index of this student is livescores is: = "+index);  // Output: 1
-      if (index < 0 ) {
-        //add loggedInStudent to livescores list
-        console.log("Can't find this student in livescoreboard. Add him/her")
-        dispatch(addLiveScore({student_name: student.username, question_number: null, score: null, total_score: null}))
-      }
-      //
-  })
-  },[loggedInStudentsList])
-*/
+
+    useEffect(() => {
+      socket.on('scoreboard', arg => {
+          //console.log(" student receive scoreboard. arg.list: ",arg.list)
+          //setStudentsList([...studentsList, arg.new_user])
+          //for testing only
+          //setStudentsListFromServer(arg.userlist)
+          dispatch(setLiveQuizId(arg.quizid))
+          arg.list.forEach( (row) => {
+            //console.log("HEEEE row =",row)
+            dispatch(addScore(row))
+        })
+        dispatch(setLiveQuizFlag(true))
+      })
+      
+      return () => {
+          socket.off("scoreboard")
+      }   
+      //eslint-disable-next-line 
+  }, [])
+ 
     const enableLiveQuiz = () => {
         dispatch(setLiveQuizFlag(true))
     }
 
     const disableLiveQuiz = () => {
         dispatch(setLiveQuizFlag(false))
+        dispatch(clearLiveQuizId())
     }
 
     const toggleRecord = () => {
@@ -50,7 +57,7 @@ export function HomeStudent(props) {
 //  
     return (
         <>
-    <h5>Live qqqquiz: <span style={{color: livequizflag ? "green" : "red"  }}>
+    <h5>Live quiz: <span style={{color: livequizflag ? "green" : "red"  }}>
         {livequizflag.toString()}
         </span>
     </h5>
@@ -71,15 +78,13 @@ export function HomeStudent(props) {
           <Row style ={ { backgroundColor: 'green', height:"30vh" } } >
           <RecordViewStudent />
           </Row>
+        
           </> }
-        </Col>
-       
-        <Col style={{ height: "90vh", backgroundColor: "#e0b8c3"}} xs={3}>
-              <ChatPage />
-        </Col>
-      </Row>
-      <Row>
-      <div>SCOREBOARD</div>
+          {livequizflag && 
+          <Row>
+            <div>&nbsp;</div>
+      <div>Live Scoreboard {livequizid} </div>
+      <div>&nbsp;</div>
         <ul className='scoreboard'>
                 {livescores.map((score_data, index) => (
                     <li key={index}>
@@ -89,6 +94,14 @@ export function HomeStudent(props) {
                 ))}
        </ul>
        </Row>
+      }
+        </Col>
+       
+        <Col style={{ height: "90vh", backgroundColor: "#e0b8c3"}} xs={3}>
+              <ChatPage />
+        </Col>
+      </Row>
+     
        
     </Container>
     

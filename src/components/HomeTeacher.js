@@ -4,17 +4,32 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {SocketContext}  from './App.js';
 import ChatPage from './chat/ChatPage'
+import { setLiveQuizId } from '../redux/livequizid.js';
+import { useDispatch, useSelector } from 'react-redux';
 
 //const students_list = ["linhdan", "lockim", "khanhyen", "giabinh", "bichphuong", "basic3", "quocminh", "nhatminh"]
 export function HomeTeacher(props) {
     const socket = useContext(SocketContext);
     const [studentsList, setStudentsList] = useState([])
     const [studentsLisFromServer, setStudentsListFromServer] = useState([])
-    const enableNextButton = () => {   
-          socket.emit('enable_next_button', {
-            enable_flag: 1
+    const livequizid = useSelector(state => state.livequizid.value)
+    const dispatch = useDispatch()
+
+    const sendScoreBoard = () => {   
+          socket.emit('scoreboard', {
+            quizid: livequizid,
+            list: [
+                {student_name: "basic2", question_number: null, score: null, total_score: null},
+                {student_name: "basic4", question_number: null, score: null, total_score: null},
+            ]
           });
     }
+
+    const enableNextButton = () => {   
+        socket.emit('enable_next_button', {
+          enable_flag: 1
+        });
+  }
     //{new_user: user, userlist: users} )
     
     //io.emit("user_disconnected", {userlist: users})
@@ -78,6 +93,9 @@ export function HomeTeacher(props) {
     }
       </Row>
         <Row>
+            <div>{livequizid}</div>
+            <button onClick={sendScoreBoard} >Send ScoreBoard</button>
+            <input type="text" onChange={e => dispatch(setLiveQuizId(e.target.value) ) } />
             <button onClick={enableNextButton} >Enable Next Button</button>
            <div>Recordingss</div>
         </Row>

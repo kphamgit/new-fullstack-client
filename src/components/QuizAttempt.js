@@ -107,54 +107,39 @@ const setShowQuestionFlag = (value) => {
        setQuestionAttemptId(value)
     }
 
-    if ((livequizflag && livequizready) || (livequizflag === false ) ) {
       return ( 
+        <>
         <Container>
-        <Row>
-        <Col style={{backgroundColor:'#e6d3c3'}} xs={10}>
-          {(showQuestion) ?
-            <QuestionAttempt 
-              question={question} 
+      <Row>
+      <Col style={{backgroundColor:'#e6d3c3'}} xs={10}>
+        {(showQuestion) ?
+          <QuestionAttempt 
+            question={question} 
+            setShowQuestion={setShowQuestionFlag}
+            setAttemptResponse={setTheAttemptResponse}
+            questionAttemptId={questionAttemptId}
+          />
+          :
+          <>
+            {showAttemptResponse && <QuestionResponse question={question} response_content={attemptResponse} />}
+            <NextButton 
+              next_question_number={currentquestionnumber +1} 
+              setNextQuestion={setTheNextQuestion}
               setShowQuestion={setShowQuestionFlag}
-              setAttemptResponse={setTheAttemptResponse}
-              questionAttemptId={questionAttemptId}
+              setQuestionAttemptId={setTheQuestionAttemptId}
             />
-            :
-            <>
-              {showAttemptResponse && <QuestionResponse question={question} response_content={attemptResponse} />}
-              <NextButton 
-                next_question_number={currentquestionnumber +1} 
-                setNextQuestion={setTheNextQuestion}
-                setShowQuestion={setShowQuestionFlag}
-                setQuestionAttemptId={setTheQuestionAttemptId}
-              />
-            </>
+          </>
+        }
+        </Col>
+        <Col style={{backgroundColor:'#92cfd6'}} xs={2}>
+          { livequizflag &&
+            <LiveScoreBoard />
           }
-          </Col>
-          <Col style={{backgroundColor:'#92cfd6'}} xs={2}>
-            { livequizflag &&
-              <LiveScoreBoard />
-            }
-          </Col>
-        </Row>
-      </Container>   
+        </Col>
+      </Row>
+    </Container>   
+       </>
        )
-    }
-    else {
-      return ( 
-        <Container>
-        <Row>
-        <Col style={{backgroundColor:'#e6d3c3'}} xs={10}>
-            Please Wait....wwww
-          </Col>
-          <Col style={{backgroundColor:'#92cfd6'}} xs={2}>
-            { livequizflag &&
-              <LiveScoreBoard />
-            }
-          </Col>
-        </Row>
-      </Container>   
-       )
-    }
+    
 }
 

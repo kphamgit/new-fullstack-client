@@ -6,6 +6,7 @@ import userReducer from "./user.js"
 import livescoreReducer from "./livescores.js"
 import livequestionReducer from "./livequestion.js"
 import livequizflagReducer from "./livequizflag.js"
+import livequizidReducer from "./livequizid.js"
 import showlivequestionReducer from "./showlivequestion.js"
 import nextbuttonflagReducer from "./nextbuttonflag.js"
 //redux persist
@@ -25,6 +26,7 @@ const persistConfig = {
 export const store = configureStore({
     reducer: {
         quiz_attempt_id: quizAttemptIdReducer,
+        livequizid: livequizidReducer,
         rootpath: persistedRootpathReducer,
         subcategory: subcategoryReducer,
         user: persistedUserReducer,

@@ -38,8 +38,8 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
           question_number: question.question_number
         })
       }
-      
-  },[])
+       //eslint-disable-next-line
+  },[livequizflag, user.user_name, question.question_number])
 
   useEffect(() => {
     if (user_answer != null) {
@@ -52,23 +52,21 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
   const process_question_attempt = async (user_answer) => {
     //console.log("in process ........1 user_answer=",user_answer)
       var url1 = rootpath + '/api/question_attempts/' + questionAttemptId + '/process_attempt'
-      const firstRequest = await axios.post(url1,{user_answer: user_answer})
-      const data1 = firstRequest.data
+      const response = await axios.post(url1,{user_answer: user_answer})
+      const data = response.data
+      //console.log("response from process question attempt", data)
+      //  socket.emit('live_score', {livequestionnumber: question.question_number, 
+      //score: response_data.question_attempt_results.score, total_score: my_current_total,
+      // user: user.user_name})
+
       if(livequizflag) {
         socket.emit('live_score', {
           livequestionnumber: 1, 
           score: 5, 
-          total_score: 100, user: user.user_name
+          total_score: data.accumulated_score, user: user.user_name
         })
       }
-      /*
-      socket.emit('live_score', {
-        livequestionnumber: question.question_number, 
-         score: response_data.question_attempt_results.score, 
-         total_score: my_current_total, user: user.user_name
-      })
-      */
-      setAttemptResponse({...data1, elapsed_time: elapsedTime})
+      setAttemptResponse({...data, elapsed_time: elapsedTime})
   }
 
   const renderCurrentQA = () => {

@@ -30,6 +30,7 @@ const chunk = (arr, size) =>
         });
     },[])
     */
+   /*
     useEffect(() => {
       socket.on('new_user', arg => {
           //console.log(" new user. User list: ",arg)
@@ -53,6 +54,7 @@ const chunk = (arr, size) =>
       }   
       //eslint-disable-next-line 
   }, [])
+  */
   /*
     useEffect(() => {
         async function fetchData() {
@@ -78,7 +80,8 @@ const chunk = (arr, size) =>
 
   return ( 
         <>
-        <div>SCOREBOARD</div>
+        <div>Live Scoreboard</div>
+        <br />
         <div className='scoreboard'>
                 {livescores.map((score_data, index) => (
                     <div key={index}>

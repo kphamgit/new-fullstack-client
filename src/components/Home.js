@@ -42,7 +42,7 @@ useEffect(() =>{
 
   return (
     <>
-    <ConnectionState isConnected={ isConnected } />
+    
     <Container style ={ { backgroundColor: 'orange'} }>
       <Row>
         <Col>
@@ -53,6 +53,7 @@ useEffect(() =>{
         }
         </Col>
       </Row>
+      <ConnectionState isConnected={ isConnected } />
     </Container>
     </>
   )
