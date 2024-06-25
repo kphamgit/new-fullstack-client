@@ -2,7 +2,7 @@ import React, {useContext,useEffect, useState} from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import LiveScoreBoard from './LiveScoreBoard.js'
+//import LiveScoreBoard from './LiveScoreBoard.js'
 import { SocketContext } from './App.js';
 import ChatPage from './chat/ChatPage'
 import RecordViewStudent from './RecordViewStudent.js'

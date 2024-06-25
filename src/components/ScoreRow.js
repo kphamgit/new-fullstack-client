@@ -5,15 +5,15 @@ import { setQuestionNumber, setScores } from '../redux/livescores';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { useSelector } from "react-redux";
-import axios from 'axios';
-import { setShowLiveQuestion } from '../redux/showlivequestion';
-import { setQuestion } from '../redux/livequestion';
+//import axios from 'axios';
+//import { setShowLiveQuestion } from '../redux/showlivequestion';
+//import { setQuestion } from '../redux/livequestion';
 
 function ScoreRow({score_data }) {
     const socket = useContext(SocketContext);
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.value)
-    const rootpath = useSelector((state) => state.rootpath.value)
+   
 
     /*
     useEffect(() => {

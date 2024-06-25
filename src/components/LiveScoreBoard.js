@@ -1,28 +1,22 @@
-import React, { useEffect, useState, useContext } from 'react'
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { SocketContext } from './App';
-import { addLiveScore } from '../redux/livescores';
+import React from 'react'
+import { useSelector } from 'react-redux';
+//import { addLiveScore } from '../redux/livescores';
 import ScoreRow from './ScoreRow';
-import { resetLiveScores } from '../redux/livescores';
-import { setQuestion } from '../redux/livequestion';
-import {clearScores} from '../redux/livescores'
+//import { resetLiveScores } from '../redux/livescores';
+//import { setQuestion } from '../redux/livequestion';
+//import {clearScores} from '../redux/livescores'
 
-
+/*
 const chunk = (arr, size) =>
 //break arr into chunks of size 'size'
   Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
     arr.slice(i * size, i * size + size)
   );
-
+*/
  function LiveScoreBoard() {
-  const [studentList, setStudentList] = useState([])
+  
     const livescores = useSelector((state) => state.livescore.value)
-    const rootpath = useSelector((state) => state.rootpath.value)
-    const user = useSelector((state) => state.user.value)
-    const socket = useContext(SocketContext);
-    const dispatch = useDispatch()
-    const [scoresTable, setScoresTable] = useState([])
+    
     /*
     useEffect(() => {
         socket.emit('scoreboard_loaded', {

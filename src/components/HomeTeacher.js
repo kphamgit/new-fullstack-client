@@ -95,7 +95,7 @@ export function HomeTeacher(props) {
         <Row>
             <div>{livequizid}</div>
             <button onClick={sendScoreBoard} >Send ScoreBoard</button>
-            <input type="text" onChange={e => dispatch(setLiveQuizId(e.target.value) ) } />
+            <input type="text"  onChange={e => dispatch(setLiveQuizId(e.target.value) ) } />
             <button onClick={enableNextButton} >Enable Next Button</button>
            <div>Recordingss</div>
         </Row>
