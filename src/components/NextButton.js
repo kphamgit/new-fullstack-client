@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import axios from 'axios';
 import { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 //import { setQuestion } from "../../redux/question.js";
 //import { setQuestionAttemptId } from "../../redux/question_att_id.js";
 import styled from 'styled-components'
-//import { setShowQuestionAttempt } from '../../redux/showquestionattempt.js';
-
+import { SocketContext } from './App.js';
 const Button = styled.button`
 background-color:brown;
 color:white;
@@ -14,11 +13,12 @@ padding:5px 15px;
 `
 
 function NextButton({ next_question_number, setNextQuestion, setShowQuestion,setQuestionAttemptId  }) {
+    
     const rootpath = useSelector((state) => state.rootpath.value)
+    const socket = useContext(SocketContext);
     const quiz_attempt_id = useSelector((state) => state.quiz_attempt_id.value)
-    const nextButtonFlag = useSelector(state => state.nextbuttonflag.value)
     const livequizflag = useSelector(state => state.livequizflag.value)
-    const dispatch = useDispatch()
+    const user = useSelector(state => state.user.value)
     const [endofquiz, setEndofquiz] = useState(false)
     const get_next_question = () => {
         //console.log("next quiz attempt id"+quiz_attempt_id)
@@ -31,7 +31,7 @@ function NextButton({ next_question_number, setNextQuestion, setShowQuestion,set
                     setEndofquiz(true)
             }
             else {
-                //console.log("in NextButton get_next_question")
+                console.log("in NextButton get_next_question data =", response.data)
                 //dispatch(setQuestion(response.data.question))
                 setNextQuestion(response.data.question)
                 setShowQuestion(true)
@@ -39,6 +39,14 @@ function NextButton({ next_question_number, setNextQuestion, setShowQuestion,set
                 setQuestionAttemptId(response.data.question_attempt_id)
                 //dispatch(setShowQuestionAttempt(true))
                 //setShowQuestionAttemptFlag(true)
+                if (livequizflag) {
+                    const params = {
+                        user_name: user.user_name,
+                        livequestionnumber: response.data.question.question_number
+                    }
+                    console.log("before emit live_question_acknowledged params =", params)
+                    socket.emit("live_question_acknowledged", params)
+                }
             }
         });
     
@@ -51,9 +59,7 @@ function NextButton({ next_question_number, setNextQuestion, setShowQuestion,set
     if (livequizflag) {
         return (
            <>
-             { nextButtonFlag &&
                 <Button onClick={() => get_next_question()}>Next</Button>
-            }
            </>
         )
     }

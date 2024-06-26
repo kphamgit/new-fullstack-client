@@ -56,9 +56,24 @@ export default function QuizAttempt(props) {
   */
 
   useEffect(() => {
-    socket.on('enable_next_button', (data) => dispatch(setNextButtonFlag(data.enable_flag)));
-  }, [socket, dispatch]);
-
+    socket.on('enable_next_button', arg => {
+        //console.log(" in QuizAttempt received next button arg: ", arg)
+        if (!arg.to_student) {
+          //console.log("NO STUDENT")
+          dispatch(setNextButtonFlag(arg.enable_flag))
+        }
+        else if (arg.to_student === user.user_name) {  ////is this for me?
+          dispatch(setNextButtonFlag(arg.enable_flag))
+        }
+        else {
+          console.log("enable_next_button message is not intended for me or Error with student name in enable_next_button message")
+        }
+    })
+    return () => {
+      socket.off("enable_next_button")
+  }   
+  },[socket, dispatch, user.user_name])
+  
   //NOTE: this similar to componentWillUnmount()
   useEffect(() => {
     return () => {
@@ -122,12 +137,13 @@ const setShowQuestionFlag = (value) => {
           :
           <>
             {showAttemptResponse && <QuestionResponse question={question} response_content={attemptResponse} />}
-            <NextButton 
+            { nextButtonFlag && <NextButton 
               next_question_number={currentquestionnumber +1} 
               setNextQuestion={setTheNextQuestion}
               setShowQuestion={setShowQuestionFlag}
               setQuestionAttemptId={setTheQuestionAttemptId}
             />
+            }
           </>
         }
         </Col>

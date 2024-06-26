@@ -14,40 +14,6 @@ function ScoreRow({score_data }) {
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.value)
    
-
-    /*
-    useEffect(() => {
-        socket.on('next_live_question', (arg, callback) => {
-           // if (showlivequestion) {
-            const it_s_me = () => user.user_name === score_data.student_name
-            if (it_s_me() ) {
-                callback({status: "OK", user_name: user.user_name, livequestionnumber: arg.live_question_number});
-                //const {source, ...restOfArg} = arg              
-                var url = rootpath + '/api/quizzes/' + arg.quiz_id + '/get_question/' + arg.quiz_question_number
-                axios.get(url).then((response) => {
-                    if (response.data.end_of_quiz) {
-                            console.log("END OF QUIZ")
-                    }
-                    else {
-                        //update live question number in livescores araay in redux store
-                        dispatch(setQuestionNumber({student_name: user.user_name, question_number: arg.live_question_number}))
-                        dispatch(setShowLiveQuestion(true))
-                        dispatch(setQuestion({...response.data.question, 
-                            question_number: arg.live_question_number, timeout_length: arg.timeout_length
-                        }))
-                    }
-                });
-            }
-           // }
-        })
-        return () => {
-            //event registration cleanup (happens upon component dismount)
-            //i.e, user goes to another link/route/page
-            socket.off("next_live_question")
-        }  
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[socket, user.user_name, dispatch]) 
-*/
     useEffect(() => {
         socket.on('live_score', arg => {
             //console.log("OOOOOOOOOOOOOO ScoreRow live score receive arg",arg)
@@ -90,7 +56,7 @@ function ScoreRow({score_data }) {
 
     useEffect(() => {
         socket.on('live_question_acknowledged', (arg) => {
-            //console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+            //console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXX X live_question_acknowledged RECEIVED arg", arg)
             //console.log("I am a ScoreRow. My student name is: "+score_data.student_name)
             //console.log(` I am ${it_s_me() === true ? ' ' : "NOT"} the current logged in user`)
             //console.log("I just received a live question acknowledgement from this user: ",arg.user_name)
@@ -98,14 +64,19 @@ function ScoreRow({score_data }) {
             //console.log("acknowledgement received score data",score_data)
             if(arg.user_name === score_data.student_name) {
                 const it_s_me = () => user.user_name === score_data.student_name
-                //console.log("This live question acknowledgement was sent from a user with my student name") 
-                if (!it_s_me()) {
+                //it_s_me = TRUE means this live question acknowledgement was sent from a user with my student name") 
+                //if (!it_s_me()) {
                   // console.log(" I am not the current logged in user")
                    //console.log(" So i will update the question number for me in redux store")
                    //console.log(" acknowledgement arg=",arg)
                    //only update question number if ScoreRow student is not the current logged in user
-                   dispatch(setQuestionNumber({student_name: arg.user_name, question_number: arg.livequestionnumber}))
-                }
+                   const params = {
+                        student_name: arg.user_name, 
+                        question_number: arg.livequestionnumber
+                   }
+                   console.log(" YYYYY live_question_acknowledged RECEIVED before setQuestionNumber params =", params )
+                   dispatch(setQuestionNumber(params))
+               //}
                 //else: Since I am the current logged in owner, I already have my question_number, 
                 // so I don't need to update my question number in Redux store
             }

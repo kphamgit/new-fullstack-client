@@ -9,7 +9,7 @@ export const scoreSlice = createSlice({
   initialState,
   reducers: {
     addScore: (state, action) => {
-      console.log(" in addScore action payload =", action.payload)
+      //console.log(" in addScore action payload =", action.payload)
       state.value.push(action.payload)
     },
     resetLiveScores: (state) => {

@@ -13,6 +13,7 @@ export function HomeTeacher(props) {
     const [studentsList, setStudentsList] = useState([])
     const [studentsLisFromServer, setStudentsListFromServer] = useState([])
     const livequizid = useSelector(state => state.livequizid.value)
+    const [toStudent, setToStudent] = useState()
     const dispatch = useDispatch()
 
     const enableLiveQuiz = () => { 
@@ -30,6 +31,7 @@ export function HomeTeacher(props) {
 
     const enableNextButton = () => {   
         socket.emit('enable_next_button', {
+          to_student: toStudent,
           enable_flag: 1
         });
   }
@@ -100,6 +102,7 @@ export function HomeTeacher(props) {
             <button onClick={enableLiveQuiz} >Enable Live Quiz</button>
             <input type="text"  onChange={e => dispatch(setLiveQuizId(e.target.value) ) } />
             <button onClick={enableNextButton} >Enable Next Button</button>
+            <input type="text" onChange={e => setToStudent(e.target.value)} />
            <div>Recordingss</div>
         </Row>
     </Container>
