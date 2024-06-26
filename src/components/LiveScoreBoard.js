@@ -1,8 +1,9 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
-//import { addLiveScore } from '../redux/livescores';
+import React, {useEffect} from 'react'
+import { useSelector, useDispatch} from 'react-redux';
+import { addScore } from '../redux/livescores';
 import ScoreRow from './ScoreRow';
-//import { resetLiveScores } from '../redux/livescores';
+import { resetLiveScores } from '../redux/livescores';
+import axios from 'axios';
 //import { setQuestion } from '../redux/livequestion';
 //import {clearScores} from '../redux/livescores'
 
@@ -16,49 +17,19 @@ const chunk = (arr, size) =>
  function LiveScoreBoard() {
   
     const livescores = useSelector((state) => state.livescore.value)
-    
-    /*
-    useEffect(() => {
-        socket.emit('scoreboard_loaded', {
-            user_name: user.user_name
-        });
-    },[])
-    */
-   /*
-    useEffect(() => {
-      socket.on('new_user', arg => {
-          //console.log(" new user. User list: ",arg)
-          setStudentList(arg)
-      })
-      
-      return () => {
-          socket.off("new_user")
-      }   
-      //eslint-disable-next-line 
-  }, [])
-
-  useEffect(() => {
-      socket.on('user_disconnected', arg => {
-          //console.log(" user disconnected list :",arg)
-          setStudentList(arg)
-      })
-      
-      return () => {
-          socket.off("user_disconnected")
-      }   
-      //eslint-disable-next-line 
-  }, [])
-  */
-  /*
+    const rootpath = useSelector((state) => state.rootpath.value)
+    const user = useSelector((state) => state.user.value)
+    const dispatch = useDispatch()
+  
     useEffect(() => {
         async function fetchData() {
           // You can await here
             const url = rootpath + `/api/classes/${user.class_id}`
             const response = await axios.get(url)
-            console.log("LiveScoreBoard XXXXXXXXXXXX fetch student data response=", response.data)
+            //console.log("LiveScoreBoard XXXXXXXXXXXX fetch student data response=", response.data)
             dispatch(resetLiveScores())
             response.data.forEach( (name) => {
-                dispatch(addLiveScore({student_name: name, question_number: null, score: null, total_score: null}))
+                dispatch(addScore({student_name: name, question_number: null, score: null, total_score: null}))
             })
             //convert response.data (list of student names) into a 2-dimentional array for display
             //keep this to learn programming
@@ -70,7 +41,7 @@ const chunk = (arr, size) =>
         }
         fetchData()
     },[dispatch, rootpath, user.class_id])
-    */
+    
 
   return ( 
         <>

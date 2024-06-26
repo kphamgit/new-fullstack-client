@@ -15,14 +15,17 @@ export function HomeTeacher(props) {
     const livequizid = useSelector(state => state.livequizid.value)
     const dispatch = useDispatch()
 
-    const sendScoreBoard = () => {   
-          socket.emit('scoreboard', {
-            quizid: livequizid,
-            list: [
-                {student_name: "basic2", question_number: null, score: null, total_score: null},
-                {student_name: "basic4", question_number: null, score: null, total_score: null},
-            ]
+    const enableLiveQuiz = () => { 
+        if (livequizid.trim()) {
+            console.log("MMMMMMMMMMM ")
+          socket.emit('enable_live_quiz', {
+            quizid: livequizid
           });
+        }
+        else {
+            alert("Enter quiz id!")
+            return
+        }
     }
 
     const enableNextButton = () => {   
@@ -94,7 +97,7 @@ export function HomeTeacher(props) {
       </Row>
         <Row>
             <div>{livequizid}</div>
-            <button onClick={sendScoreBoard} >Send ScoreBoard</button>
+            <button onClick={enableLiveQuiz} >Enable Live Quiz</button>
             <input type="text"  onChange={e => dispatch(setLiveQuizId(e.target.value) ) } />
             <button onClick={enableNextButton} >Enable Next Button</button>
            <div>Recordingss</div>
