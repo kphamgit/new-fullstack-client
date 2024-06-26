@@ -137,13 +137,13 @@ const setShowQuestionFlag = (value) => {
           :
           <>
             {showAttemptResponse && <QuestionResponse question={question} response_content={attemptResponse} />}
-            { nextButtonFlag && <NextButton 
+          <NextButton 
               next_question_number={currentquestionnumber +1} 
               setNextQuestion={setTheNextQuestion}
               setShowQuestion={setShowQuestionFlag}
               setQuestionAttemptId={setTheQuestionAttemptId}
             />
-            }
+            
           </>
         }
         </Col>

@@ -18,7 +18,7 @@ export function HomeTeacher(props) {
 
     const enableLiveQuiz = () => { 
         if (livequizid.trim()) {
-            console.log("MMMMMMMMMMM ")
+            //console.log("MMMMMMMMMMM ")
           socket.emit('enable_live_quiz', {
             quizid: livequizid
           });
@@ -99,10 +99,10 @@ export function HomeTeacher(props) {
       </Row>
         <Row>
             <div>{livequizid}</div>
-            <button onClick={enableLiveQuiz} >Enable Live Quiz</button>
-            <input type="text"  onChange={e => dispatch(setLiveQuizId(e.target.value) ) } />
             <button onClick={enableNextButton} >Enable Next Button</button>
             <input type="text" onChange={e => setToStudent(e.target.value)} />
+            <button onClick={enableLiveQuiz} >Enable Live Quiz</button>
+            <input type="text"  onChange={e => dispatch(setLiveQuizId(e.target.value) ) } />
            <div>Recordingss</div>
         </Row>
     </Container>

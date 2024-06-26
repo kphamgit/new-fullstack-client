@@ -68,7 +68,7 @@ export function HomeStudent(props) {
         <Col style ={ { backgroundColor: '#f2caa7' }} xs={9}>
         <Row>
         <Col xs={4}>
-          <Button variant="danger" onClick={enableLiveQuiz}>Turn on Live Quiz</Button>
+          <Button variant="info" onClick={enableLiveQuiz}>Turn on Live Quiz</Button>
           </Col>
           <Col xs={4}>
           <Button variant="danger" onClick={disableLiveQuiz}>Turn Off Live Quiz</Button>

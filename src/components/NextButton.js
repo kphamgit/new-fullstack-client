@@ -18,11 +18,10 @@ function NextButton({ next_question_number, setNextQuestion, setShowQuestion,set
     const socket = useContext(SocketContext);
     const quiz_attempt_id = useSelector((state) => state.quiz_attempt_id.value)
     const livequizflag = useSelector(state => state.livequizflag.value)
+    const nextButtonFlag = useSelector(state => state.nextbuttonflag.value)
     const user = useSelector(state => state.user.value)
     const [endofquiz, setEndofquiz] = useState(false)
     const get_next_question = () => {
-        //console.log("next quiz attempt id"+quiz_attempt_id)
-        //console.log("next question number"+next_question_number)
         var url = rootpath + '/api/quiz_attempts/' + quiz_attempt_id + '/creat_next_question_attempt/' + next_question_number
         axios.get(url).then((response) => {
             //console.log("Next question response=", response)
@@ -31,20 +30,16 @@ function NextButton({ next_question_number, setNextQuestion, setShowQuestion,set
                     setEndofquiz(true)
             }
             else {
-                console.log("in NextButton get_next_question data =", response.data)
-                //dispatch(setQuestion(response.data.question))
+                //console.log("in NextButton get_next_question data =", response.data)
                 setNextQuestion(response.data.question)
                 setShowQuestion(true)
-               // dispatch(setQuestionAttemptId(response.data.question_attempt_id))
                 setQuestionAttemptId(response.data.question_attempt_id)
-                //dispatch(setShowQuestionAttempt(true))
-                //setShowQuestionAttemptFlag(true)
                 if (livequizflag) {
                     const params = {
                         user_name: user.user_name,
                         livequestionnumber: response.data.question.question_number
                     }
-                    console.log("before emit live_question_acknowledged params =", params)
+                    //console.log("before emit live_question_acknowledged params =", params)
                     socket.emit("live_question_acknowledged", params)
                 }
             }
@@ -58,8 +53,9 @@ function NextButton({ next_question_number, setNextQuestion, setShowQuestion,set
 
     if (livequizflag) {
         return (
-           <>
+           <>  { nextButtonFlag && 
                 <Button onClick={() => get_next_question()}>Next</Button>
+           }
            </>
         )
     }
