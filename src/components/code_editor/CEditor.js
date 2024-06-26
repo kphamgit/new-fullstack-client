@@ -13,14 +13,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 
-function CEditor({questionAttemptId, extra_codeSnipped}) {
+function CEditor({questionAttemptId, codeSnippet}) {
   /*
     const codeSnippet = `function add(a, b) {
         return a + b;
       }`
     */  
-      const [output, setOutput] = useState('');
-//console.log("Extra code snipped: ", extra_codeSnipped)
+     
+/*
 const codeSnippet = `#include <stdio.h>
 int main() {
   // Funtions declarations
@@ -29,13 +29,15 @@ int main() {
     printf("Hello World");
     return 0;
 }`
-    
-      const rootpath = useSelector((state) => state.rootpath.value)
+*/
+    const rootpath = useSelector((state) => state.rootpath.value)
+    const [output, setOutput] = useState('');
     const [code, setCode] = useState(codeSnippet);
     
     useEffect(() => {
-        setCode(codeSnippet + '\n' + extra_codeSnipped)
-    },[codeSnippet, extra_codeSnipped])
+        setCode(codeSnippet)
+    },[codeSnippet])
+    
 
     const run_code = async () => {
       var url2 = rootpath + '/api/question_attempts/' + questionAttemptId + '/test_doodle'

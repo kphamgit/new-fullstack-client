@@ -103,7 +103,7 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
       
       <div dangerouslySetInnerHTML={{ __html: question.instruction }}></div>
       <div>{question.coding && 
-          <CEditor questionAttemptId={questionAttemptId} extra_codeSnipped = {question.prompt} />
+          <CEditor questionAttemptId={questionAttemptId} codeSnippet = {question.prompt} />
       }</div>
       { !question.coding &&
       <TextareaAutosize id="prompt" cols="70" style={{ color:'#ebe7d8', backgroundColor:'#21043d'}} value={question.prompt} />
