@@ -5,6 +5,7 @@ import ClozeQuestionAttempt from './ClozeQA';
 import { Radio } from './Radio';
 import WordsScrambler from './WordsScrambler';
 
+
 import ReactPlayer from 'react-player';
 import WordsSelect from './WordsSelect';
 import RecordQuestionAttempt from './RecordQA';
@@ -98,16 +99,15 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
 
     return (
       <>
-      
       <div>Question: <span>{question.question_number}</span></div>
       
       <div dangerouslySetInnerHTML={{ __html: question.instruction }}></div>
       <div>{question.coding && 
-          <CEditor questionAttemptId={questionAttemptId}/>
+          <CEditor questionAttemptId={questionAttemptId} extra_codeSnipped = {question.prompt} />
       }</div>
-     
+      { !question.coding &&
       <TextareaAutosize id="prompt" cols="70" style={{ color:'#ebe7d8', backgroundColor:'#21043d'}} value={question.prompt} />
-       
+    }
       <div>
       {question.audio_src && <audio src={question.audio_src} controls />}
       </div> 

@@ -8,7 +8,7 @@ import RecordViewStudent from './RecordViewStudent.js'
 import { setLiveQuizFlag } from '../redux/livequizflag.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { clearLiveQuizId, setLiveQuizId } from '../redux/livequizid.js';
+import { setLiveQuizId } from '../redux/livequizid.js';
 
 export function HomeStudent(props) {
     const socket = useContext(SocketContext);
@@ -16,7 +16,7 @@ export function HomeStudent(props) {
     const [showRecordView, setShowRecordView] = useState(false)
     const livequizflag = useSelector(state => state.livequizflag.value)
     const livequizid = useSelector(state => state.livequizid.value)
-    const livescores = useSelector((state) => state.livescore.value)
+    //const livescores = useSelector((state) => state.livescore.value)
 
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export function HomeStudent(props) {
 
     const disableLiveQuiz = () => {
         dispatch(setLiveQuizFlag(false))
-        dispatch(clearLiveQuizId())
+        //dispatch(clearLiveQuizId())
     }
 
     const toggleRecord = () => {
@@ -59,10 +59,12 @@ export function HomeStudent(props) {
     <h5>Live quiz: <span style={{color: livequizflag ? "green" : "red"  }}>
         {livequizflag.toString()}
         </span>
+        </h5>
+      <div>
         { livequizflag &&
           <span>&nbsp; Quiz id: &nbsp;{livequizid}</span>
         }
-    </h5>
+    </div>
     <Container style ={ { backgroundColor: '#f2caa7'} }>
       <Row style ={ { backgroundColor: 'red', height:"90vh" }}>
         <Col style ={ { backgroundColor: '#f2caa7' }} xs={9}>
@@ -88,7 +90,9 @@ export function HomeStudent(props) {
               <ChatPage />
         </Col>
       </Row>
-     
+     <Row>
+     <span>&nbsp; Live quiz id: &nbsp;{livequizid}</span>
+     </Row>
        
     </Container>
     
