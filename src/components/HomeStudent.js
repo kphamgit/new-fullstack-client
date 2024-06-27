@@ -9,6 +9,7 @@ import { setLiveQuizFlag } from '../redux/livequizflag.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { setLiveQuizId } from '../redux/livequizid.js';
+import { clearLiveQuizId } from '../redux/livequizid.js';
 
 export function HomeStudent(props) {
     const socket = useContext(SocketContext);
@@ -47,7 +48,7 @@ export function HomeStudent(props) {
 
     const disableLiveQuiz = () => {
         dispatch(setLiveQuizFlag(false))
-        //dispatch(clearLiveQuizId())
+        dispatch(clearLiveQuizId())
     }
 
     const toggleRecord = () => {

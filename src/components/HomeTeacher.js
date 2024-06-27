@@ -84,26 +84,31 @@ export function HomeTeacher(props) {
         </Col>
       </Row>
       <Row>
+        <Col>
         <div>Logged-in students:</div>
-      {
-      studentsList.map((student, index) =>
-        <li style={{color:"yellow"}} key={ index }>{ student.username }, {student.id }</li>
-      )
-    }
-      <div>Students list from server:</div>
-      {
-      studentsLisFromServer.map((student, index) =>
-        <li style={{color:"yellow"}} key={ index }>{ student.username }, {student.id }</li>
-      )
-    }
-      </Row>
-        <Row>
+        {
+            studentsList.map((student, index) =>
+             <li style={{color:"yellow"}} key={ index }>{ student.username }, {student.id }</li>
+             )
+         }
+         <div>Students list from server:</div>
+        {
+           studentsLisFromServer.map((student, index) =>
+            <li style={{color:"yellow"}} key={ index }>{ student.username }, {student.id }</li>
+            )
+        }
+        </Col>
+        <Col>
+        <div>Recordingss</div>
+            </Col>
+            <Col>
             <div>{livequizid}</div>
-            <button onClick={enableNextButton} >Enable Next Button</button>
-            <input type="text" onChange={e => setToStudent(e.target.value)} />
-            <button onClick={enableLiveQuiz} >Enable Live Quiz</button>
-            <input type="text"  onChange={e => dispatch(setLiveQuizId(e.target.value) ) } />
-           <div>Recordingss</div>
+            <div><button onClick={enableNextButton} >Enable Next Button</button>&nbsp;
+            <input type="text" onChange={e => setToStudent(e.target.value)} /></div>
+            <div><button onClick={enableLiveQuiz} >Enable Live Quiz</button>&nbsp;
+            <input type="text"  onChange={e => dispatch(setLiveQuizId(e.target.value) ) } /></div>
+          
+        </Col>
         </Row>
     </Container>
     </>
