@@ -39,8 +39,7 @@ function NextButton({ next_question_number, setNextQuestion, setShowQuestion,set
                         user_name: user.user_name,
                         livequestionnumber: response.data.question.question_number
                     }
-                    //console.log("before emit live_question_acknowledged params =", params)
-                    socket.emit("live_question_acknowledged", params)
+                    socket.emit("next_question_fetched", params)
                 }
             }
         });

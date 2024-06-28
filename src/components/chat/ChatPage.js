@@ -17,7 +17,10 @@ const ChatPage = () => {
 
     useEffect(() => {
       //console.log("in ChatPage socket id"+ socket.id)
-       socket.on('chat', (data) => setMessages([...messages, data]));
+      socket.on('chat', (data) => setMessages([...messages, data]));
+      return () => {
+        socket.off("chat")
+      }   
     }, [socket, messages]);
 
     /*

@@ -55,8 +55,8 @@ function ScoreRow({score_data }) {
     },[score_data.total_score])
 
     useEffect(() => {
-        socket.on('live_question_acknowledged', (arg) => {
-            //console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXX X live_question_acknowledged RECEIVED arg", arg)
+        socket.on('next_question_fetched', (arg) => {
+           
             //console.log("I am a ScoreRow. My student name is: "+score_data.student_name)
             //console.log(` I am ${it_s_me() === true ? ' ' : "NOT"} the current logged in user`)
             //console.log("I just received a live question acknowledgement from this user: ",arg.user_name)
@@ -74,7 +74,6 @@ function ScoreRow({score_data }) {
                         student_name: arg.user_name, 
                         question_number: arg.livequestionnumber
                    }
-                   console.log(" YYYYY live_question_acknowledged RECEIVED before setQuestionNumber params =", params )
                    dispatch(setQuestionNumber(params))
                //}
                 //else: Since I am the current logged in owner, I already have my question_number, 
@@ -82,7 +81,7 @@ function ScoreRow({score_data }) {
             }
         })
         return () => {
-            socket.off("live_question_acknowledged")
+            socket.off("next_question_fetched")
         }   
         //eslint-disable-next-line
     },[socket, dispatch, score_data.student_name])

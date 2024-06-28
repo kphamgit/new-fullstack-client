@@ -31,11 +31,11 @@ export default function QuizAttempt(props) {
     const [attemptResponse, setAttemptResponse] = useState(null)
     const [showExitPrompt, setShowExitPrompt] = useExitPrompt(true);
     
-    const [livequizready, setLiveQuizReady] = useState(false)
+    //const [livequizready, setLiveQuizReady] = useState(false)
 
     const socket = useContext(SocketContext);
 
-    const nextButtonFlag = useSelector(state => state.nextbuttonflag.value)
+    
     const location = useLocation()
     //console.log("MMMMMM location",location)
     const parts = location.pathname.split('/')
@@ -56,8 +56,10 @@ export default function QuizAttempt(props) {
   */
 
   useEffect(() => {
-    socket.on('enable_next_button', arg => {
-        //console.log(" in QuizAttempt received next button arg: ", arg)
+    socket.on('enable_next_button', (arg, callback) => {
+        console.log(" in QuizAttempt received next button arg: ", arg)
+        console.log("current question number:"+currentquestionnumber)
+        callback({status: "I got the enable_next_button message. OK", user_name: user.user_name, last_question_number: currentquestionnumber});
         if (!arg.to_student) {
           //console.log("NO STUDENT")
           dispatch(setNextButtonFlag(arg.enable_flag))
@@ -72,7 +74,7 @@ export default function QuizAttempt(props) {
     return () => {
       socket.off("enable_next_button")
   }   
-  },[socket, dispatch, user.user_name])
+  },[socket, dispatch, user.user_name, currentquestionnumber])
   
   //NOTE: this similar to componentWillUnmount()
   useEffect(() => {

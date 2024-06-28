@@ -6,6 +6,8 @@ import {SocketContext}  from './App.js';
 import ChatPage from './chat/ChatPage'
 import { setLiveQuizId } from '../redux/livequizid.js';
 import { useDispatch, useSelector } from 'react-redux';
+//import {styles} from './HomeTeacher.module.css'
+import HomeTeacherBody from './HomeTeacherBody.js'
 
 //const students_list = ["linhdan", "lockim", "khanhyen", "giabinh", "bichphuong", "basic3", "quocminh", "nhatminh"]
 export function HomeTeacher(props) {
@@ -14,6 +16,7 @@ export function HomeTeacher(props) {
     const [studentsLisFromServer, setStudentsListFromServer] = useState([])
     const livequizid = useSelector(state => state.livequizid.value)
     const [toStudent, setToStudent] = useState()
+    const [enableNextQuestionAck, setEnableNextQuestionAck ] =useState([])
     const dispatch = useDispatch()
 
     const enableLiveQuiz = () => { 
@@ -52,11 +55,24 @@ export function HomeTeacher(props) {
         }   
         //eslint-disable-next-line 
     }, [studentsList])
+//
+useEffect(() => {
+    socket.on('enable_button_acknowledged', arg => {
+        console.log(" enable_button_acknowledged. arg: ",arg)
+        //user_name, question_number
+        setEnableNextQuestionAck([...enableNextQuestionAck, arg])
+    })
+    
+    return () => {
+        socket.off("enable_button_acknowledged")
+    }   
+    //eslint-disable-next-line 
+}, [enableNextQuestionAck])
 
     useEffect(() => {
         socket.on('user_disconnected', arg => {
-            console.log(" disconnected user :",arg.disconnected_user)
-            console.log(" current studentsList=", studentsList)
+            //console.log(" disconnected user :",arg.disconnected_user)
+            //console.log(" current studentsList=", studentsList)
             //let user_index = studentsList.findIndex(e => e.id === arg.disconnected_user.id )
             //console.log(" disconnect user index in studentsList = "+user_index)
             const filtered_list = studentsList.filter((user) => user.id !== arg.disconnected_user.id)
@@ -70,13 +86,17 @@ export function HomeTeacher(props) {
         }   
         //eslint-disable-next-line 
     }, [studentsList])
-    
+    //style={ { display: isLoggedIn ? 'block' : 'none' } }  
+    //:"#e8dfda"
     return (
         <>
         <h3>Teacher</h3>
         <Container style ={ { backgroundColor: 'brown'} }>
       <Row>
-        <Col style ={ {height: "70vh", backgroundColor: 'green' }} xs={9}> 
+        <Col style ={ {overflowY: "scroll" ,  height: "70vh", backgroundColor: '#21201f' }} xs={9}> 
+        <div>
+            <HomeTeacherBody messages = {enableNextQuestionAck} />
+         </div>
         </Col>
         <Col style ={ {height: "70vh", backgroundColor: 'orange' }} >
         <ChatPage />
@@ -85,6 +105,7 @@ export function HomeTeacher(props) {
       </Row>
       <Row>
         <Col>
+        
         <div>Logged-in students:</div>
         {
             studentsList.map((student, index) =>
