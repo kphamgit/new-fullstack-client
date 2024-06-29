@@ -103,7 +103,9 @@ function QuestionResponse({question, response_content}) {
   function displayResponse() {
       return (
         <>
+        
         <div>
+          
           {response_content.question_attempt_results.answer }
           &nbsp;&nbsp;{ !response_content.question_attempt_results.error_flag ?
                     <FontAwesomeIcon icon={faCheckSquare} size="lg" />
@@ -117,6 +119,7 @@ function QuestionResponse({question, response_content}) {
   }
 
   function displayCorrectAnswer() {
+   
     if (response_content.question_format === 6 ) {
       let marr = response_content.question_attempt_results.correct_answer.split('/')
       //words_scramble_direction
@@ -143,14 +146,21 @@ function QuestionResponse({question, response_content}) {
           </div>
         )
     }
+    else if (response_content.question_format === 7 ) {
+      
+        const parts = question.answer_key.split('*')
+        return (
+          <div style = {{color:'blue'}}>
+             {parts.map((item, index) =>  
+                 (<span key = {index}>
+                   {parseInt(index)+1}) { item } <br />
+                 </span>
+                 )
+             )}
+          </div>
+        )
+    }
     else {
-      const msg = new SpeechSynthesisUtterance()
-    msg.volume = 1; // From 0 to 1
-    msg.rate = .8; // From 0.1 to 10
-    //msg.pitch = 2; // From 0 to 2
-    msg.lang = 'en';
-    msg.text = "Are there any pencils in the case? Yes, there are"
-    msg.voice = window.speechSynthesis.getVoices()[1];
     //window.speechSynthesis.speak(msg)
       return ( 
         <>
@@ -160,6 +170,16 @@ function QuestionResponse({question, response_content}) {
     }
     
   }
+
+  /*
+  const msg = new SpeechSynthesisUtterance()
+    msg.volume = 1; // From 0 to 1
+    msg.rate = .8; // From 0.1 to 10
+    //msg.pitch = 2; // From 0 to 2
+    msg.lang = 'en';
+    msg.text = "Are there any pencils in the case? Yes, there are"
+    msg.voice = window.speechSynthesis.getVoices()[1];
+  */
 
   const displayElapsedTime = () => {
     const minutes = Math.floor(response_content.elapsed_time / 60);
@@ -214,7 +234,9 @@ function QuestionResponse({question, response_content}) {
             { response_content.question_attempt_results.error_flag &&
             <Row xs="9">
                 <Col className='bg-warning'>
+                  <br />
                 <div>The correct answer is (Câu trả lời đúng là):</div>
+                <br />
                 <pre>{displayCorrectAnswer(response_content) } </pre> 
                 <div>{question.help1}</div>
                 </Col>
