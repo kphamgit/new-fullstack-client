@@ -11,8 +11,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import useExitPrompt from './useExitPrompt.js'
 import axios from "axios";
-//import { SocketContext } from './Home';
-//import { SocketContext } from "./Home.js";
 import { SocketContext } from "./App.js";
 import { setNextButtonFlag } from "../redux/nextbuttonflag.js";
 import LiveScoreBoard from "./LiveScoreBoard.js";

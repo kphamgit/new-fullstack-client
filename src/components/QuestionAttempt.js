@@ -4,6 +4,7 @@ import { SocketContext } from "./App.js";
 import ClozeQuestionAttempt from './ClozeQA';
 import { Radio } from './Radio';
 import WordsScrambler from './WordsScrambler';
+import {SpeechRecognitionQA} from './SpeechRecognitionQA.js';
 
 
 import ReactPlayer from 'react-player';
@@ -87,6 +88,8 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
             return <Radio question={question} setUserAnswer={setTheUserAnswer} />
         case 6:
           return <WordsScrambler question={question} setUserAnswer={setTheUserAnswer} />
+        case 7:
+          return <SpeechRecognitionQA question={question} setUserAnswer={setTheUserAnswer} />
         case 8:
             return <WordsSelect question={question} setUserAnswer={setTheUserAnswer} />
         case 9:

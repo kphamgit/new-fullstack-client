@@ -6,8 +6,6 @@ import {SocketContext}  from './App.js';
 import ChatPage from './chat/ChatPage'
 import { setLiveQuizId } from '../redux/livequizid.js';
 import { useDispatch, useSelector } from 'react-redux';
-//import {styles} from './HomeTeacher.module.css'
-import HomeTeacherBody from './HomeTeacherBody.js'
 
 //const students_list = ["linhdan", "lockim", "khanhyen", "giabinh", "bichphuong", "basic3", "quocminh", "nhatminh"]
 export function HomeTeacher(props) {
@@ -93,11 +91,6 @@ useEffect(() => {
         <h3>Teacher</h3>
         <Container style ={ { backgroundColor: 'brown'} }>
       <Row>
-        <Col style ={ {overflowY: "scroll" ,  height: "70vh", backgroundColor: '#21201f' }} xs={9}> 
-        <div>
-            <HomeTeacherBody messages = {enableNextQuestionAck} />
-         </div>
-        </Col>
         <Col style ={ {height: "70vh", backgroundColor: 'orange' }} >
         <ChatPage />
         <br />
