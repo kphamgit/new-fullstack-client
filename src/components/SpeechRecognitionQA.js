@@ -10,7 +10,7 @@ export function SpeechRecognitionQA({question, setUserAnswer}) {
 
     useEffect (() => {
         const arr = question.content.split('#')
-        console.log("CCCCCCC", arr)
+        
         setQuestionContent( arr )
     },[question.content])
     

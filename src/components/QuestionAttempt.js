@@ -32,8 +32,6 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
   }
 
   useEffect(() => {
-      console.log("Starting question attempt")
-      
       if(livequizflag) {
         socket.emit('question_attempt_started', {
           user_name: user.user_name,
@@ -56,7 +54,6 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
       var url1 = rootpath + '/api/question_attempts/' + questionAttemptId + '/process_attempt'
       const response = await axios.post(url1,{user_answer: user_answer})
       const data = response.data
-      console.log("response from process question attempt", data)
       //  socket.emit('live_score', {livequestionnumber: question.question_number, 
       //score: response_data.question_attempt_results.score, total_score: my_current_total,
       // user: user.user_name})
