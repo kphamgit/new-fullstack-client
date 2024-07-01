@@ -11,7 +11,7 @@ import { Button } from 'react-bootstrap';
 import { setLiveQuizId } from '../redux/livequizid.js';
 import { clearLiveQuizId } from '../redux/livequizid.js';
 
-export function HomeStudent(props) {
+export function HomeStudent({user}) {
     const socket = useContext(SocketContext);
     const dispatch = useDispatch()
     const [showRecordView, setShowRecordView] = useState(false)
@@ -71,6 +71,7 @@ export function HomeStudent(props) {
           </Col>
         </Row>
         <br />
+        <div  dangerouslySetInnerHTML={{ __html: user.teacher_message }}></div>
         <Button onClick={toggleRecord}>Show Record</Button>
           {showRecordView && <>
           <Row style ={ { backgroundColor: 'green', height:"30vh" } } >

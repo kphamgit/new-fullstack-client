@@ -49,7 +49,7 @@ useEffect(() =>{
         { user.role === 'teacher' ?
         <HomeTeacher />
         :
-        <HomeStudent />
+        <HomeStudent user = {user} />
         }
         </Col>
       </Row>
