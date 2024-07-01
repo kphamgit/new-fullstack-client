@@ -42,10 +42,6 @@ export function HomeStudent(props) {
       //eslint-disable-next-line 
   }, [])
  
-    const enableLiveQuiz = () => {
-        dispatch(setLiveQuizFlag(true))
-    }
-
     const disableLiveQuiz = () => {
         dispatch(setLiveQuizFlag(false))
         dispatch(clearLiveQuizId())
@@ -57,8 +53,8 @@ export function HomeStudent(props) {
 //  
     return (
         <>
-    <h5>Live quiz: <span style={{color: livequizflag ? "green" : "red"  }}>
-        {livequizflag.toString()}
+    <h5>Live quiz: <span style={{color: livequizflag ? "green" : "brown"  }}>
+        {livequizflag ? "ON" : "OFF"}
         </span>
         </h5>
       <div>
@@ -70,9 +66,6 @@ export function HomeStudent(props) {
       <Row style ={ { backgroundColor: 'red', height:"90vh" }}>
         <Col style ={ { backgroundColor: '#f2caa7' }} xs={9}>
         <Row>
-        <Col xs={4}>
-          <Button variant="info" onClick={enableLiveQuiz}>Turn on Live Quiz</Button>
-          </Col>
           <Col xs={4}>
           <Button variant="danger" onClick={disableLiveQuiz}>Turn Off Live Quiz</Button>
           </Col>
