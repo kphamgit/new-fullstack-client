@@ -34,7 +34,7 @@
          //  sentence_parts =  [ 'I', '*', '', 'a', 'student.' ]
          let bracket_index = 0;
          
-        var self = this;
+        
          sentence_parts.forEach(function (part) {
             //console.log("part"+part)
              if (part.trim() === '*' )  {

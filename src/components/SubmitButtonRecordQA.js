@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React from 'react'
 import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
+import {  useSelector } from 'react-redux'
 //import {setAttemptResponse} from '../../redux/attemptResponse'
 import styled from 'styled-components'
 //import { setEndOfQuiz } from '../../redux/endofquiz'
@@ -16,10 +16,10 @@ padding:5px 15px;
   const rootpath = useSelector((state) => state.rootpath.value)
   const question_attempt_id = useSelector((state) => state.question_attempt_id.value)
   const quiz_attempt_id = useSelector((state) => state.quiz_attempt_id.value)
-  const [showquestionattempt, setShowQuestionAttempt] = useState(null)
+  //const [showquestionattempt, setShowQuestionAttempt] = useState(null)
   //
   //const question_attempt_reponse = useSelector((state) => state.question_attempt_reponse.value)
-    const dispatch = useDispatch()
+    //const dispatch = useDispatch()
     let user_answer =  useSelector((state) => state.answer.value)
     
     const process_question_attempt = async () => {

@@ -4,7 +4,6 @@ import ChatFooter from './ChatFooter'
 import { useEffect, useState } from 'react';
 //import { SocketContext } from '../Home';
 import { SocketContext } from '../App';
-import { useSelector } from 'react-redux';
 
 
 const ChatPage = () => {
@@ -12,7 +11,6 @@ const ChatPage = () => {
     const socket = useContext(SocketContext);
     
     const [messages, setMessages] = useState([]);
-    const user = useSelector((state) => state.user.value)
 
 
     useEffect(() => {

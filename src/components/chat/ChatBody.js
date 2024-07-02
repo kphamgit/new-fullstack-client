@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from "./ChatPage.module.css";
 import { useRef, useEffect } from 'react';
 
@@ -12,14 +11,15 @@ const ChatBody = ({messages}) => {
     
   //messagesEndRef.current?.scrollIntoView({ behavior: "smooth",  block: 'nearest', inline: 'start'  })
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
+  /*
   const handleLeaveChat = () => {
     localStorage.removeItem('userName');
     navigate('/');
     window.location.reload();
   };
-
+*/
   useEffect(() => {
     scrollToBottom()
   }, [messages])

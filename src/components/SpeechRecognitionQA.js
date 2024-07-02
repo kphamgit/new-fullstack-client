@@ -6,7 +6,6 @@ export function SpeechRecognitionQA({question, setUserAnswer}) {
     //const [isListening, setIsListening] = useState(false)
     //const [isMicBlocked, setIsMicBlocked] = useState(false)
     const [questioncontent, setQuestionContent] = useState([])
-    const [questioncontent1, setQuestionContent1] = useState(["name", "age"])
 
     useEffect (() => {
         const arr = question.content.split('#')

@@ -1,14 +1,10 @@
 import React, {useState} from "react";
-import { useDispatch, useSelector } from "react-redux";
-//import { setAnswer } from "../../redux/answer";
-import Button from "react-bootstrap/Button"
 import Form from 'react-bootstrap/Form';
 import SubmitButton from "./SubmitButton";
-//import LiveSubmitButton from "./LiveSubmitButton";
 
 export const Radio = ({question, setUserAnswer, live_flag}) => {
   const [selectedItem, setSelectedItem] = useState(null)
-  const livequizflag = useSelector((state) => state.livequizflag.value)
+  //const livequizflag = useSelector((state) => state.livequizflag.value)
 
   const onOptionChange = (e) => {
     //console.log("XXXXXXXXXXXXXXXXXX"+e.target.value)
