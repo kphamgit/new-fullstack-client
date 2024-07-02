@@ -4,6 +4,7 @@ import './Login.css';
 //import Context from '../App/App.js'
 import { useDispatch } from "react-redux";
 import { setUser } from '../../redux/user';
+import { setLiveQuizFlag } from '../../redux/livequizflag';
 import {login} from '../services/list'
   
 export default function Login({setToken, setAuth}) {
@@ -32,10 +33,11 @@ export default function Login({setToken, setAuth}) {
     .then (response => {
       setToken(response.token);
       setAuth({auth: response.token})
+      dispatch(setLiveQuizFlag(false))
       dispatch(setUser(response.user))
     })
     .catch(error => {
-      console.log("Login error",error)
+      //console.log("Login error",error)
       alert(error.response.data.error)
       //alert(error.data)
     })
