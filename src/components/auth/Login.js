@@ -30,9 +30,14 @@ export default function Login({setToken, setAuth}) {
     e.preventDefault();
     login({username: username, password} )
     .then (response => {
-      setToken(response.data.token);
-      setAuth({auth: response.data.token})
-      dispatch(setUser(response.data.user))
+      setToken(response.token);
+      setAuth({auth: response.token})
+      dispatch(setUser(response.user))
+    })
+    .catch(error => {
+      console.log("Login error",error)
+      alert(error.response.data.error)
+      //alert(error.data)
     })
   }
 

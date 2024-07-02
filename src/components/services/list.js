@@ -20,8 +20,16 @@ export async function newGetCategories() {
 }
 
 export async function login(credentials) {
+   if (credentials.username.length === 0) {
+      alert("Please enter username")
+      return false
+   }
+   else if (credentials.password.length === 0) {
+      alert("please enter password")
+      return false
+  }
    let url = `${newrootpath}/sessions` 
    const response = await axios.post(url, credentials )
    //response is a promise
-   return response
+   return response.data
 }
