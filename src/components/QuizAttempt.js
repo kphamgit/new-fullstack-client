@@ -83,7 +83,6 @@ export default function QuizAttempt(props) {
   }, [])
 
     const setTheNextQuestion = (value) => {
-      //console.log(" IN setTheNextQuestion value=", value)
         setQuestion(value)
         setCurrentQuestionNumber(value.question_number)
         setShowQuestionAttemptResponse(false)
@@ -100,14 +99,14 @@ export default function QuizAttempt(props) {
   useEffect(() => {
     //console.log(" 3) in QuizAttempt useEffect.About to call axios to find/create quiz attempt url ="+url)
     axios.get(url).then((response) => {
-      //console.log('  QuizAtt in useEffect server response data=',response.data)
-      //first, disable live quiz flag. This is important (See SubmitButton.js and LiveSubmitButton.js)
-      //dispatch(setLiveQuizFlag(false))
       setTheNextQuestion(response.data.question)
       setShowQuestion(true)
       setQuestionAttemptId(response.data.question_attempt_id)
       dispatch(setQuizAttemptId(response.data.quiz_attempt_id))
       
+    })
+    .catch(error => {
+        console.log(error)
     });
     
 },[url, dispatch]);

@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { setLiveQuizId } from '../redux/livequizid.js';
 import { clearLiveQuizId } from '../redux/livequizid.js';
-
+import { MatchGame } from './MatchGame.js';
+import { Link } from 'react-router-dom';
 export function HomeStudent({user}) {
     const socket = useContext(SocketContext);
     const dispatch = useDispatch()
@@ -53,7 +54,7 @@ export function HomeStudent({user}) {
 //  
     return (
         <>
-    <h5>Live quiz: <span style={{color: livequizflag ? "green" : "brown"  }}>
+    <h5>Live qqquiz: <span style={{color: livequizflag ? "green" : "brown"  }}>
         {livequizflag ? "ON" : "OFF"}
         </span>
         </h5>
@@ -69,15 +70,19 @@ export function HomeStudent({user}) {
           <Col xs={4}>
           <Button variant="danger" onClick={disableLiveQuiz}>Turn Off Live Quiz</Button>
           </Col>
+          <Col>
+          <div style={{display:"flex",  justifyContent:"flex-end"}}><Link to={`/matching_games/`}>Games</Link></div></Col>
         </Row>
         <br />
+       
         <div  dangerouslySetInnerHTML={{ __html: user.teacher_message }}></div>
+        
         <Button onClick={toggleRecord}>Show Record</Button>
           {showRecordView && <>
           <Row style ={ { backgroundColor: 'green', height:"30vh" } } >
           <RecordViewStudent />
           </Row>
-        
+         
           </> }
         </Col>
        

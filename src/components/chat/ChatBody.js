@@ -24,16 +24,13 @@ const ChatBody = ({messages}) => {
     scrollToBottom()
   }, [messages])
 
-
-
   return (
     <>
       {/*This shows messages sent from you*/}
       <div className={styles.message__container}>
         {messages.map((message) =>
-            <div className={styles.message__chats} key={message.id}>
+            <div key={message.id}>
                 <p ref={messagesEndRef}>{message.name}: {message.text}</p>
-             
             </div>
         )}
       </div>

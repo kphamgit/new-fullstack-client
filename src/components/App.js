@@ -10,7 +10,10 @@ import Subcategory from './Subcategory';
 import QuizAttempt from './QuizAttempt';
 //import axios from 'axios';
 import {newGetCategories } from './services/list'
+import { getGames } from './services/list';
 import io from "socket.io-client";
+import Games from './Games';
+import { MatchGame } from './MatchGame';
 
 
 //const token = getToken();
@@ -40,10 +43,9 @@ const socket = io.connect(URL, {
 
 function App() {
 
-  const userAuth = useRef(null)
-  //const token = useSelector((state) => state.token.value)
+  //const userAuth = useRef(null)
   const [token, setToken] = useState()
-  const subcategory = useSelector((state) => state.subcategory.value)
+  //const subcategory = useSelector((state) => state.subcategory.value)
   
   const [categories, setCategories] = useState([])
   const [subcategories, setSubcategories] = useState([])
@@ -72,7 +74,6 @@ function App() {
   useEffect(() => {
       mounted.current = true;
       if (!auth) return
-      
       newGetCategories()
       .then ( response => {
         if(mounted.current) {
@@ -85,6 +86,14 @@ function App() {
           })
           setSubcategories(all_sub_categories)
         }
+      })
+      getGames()
+      .then (response => {
+        if(mounted.current) {
+            console.log("RRRRRRRRR", response.data)
+            setGames(response.data);
+        }
+          
       })
       return () => mounted.current = false;
     //}
@@ -119,6 +128,14 @@ function App() {
               ))
              }
                <Route path="/quiz_attempts/take_quiz/:quiz_id" element = {<QuizAttempt username={user.username} />} />
+               <Route path="/matching_games" element = {<Games />} />
+
+        {console.log("XXXXX", games)}
+        {
+            games && games.map(game => (
+                <Route key={game.id} path={`/matching_games/play/${game.id}`} element={<MatchGame />} />
+            ))
+        }
             </Routes>
            
             </BrowserRouter>

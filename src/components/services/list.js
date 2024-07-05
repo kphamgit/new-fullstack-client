@@ -19,6 +19,12 @@ export async function newGetCategories() {
   
 }
 
+export async function getGames() {
+  let url = `${newrootpath}/api/matching_games` 
+  const response = await axios.get(url)
+  return response
+}
+
 export async function login(credentials) {
    if (credentials.username.length === 0) {
       alert("Please enter username")

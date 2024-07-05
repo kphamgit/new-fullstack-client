@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux';
 import { ListGroup } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { setSubcategory } from '../redux/subcategory';
-import { Route, Routes } from 'react-router-dom';
-import QuizAttempt from './QuizAttempt';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -15,7 +13,7 @@ import Col from 'react-bootstrap/Col';
 
 //import { BrowserRouter } from 'react-router-dom';
 export default function Subcategory({id, name}) {
-
+  
   const rootpath = useSelector((state) => state.rootpath.value)
   const dispatch = useDispatch()
   useEffect(() => {
@@ -34,25 +32,24 @@ export default function Subcategory({id, name}) {
   
     });
   }, [url]);
-  //
+ 
   return(
     <>
-      <Routes>
-        <Route path="/quiz_attempts/take_quiz/:quiz_id" element = {<QuizAttempt username={"uname"} />} />
-        </Routes>
-        <Container>
+      <Container>
           <Row>
             <Col style={{backgroundColor: "#f5ebe4"}}>
-   {post.units && <ul>
-        {post.units.map((unit) =>  
-              (<ListGroup key = {unit.id}>
-                <Unit content={unit}/>
-              </ListGroup> 
-              )
-          )}
-      </ul>}
-      </Col>
-      </Row>
+            
+            {post.units && 
+              <ul>
+                {post.units.map((unit) =>  
+                (<ListGroup key = {unit.id}>
+                  <Unit content={unit}/>
+                </ListGroup> 
+                )
+                )}
+              </ul>}
+            </Col>
+          </Row>
       </Container>
       </>
   );

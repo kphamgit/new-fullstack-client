@@ -7,13 +7,12 @@ import ChatPage from './chat/ChatPage'
 import { setLiveQuizId } from '../redux/livequizid.js';
 import { useDispatch, useSelector } from 'react-redux';
 
-//const students_list = ["linhdan", "lockim", "khanhyen", "giabinh", "bichphuong", "basic3", "quocminh", "nhatminh"]
 export function HomeTeacher(props) {
     const socket = useContext(SocketContext);
     const [studentsList, setStudentsList] = useState([])
     const [studentsLisFromServer, setStudentsListFromServer] = useState([])
     const livequizid = useSelector(state => state.livequizid.value)
-    const [toStudent, setToStudent] = useState()
+    const [targetStudent, setTargetStudent] = useState('everyone')
     const [enableNextQuestionAck, setEnableNextQuestionAck ] =useState([])
     const dispatch = useDispatch()
 
@@ -32,7 +31,7 @@ export function HomeTeacher(props) {
 
     const enableNextButton = () => {   
         socket.emit('enable_next_button', {
-          to_student: toStudent,
+          to_student: targetStudent,
           enable_flag: 1
         });
   }
@@ -57,7 +56,6 @@ export function HomeTeacher(props) {
 useEffect(() => {
     socket.on('enable_button_acknowledged', arg => {
         console.log(" enable_button_acknowledged. arg: ",arg)
-        //user_name, question_number
         setEnableNextQuestionAck([...enableNextQuestionAck, arg])
     })
     
@@ -69,10 +67,6 @@ useEffect(() => {
 
     useEffect(() => {
         socket.on('user_disconnected', arg => {
-            //console.log(" disconnected user :",arg.disconnected_user)
-            //console.log(" current studentsList=", studentsList)
-            //let user_index = studentsList.findIndex(e => e.id === arg.disconnected_user.id )
-            //console.log(" disconnect user index in studentsList = "+user_index)
             const filtered_list = studentsList.filter((user) => user.id !== arg.disconnected_user.id)
             //console.log(" filterd list = ", filtered_list)
             setStudentsList(filtered_list)
@@ -84,21 +78,51 @@ useEffect(() => {
         }   
         //eslint-disable-next-line 
     }, [studentsList])
-    //style={ { display: isLoggedIn ? 'block' : 'none' } }  
-    //:"#e8dfda"
+ 
+    const cleartargetStudent = () => {
+        setTargetStudent('')
+    }
+
+    const handleTargetStudentChoiceChange = (value) => {
+            //console.log(value)
+            if (value.indexOf('For everyone:') >= 0 ) {
+                setTargetStudent('everyone')
+            }
+            else if (targetStudent.indexOf('everyone') >= 0 ) {
+                setTargetStudent('')
+            }
+    }
+
     return (
         <>
-        <h3>Teacher</h3>
+        <h3>Teacddher</h3>
         <Container style ={ { backgroundColor: 'brown'} }>
-      <Row>
-        <Col style ={ {height: "70vh", backgroundColor: 'orange' }} >
-        <ChatPage />
-        <br />
-        </Col>
+        <Row style = {{height: "70vh"}}>
+        <Col style ={ {width: "80%", backgroundColor: 'green' }}>
+                <div>{livequizid}</div>
+                <div><button onClick={enableNextButton} >Enable Next Button</button>&nbsp;
+                <div>
+                <select name="targetstudentchoice" onChange={event => handleTargetStudentChoiceChange(event.target.value)}>
+                <option id="0" >For everyone:</option>
+                <option id="1" >For only:</option>
+                <option id="2" >For everyone except: </option>
+                </select>
+                <input type="text" value={targetStudent} onChange={e => setTargetStudent(e.target.value)} />
+                <button onClick={cleartargetStudent} >Clear</button>
+                </div>
+                   
+                </div>
+                <div><button onClick={enableLiveQuiz} >Enable Live Quiz</button>&nbsp;
+                    <input type="text"  onChange={e => dispatch(setLiveQuizId(e.target.value) ) } />
+                </div>
+            </Col>
+            <Col style ={ {width: "20%" , backgroundColor: 'pink' }} >
+                <ChatPage />
+                 <br />
+            </Col>
       </Row>
-      <Row>
+      <Row style = {{height: "30vh"}}>
         <Col>
-        
         <div>Logged-in students:</div>
         {
             studentsList.map((student, index) =>
@@ -115,14 +139,6 @@ useEffect(() => {
         <Col>
         <div>Recordingss</div>
             </Col>
-            <Col>
-            <div>{livequizid}</div>
-            <div><button onClick={enableNextButton} >Enable Next Button</button>&nbsp;
-            <input type="text" onChange={e => setToStudent(e.target.value)} /></div>
-            <div><button onClick={enableLiveQuiz} >Enable Live Quiz</button>&nbsp;
-            <input type="text"  onChange={e => dispatch(setLiveQuizId(e.target.value) ) } /></div>
-          
-        </Col>
         </Row>
     </Container>
     </>

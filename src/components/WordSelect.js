@@ -29,26 +29,6 @@ function WordSelect({pair, addWordToAnswer, removeWordFromAnswer} ) {
 
    };
 
-   /*
-    const handleClick = (word) => {
-        console.log("handleClick word"+word)
-        let new_clickCount = clickCount + 1
-        setClickCount(new_clickCount)
-        if (clickCount%2 == 0) {
-            console.log("XXXXXXXXXXXXXXX even click count",+word)
-            setAnswerArray([...answerarray, word])
-            //dispatch(setAnswerArray([...answerarray, word]))
-        }
-        else {
-            console.log("YYYYYYYYY odd click count"+word)
-            let word_index = answerarray.findIndex(e => e === word )
-            setAnswerArray(answerarray.filter((word, idx) => idx !== word_index))
-            //dispatch(setAnswerArray(answerarray.filter((word, idx) => idx !== word_index))
-            //setAnswerArray(answerarray.filter((word, idx) => idx !== word_index)) )
-        }
- 
-    }
-    */
     const handleClick = (word) => {
         let new_clickCount = clickCount + 1
         setClickCount(new_clickCount)
