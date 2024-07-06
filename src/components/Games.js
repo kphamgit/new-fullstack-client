@@ -2,8 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 //import { Image } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { MatchGame } from './MatchGame'
-
+import styles from './Games.module.css'
 //mport {GamePage}
 import axios from 'axios'
 
@@ -36,11 +35,14 @@ function Games() {
  //<Image src="https://kevinphambucket.s3.amazonaws.com/images/a/apple.jpeg" />
  
   return (
-    <>
+   <>
    
-    <div style={myStyle}>
-
-        <div className='gamegrid'>
+    <div className={styles.container}>
+        <div className={styles.header}>
+        
+        </div>
+        <div className={styles.nav}></div>
+        <div className={styles.main}>
         { 
           games.map((game) => (
             <div>
@@ -51,8 +53,10 @@ function Games() {
         ))
         }
         </div>
+        <div className={styles.aside}></div>
+        <div className={styles.footer}></div>
     </div>
-      </>
+    </>
   )
 }
 

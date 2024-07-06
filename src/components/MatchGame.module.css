@@ -6,7 +6,7 @@
     "nav    nav   main   main    main     aside"
     "footer footer footer footer footer    aside"
   ;
-  grid-template-rows: 1fr 10fr 1fr;
+  grid-template-rows: 0.25fr 3fr 0.25fr;
 }
 .container1 {
   background-color: #dedede;
@@ -17,7 +17,7 @@
     "main   main    main   main    aside"
     "footer footer footer footer   footer"
   ;
-  grid-template-rows: .5fr .25fr 4fr 1fr;
+  grid-template-rows: .5fr .25fr 3fr 1fr;
 }
 
 .container1 > * {

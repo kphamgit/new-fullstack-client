@@ -30,7 +30,7 @@ export function WordCard({card, handleChoice}) {
             </span>
             :
             <span style={{color:"red"}}>
-                {card.src}
+                &nbsp;
             </span>
             }
         </>

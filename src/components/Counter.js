@@ -5,11 +5,21 @@ import React, {useState, forwardRef, useRef, useEffect, useImperativeHandle} fro
     const interval = useRef(null)
     //const myTimeout = useRef(null)
 
+    /*
+   clearCount is not being used but keep it as demo for calling multiple 
+   functions in child from parent component
+*/
+    
     useImperativeHandle(ref, () => ({
+      clearCount() {
+        setCounter(null)
+        return
+      },
       getCount() {
         return counter;
       }
     }));
+    
 
     useEffect(() => {
         interval.current = setInterval(() => {

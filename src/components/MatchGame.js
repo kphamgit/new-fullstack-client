@@ -1,65 +1,52 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { WordCard } from './WordCard';
 import styles from "./MatchGame.module.css";
 import ChatPage from './chat/ChatPage';
+import { Link } from 'react-router-dom';
+import  Counter  from './Counter'
 //make cards outside of component so that it won't get recreated
 //everytime component is refreshed.
 
-const cardImages = [
-    {"text" : "test1"},
-    {"text" : "test2"},
-    {"text" : "test3"},
-    {"text" : "test4"},
-    {"text" : "test5"},
-    {"text" : "test6"}
-]
-const container = {
-    width: "100%", 
-    display: 'flex',
-    flexDirection: 'row',
-    backgroundColor: '#F43596',
-};
 
-const container_left = {
-    display: 'flex',
-    flexDirection: 'column',
-    width:"50%",
-    backgroundColor: 'blue',
-};
-
+/*
 const container_right = {
     display: 'flex',
     flexDirection: 'column',
     width:"50%",
     backgroundColor: 'red',
 };
+*/
 
-const wordStyle = {
-    fontSize: "14px",
-    color: "blue", 
-    backgroundColor:"yellow",
-    textDecorationSkipInk: 'none',
-    padding: 0.5,
-    margin: '40px 70px 40px 30px',
-    border: "solid", 
-    userSelect: 'none'
-
-};
-
-export function MatchGame(props) {
+export function MatchGame({gameId}) {
     const rootpath = useSelector(state => state.rootpath.value)
     const [leftCards , setLeftCards] = useState([])
     const [rightCards , setRightCards] = useState([])
     const [turns, setTurns] = useState(0)
+    const [nummatches, setNumMatches] = useState(0)
+    const [gameover, setGameOver] = useState(false)
+    const [wasTimedOut, setWasTimedOut] = useState(false)
+
+    const childRef = useRef();
+    const childRef1 = useRef();
+    const myTimeout = useRef(null)
 
     const [choiceLeft, setChoiceLeft] = useState(null)
     const [choiceRight, setChoiceRight] = useState(null)
 
     useEffect(() => {
+        const clearInt = () => {
+            console.log("Game Time is up...")
+            setGameOver(true)
+            //setWasTimedOut(true)
+            clearTimeout(myTimeout.current)
+            //console.log(childRef.current.getCount())
+            //childRef.current.clearCount()
+        }
+
     const populateCards = () =>{
-        var url = rootpath + '/api/matching_games/' + '13' + '/play_fullstack'
+        var url = rootpath + '/api/matching_games/' + gameId + '/play_fullstack'
         axios.get(url).then((response) => {
                 //console.log(response.data)
                 let myArray1 = response.data.base.split('/').map((str, index) => {
@@ -98,7 +85,12 @@ export function MatchGame(props) {
         setTurns(0)
     } // end populate card
     populateCards()
-    },[])  //end useEffect
+    myTimeout.current = setTimeout(clearInt, 60000);
+    return () => {
+        //clearInterval(interval.current)
+        clearTimeout(myTimeout.current)
+      }  
+    },[rootpath, gameId])  //end useEffect
 
     useEffect (() => {
             if ((choiceLeft !==null) && (choiceRight !== null) ) {
@@ -123,6 +115,7 @@ export function MatchGame(props) {
                             }
                         })
                     })
+                    setNumMatches(prevNumMatches => prevNumMatches + 1)
                     resetTurn()
                 }
                 else {
@@ -137,6 +130,12 @@ export function MatchGame(props) {
         setTurns(prevTurns => prevTurns + 1)
     }
    
+    useEffect(() => {
+        if (nummatches === 8) {
+            setGameOver(true)
+        }
+    },[nummatches])
+
     const handleChoice = (card) => {
         choiceLeft ? setChoiceRight(card) : setChoiceLeft(card)
     }
@@ -145,36 +144,52 @@ export function MatchGame(props) {
         <>
            
            <div className={styles.container}>
-            <header className={styles.header}>
+            <div className={styles.header}>
                 <h3>Play and Learn</h3>
-            </header>
-            <nav className={styles.nav}></nav>
-            <main className={styles.main}>
-            <div className={styles.main__grid__item}>
-                { leftCards.map (card => (
-                    <div key={card.match_index}>
-                        <div>
-                        <WordCard card={card} handleChoice={handleChoice} />
+                <div><Link to={`/matching_games/`}>
+    Games</Link>
+    {!gameover &&
+                <Counter ref={childRef} />
+    }
+    <span>Turn:&nbsp;{turns} </span>
+    <span>Num matches: {nummatches} </span>
+            </div>
+            </div>
+            <div className={styles.nav}></div>
+           
+            <div className={styles.main}>
+                { (gameover) ?
+                    <h3>Game Over</h3>
+                    :
+                    <>
+                    <div className={styles.main__grid__item}>
+                        { leftCards.map (card => (
+                        <div key={card.match_index}>
+                            <div>
+                            <WordCard card={card} handleChoice={handleChoice} />
+                            </div>
                         </div>
+                        ))
+                    }
                     </div>
-                ))
-                }
-                </div>
-                <div className={styles.main__grid__item}>
-                { rightCards.map (card => (
-                    <div key={card.match_index}>
-                        <div>
-                        <WordCard card={card} handleChoice={handleChoice} />
+                    <div className={styles.main__grid__item}>
+                    { rightCards.map (card => (
+                        <div key={card.match_index}>
+                            <div>
+                            <WordCard card={card} handleChoice={handleChoice} />
+                            </div>
                         </div>
+                        ))
+                    }
                     </div>
-                ))
+                    </>
                 }
-                </div>
-            </main>
-            <aside>
+            </div>
+          
+            <div>
                 <ChatPage />
-            </aside>
-            <footer className={styles.footer}></footer>
+            </div>
+            <footer className={styles.footer}>footer</footer>
             </div>
         </>
     )

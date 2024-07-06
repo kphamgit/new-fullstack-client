@@ -90,7 +90,7 @@ function App() {
       getGames()
       .then (response => {
         if(mounted.current) {
-            console.log("RRRRRRRRR", response.data)
+            //console.log("RRRRRRRRR", response.data)
             setGames(response.data);
         }
           
@@ -129,11 +129,9 @@ function App() {
              }
                <Route path="/quiz_attempts/take_quiz/:quiz_id" element = {<QuizAttempt username={user.username} />} />
                <Route path="/matching_games" element = {<Games />} />
-
-        {console.log("XXXXX", games)}
         {
             games && games.map(game => (
-                <Route key={game.id} path={`/matching_games/play/${game.id}`} element={<MatchGame />} />
+                <Route key={game.id} path={`/matching_games/play/${game.id}`} element={<MatchGame gameId={game.id} />} />
             ))
         }
             </Routes>
