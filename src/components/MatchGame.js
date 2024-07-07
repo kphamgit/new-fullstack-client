@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { WordCard } from './WordCard';
+import { MatchCards } from './MatchCards';
 import styles from "./MatchGame.module.css";
 import ChatPage from './chat/ChatPage';
 import { Link } from 'react-router-dom';
@@ -26,7 +27,9 @@ export function MatchGame({gameId}) {
     const [turns, setTurns] = useState(0)
     const [nummatches, setNumMatches] = useState(0)
     const [gameover, setGameOver] = useState(false)
-    const [wasTimedOut, setWasTimedOut] = useState(false)
+    const [minutesElapsed, setMinutesElapsed] = useState(null)
+    const [secondsElapsed, setSecondsElapsed] = useState(null)
+   // const [wasTimedOut, setWasTimedOut] = useState(false)
 
     const childRef = useRef();
     const childRef1 = useRef();
@@ -37,12 +40,10 @@ export function MatchGame({gameId}) {
 
     useEffect(() => {
         const clearInt = () => {
-            console.log("Game Time is up...")
+            //console.log("Game Time is up...")
             setGameOver(true)
-            //setWasTimedOut(true)
+            childRef.current.clearCount()
             clearTimeout(myTimeout.current)
-            //console.log(childRef.current.getCount())
-            //childRef.current.clearCount()
         }
 
     const populateCards = () =>{
@@ -51,30 +52,30 @@ export function MatchGame({gameId}) {
                 //console.log(response.data)
                 let myArray1 = response.data.base.split('/').map((str, index) => {
                     let mystr1
-                    if (response.data.source_has_images) {
+                    if (str.indexOf('jpeg') >= 0 ) {
                       let initial = str[0]
-                      mystr1 = "https://kevinphambucket.s3.amazonaws.com/images/" + initial + '/' + str + '.jpeg'
+                      mystr1 = "https://kevinphambucket.s3.amazonaws.com/images/" + initial + '/' 
                     }
                     else {
                       mystr1 = str
                     }
                     return (
-                      {src: mystr1, matched: false, match_index: index, has_image: response.data.source_has_images, language: response.data.source_language}
+                      {src: mystr1, matched: false, match_index: index, language: response.data.source_language}
                     )
                 });
                 //console.log(myArray1)
                 setLeftCards(myArray1)
                 let myArray2 = response.data.target.split('/').map((str, index) => {
                     let mystr2
-                    if (response.data.target_has_images) {
+                    if (str.indexOf('jpeg') >= 0 ) {
                       let initial = str[0]
-                      mystr2 = "https://kevinphambucket.s3.amazonaws.com/images/" + initial + '/' + str + '.jpeg'
+                      mystr2 = "https://kevinphambucket.s3.amazonaws.com/images/" + initial + '/' + str 
                     }
                     else {
                       mystr2 = str
                     }
                     return (
-                      {src: mystr2, matched: false, match_index: index, has_image: response.data.target_has_images, language: response.data.target_language }
+                      {src: mystr2, matched: false, match_index: index, language: response.data.target_language }
                     )
                 });
                 //setRightCards(myArray2)
@@ -85,16 +86,23 @@ export function MatchGame({gameId}) {
         setTurns(0)
     } // end populate card
     populateCards()
-    myTimeout.current = setTimeout(clearInt, 60000);
+    myTimeout.current = setTimeout(clearInt, 40000);
     return () => {
-        //clearInterval(interval.current)
         clearTimeout(myTimeout.current)
       }  
     },[rootpath, gameId])  //end useEffect
 
+    useEffect(() => {
+        return () => {
+            //console.log("GAME OVER")
+            clearTimeout(myTimeout.current)
+          }  
+    },[gameover])
+
     useEffect (() => {
             if ((choiceLeft !==null) && (choiceRight !== null) ) {
                 if (choiceLeft.match_index === choiceRight.match_index) {
+
                     setLeftCards(prevCards => {
                         return prevCards.map(card => {
                             if (card.match_index === choiceLeft.match_index) {
@@ -133,6 +141,7 @@ export function MatchGame({gameId}) {
     useEffect(() => {
         if (nummatches === 8) {
             setGameOver(true)
+            childRef.current.clearCount()
         }
     },[nummatches])
 
@@ -147,12 +156,9 @@ export function MatchGame({gameId}) {
             <div className={styles.header}>
                 <h3>Play and Learn</h3>
                 <div><Link to={`/matching_games/`}>
-    Games</Link>
-    {!gameover &&
+                    Games</Link>
+            
                 <Counter ref={childRef} />
-    }
-    <span>Turn:&nbsp;{turns} </span>
-    <span>Num matches: {nummatches} </span>
             </div>
             </div>
             <div className={styles.nav}></div>
@@ -163,24 +169,10 @@ export function MatchGame({gameId}) {
                     :
                     <>
                     <div className={styles.main__grid__item}>
-                        { leftCards.map (card => (
-                        <div key={card.match_index}>
-                            <div>
-                            <WordCard card={card} handleChoice={handleChoice} />
-                            </div>
-                        </div>
-                        ))
-                    }
+                       <MatchCards cards={leftCards} handleChoice={handleChoice} />
                     </div>
                     <div className={styles.main__grid__item}>
-                    { rightCards.map (card => (
-                        <div key={card.match_index}>
-                            <div>
-                            <WordCard card={card} handleChoice={handleChoice} />
-                            </div>
-                        </div>
-                        ))
-                    }
+                       <MatchCards cards={rightCards} handleChoice={handleChoice} />
                     </div>
                     </>
                 }

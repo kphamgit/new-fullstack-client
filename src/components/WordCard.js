@@ -13,15 +13,46 @@ const wordStyle = {
 
 export function WordCard({card, handleChoice}) {
     const [matchindex, setMatchIndex] = useState(null)
+    const [ourText, setOurText] = useState("")
+    const [hasImage, setHasImage] = useState(false)
+    const msg = new SpeechSynthesisUtterance()
+    msg.volume = 1; // From 0 to 1
+    msg.rate = .8; // From 0.1 to 10
+    //msg.pitch = 2; // From 0 to 2
+    msg.lang = 'en';
 
     const handleClick = () => {
-        //setCardSelection(matchindex)
+        if (!hasImage) {
+            if (card.language === 'en') {
+                msg.text = card.src
+                msg.voice = window.speechSynthesis.getVoices()[1];
+                window.speechSynthesis.speak(msg)
+            }
+        }
         handleChoice(card)
     }
-    useEffect(() => {
-        //setMatchIndex(card.match_index)
-    })
 
+    useEffect(() => {
+       if (card.src.indexOf('jpeg') >= 0 ) {
+            setHasImage(true)
+       }
+    },[card])
+
+    if (card.src.indexOf("jpeg") >= 0 ) {
+        return (
+            <>
+            { card.matched === false ?
+            <img style={{width:"150px", height:"140px"}}src = {card.src} alt="card"
+            onClick={handleClick}
+            />
+            :
+            <span style={{color:"red"}}>
+           
+            </span>
+            }
+            </>
+        )
+    }
     return (
         <>
             { (card.matched === false) ?

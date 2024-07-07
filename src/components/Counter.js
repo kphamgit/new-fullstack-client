@@ -3,6 +3,9 @@ import React, {useState, forwardRef, useRef, useEffect, useImperativeHandle} fro
   const Counter = forwardRef(function Counter(props, ref) {
     const [counter, setCounter] = useState(null)
     const interval = useRef(null)
+    const [minutesElapsed, setMinutesElapsed] = useState(null)
+    const [secondsElapsed, setSecondsElapsed] = useState(null)
+    const [stop, setStop] = useState(false)
     //const myTimeout = useRef(null)
 
     /*
@@ -12,7 +15,13 @@ import React, {useState, forwardRef, useRef, useEffect, useImperativeHandle} fro
     
     useImperativeHandle(ref, () => ({
       clearCount() {
-        setCounter(null)
+        //setCounter(null)
+        clearInterval(interval.current)
+        const minutes = Math.floor(counter / 60);
+        setMinutesElapsed(Math.floor(minutes ))
+        const seconds = counter - minutes * 60;
+        setSecondsElapsed(seconds)
+        setStop(true)
         return
       },
       getCount() {
@@ -33,7 +42,16 @@ import React, {useState, forwardRef, useRef, useEffect, useImperativeHandle} fro
     },[])
 
   return (
-    <div>{counter}</div>
+    <>
+    {!stop ?
+    <div>{counter}&nbsp;&nbsp;&nbsp;</div>
+    :
+    <div>
+        <span>{minutesElapsed} minutes. </span>
+        <span>{secondsElapsed} seconds.</span>
+    </div>
+    }
+    </>
   )
 })
 
