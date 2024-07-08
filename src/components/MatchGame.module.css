@@ -63,3 +63,10 @@
   font-size: 30px;
   margin-left: 30px;
 }
+
+.img_grid_style {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto auto;
+  grid-gap: none
+}
