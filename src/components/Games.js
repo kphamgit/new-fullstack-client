@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Link, Route, Routes } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 //import { Image } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import styles from './Games.module.css'
@@ -9,7 +9,7 @@ import axios from 'axios'
 function Games() {
   const rootpath = useSelector((state) => state.rootpath.value)
   const [games, setGames] = useState([])
-  
+  /*
   const myStyle =  {
     borderRadius: "5px",
     marginBottom: "5px",
@@ -22,7 +22,7 @@ function Games() {
     padding: "10px 10px 10px 10px",
     background: "cyan"
 }
-
+*/
   useEffect(() => {
     const url = `${rootpath}/api/matching_games`
     axios.get(url).then((response) => {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 
 const wordStyle = {
     fontSize: "18px",
@@ -16,7 +16,7 @@ export function TextCard({card, handle_click}) {
     msg.volume = 1; // From 0 to 1
     msg.rate = .8; // From 0.1 to 10
     //msg.pitch = 2; // From 0 to 2
-    msg.lang = 'en-GB';
+    msg.lang = 'en';
 
     const handleClick = () => {
             if (card.language === 'en') {

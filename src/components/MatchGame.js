@@ -63,7 +63,7 @@ export function MatchGame({gameId}) {
             setTurns(0)
         } // end populate card
         populateCards()
-        myTimeout.current = setTimeout(clearInt, 40000);
+        myTimeout.current = setTimeout(clearInt, 100000);
         return () => {
             clearTimeout(myTimeout.current)
         }  
@@ -76,7 +76,7 @@ export function MatchGame({gameId}) {
     },[gameover])
 
     useEffect (() => {
-            if ((choiceLeft !==null) && (choiceRight !== null) ) {
+            if (choiceLeft && choiceRight ) {
                 if (choiceLeft.match_index === choiceRight.match_index) {
                     setLeftCards(prevCards => {
                         return prevCards.map(card => {
@@ -120,8 +120,12 @@ export function MatchGame({gameId}) {
         }
     },[nummatches])
 
-    const handleChoice = (card) => {
-        choiceLeft ? setChoiceRight(card) : setChoiceLeft(card)
+    const handleChoiceLeft = (card) => {
+        setChoiceLeft(card)
+    }
+
+    const handleChoiceRight = (card) => {
+       setChoiceRight(card)
     }
 
     return (
@@ -133,10 +137,10 @@ export function MatchGame({gameId}) {
                     Games</Link>
             
                 <Counter ref={childRef} />
-            </div>
+                </div>
             </div>
             <div className={styles.nav}>
-            {rightCardHasImages.toString()}
+            
             </div>
            
             <div className={styles.main}>
@@ -149,7 +153,7 @@ export function MatchGame({gameId}) {
                         { leftCards.map (card => (
                                 <div key={card.match_index}>
                                 <div>
-                                <MatchCard card={card} handleChoice={handleChoice} />
+                                <MatchCard card={card} handleChoice={handleChoiceLeft} />
                                 </div>
                                 </div>
                             ))
@@ -161,7 +165,7 @@ export function MatchGame({gameId}) {
                     { rightCards.map (card => (
                                 <div key={card.match_index}>
                                 <div>
-                                <MatchCard card={card} handleChoice={handleChoice} />
+                                <MatchCard card={card} handleChoice={handleChoiceRight} />
                                 </div>
                                 </div>
                             ))
