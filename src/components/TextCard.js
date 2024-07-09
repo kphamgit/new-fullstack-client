@@ -8,6 +8,7 @@ const wordStyle = {
     padding: "5px",
     margin: '40px 0px 40px 30px',
     border: "solid", 
+    borderColor: "#c9cca3",
     userSelect: 'none'
 };
 
@@ -18,7 +19,12 @@ export function TextCard({card, handle_click}) {
     //msg.pitch = 2; // From 0 to 2
     msg.lang = 'en';
 
-    const handleClick = () => {
+    const handleClick = (target) => {
+        //console.log(target.style.borderColor)
+        //target.style.borderColor = 'brown'
+        //setTimeout(() => {
+           // target.style.borderColor = '#c9cca3'
+        //}, 600)
             if (card.language === 'en') {
                 msg.text = card.src
                 msg.voice = window.speechSynthesis.getVoices()[1];
@@ -30,7 +36,7 @@ export function TextCard({card, handle_click}) {
     return (
         <>
          { (card.matched === false) ?
-            <span style={wordStyle} onClick={() => handleClick()}>
+            <span style={wordStyle} onClick={(e) => handleClick(e.target)}>
                 {card.src}
             </span>
             :

@@ -14,6 +14,7 @@ import { getGames } from './services/list';
 import io from "socket.io-client";
 import Games from './Games';
 import { MatchGame } from './MatchGame';
+import { MatchGameContinuous } from './MatchGameContinuous';
 
 
 //const token = getToken();
@@ -131,7 +132,7 @@ function App() {
                <Route path="/matching_games" element = {<Games />} />
         {
             games && games.map(game => (
-                <Route key={game.id} path={`/matching_games/play/${game.id}`} element={<MatchGame gameId={game.id} />} />
+                <Route key={game.id} path={`/matching_games/play/${game.id}`} element={<MatchGameContinuous gameId={game.id} />} />
             ))
         }
             </Routes>
