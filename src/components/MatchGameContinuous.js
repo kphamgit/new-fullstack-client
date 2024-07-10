@@ -1,7 +1,7 @@
 import React, {cloneElement, useEffect, useRef, useState} from 'react'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { MatchCard } from './MatchCard';
+import { TextCard } from './TextCard';
 import styles from "./MatchGame.module.css";
 import ChatPage from './chat/ChatPage';
 import { Link } from 'react-router-dom';
@@ -20,18 +20,29 @@ const img_grid_style={
 //className={completed ? 'text-strike' : null}
 export function MatchGameContinuous({gameId}) {
     const rootpath = useSelector(state => state.rootpath.value)
-    const [leftCards , setLeftCards] = useState([])
-    const [rightCards , setRightCards] = useState([])
-    const [rightCardsBank, setRightCardsBank] = useState(null)
-    const [leftCardsBank, setLeftCardsBank] = useState(null)
+    const [leftCardsPile , setLeftCardsPile] = useState([])
+    const [rightCardsPile , setRightCardsPile] = useState([])
     const [rightCardHasImages, setRightCardHasImages] = useState(false)
+    const [dataSize, setDataSize] = useState(0)
     const [turns, setTurns] = useState(0)
+
+    const [matched, setMatched] = useState(false)
+    
     const [numMatches, setNumMatches] = useState(0)
     const [gameover, setGameOver] = useState(false)
 
+    const leftCardsBank = useRef([])
+    const rightCardsBank = useRef([])
     const childRef = useRef();
     const myTimeout = useRef(null)
+    const testTimeout = useRef(null)
     const addPairTimeout = useRef(null)
+    const matchIndex = useRef(null)
+
+    const leftCardsPileRef = useRef(null)
+    const rightCardsPileRef = useRef(null)
+
+    const matchIndices = useRef([])
 
     const [choiceLeft, setChoiceLeft] = useState(null)
     const [choiceRight, setChoiceRight] = useState(null)
@@ -46,12 +57,14 @@ export function MatchGameContinuous({gameId}) {
         const populateCards = () =>{
             var url = rootpath + '/api/matching_games/' + gameId + '/play_fullstack'
             axios.get(url).then((response) => {
+                //console.log(" ENTRY POPULATE cards")
                 //console.log(response.data)
-                    let myArray1 = response.data.base.split('/').map((str, index) => {
+                let myArray1 = response.data.base.split('/').map((str, index) => {
                     return (
                       {src: str, matched: false, match_index: index, language: response.data.source_language}
                     )
                 });
+                setDataSize(myArray1.length)
                 //get 6 random cards from left cards bank
                 let tempArr = []
                 let randomIndices = []  //saved for use on right cards bank
@@ -59,13 +72,14 @@ export function MatchGameContinuous({gameId}) {
                     const randomIndex = Math.floor(Math.random() * myArray1.length);
                     randomIndices.push(randomIndex)
                     const random_card = myArray1[randomIndex]
-                    //and remove it from leftCardsBank so it won't be reselected
                     tempArr.push(random_card)
+                     //and remove it from left cards bank so it won't be reselected
                     myArray1.splice(randomIndex, 1)
                 }
-                setLeftCards(tempArr)
-                //setLeftCards(myArray1.splice(0,5))
-                setLeftCardsBank(myArray1)
+                setLeftCardsPile(tempArr)
+                //setLeftCardsPile(myArray1.splice(0,5))
+                //(myArray1)
+                leftCardsBank.current = [...myArray1]
                 let myArray2 = response.data.target.split('/').map((str, index) => {
                     return (
                       {src: str, matched: false, match_index: index, language: response.data.target_language }
@@ -75,27 +89,28 @@ export function MatchGameContinuous({gameId}) {
                 //for(let i=0; i<6; i++) {
                 randomIndices.forEach( random_index => {
                     const random_card = myArray2[random_index]
-                    //and remove it from rightCardsBank so it won't be reselected
+                    //and remove it from right cards bank so it won't be reselected
                     tempArr1.push(random_card)
                     myArray2.splice(random_index, 1)
                 })
                    
                 //}
-                setRightCards(tempArr1.sort(() => Math.random() - 0.5 ))
-                setRightCardsBank(myArray2)
+                setRightCardsPile(tempArr1.sort(() => Math.random() - 0.5 ))
+                rightCardsBank.current = [...myArray2]
 
                 //let tempRightCards = myArray2.splice(0,6)
-                setRightCardsBank(myArray2)
-                //setRightCards(tempRightCards.sort(() => Math.random() - 0.5 ) )
+               
+                //setRightCardsPile(tempRightCards.sort(() => Math.random() - 0.5 ) )
 
                 if (myArray2[0].src.indexOf('jpeg') >= 0 ) {
                     setRightCardHasImages(true)
                 }
              })
             setTurns(0)
+            
         } // end populate card
         populateCards()
-        myTimeout.current = setTimeout(clearInt, 1000000);
+        myTimeout.current = setTimeout(clearInt,1000000);
         return () => {
             clearTimeout(myTimeout.current)
         }  
@@ -107,35 +122,57 @@ export function MatchGameContinuous({gameId}) {
           }  
     },[gameover])
 
+    useEffect(() => {
+        leftCardsPileRef.current = leftCardsPile
+        rightCardsPileRef.current = rightCardsPile
+       //console.log("useEffect: LEFT/RIGHT CARD PILE CHANGED left card pile: ",leftCardsPile)
+        //console.log(" LEFT CARDS PILE LENGHT =", leftCardsPile.length)
+    },[leftCardsPile, rightCardsPile])
+
+    
+    
+    const resetTurn = () => {
+        setChoiceLeft(null)
+        setChoiceRight(null)
+        setTurns(prevTurns => prevTurns + 1)
+    }
     useEffect (() => {
-            const addPair = () => {
-                //console.log(" in addPair leftcardsBank lenght = "+leftCardsBank.length)
-                if (leftCardsBank.length >= 1) {
-                const index_in_left_array = leftCards.findIndex(element => element.match_index === choiceLeft.match_index);
-                const randomIndex = Math.floor(Math.random() * leftCardsBank.length);
-
-                //get a random card from leftCardsBank
-                //save it in left_random_card
-                const left_random_card = leftCardsBank[randomIndex]
-                //and remove it from leftCardsBank so it won't be reselected
-                leftCardsBank.splice(randomIndex, 1) 
+        const addPair = () => {
+            //console.log("left cards bank lenght:"+leftCardsBank.current.length)
+            //console.log("addPair ENTRY left card pile", leftCardsPile)
+            if (leftCardsBank.current.length > 0) {
+                //console.log("      ")
+                //console.log(" ******* addPairTest EEEEENTRY left cards pile:", leftCardsPileRef.current)
+                //console.log(" addPairTest match indices :", matchIndices.current)
+                const randomIndex = Math.floor(Math.random() * leftCardsBank.current.length);
+                const left_random_card = leftCardsBank.current[randomIndex]
+                 // remove randomly-selected card from left cards bank so it won't be reselected
+                leftCardsBank.current.splice(randomIndex, 1) 
                 //add the randomly-selected card to left card pile where the matched card occured
-                leftCards.splice(index_in_left_array, 1, left_random_card); //this splice function removes the card at
-                // index_in_left_array and add left_random_card to the same position
-                //set the state for rerendering
-                setLeftCards(leftCards)
+                //at the same time remove the matched card in the card pile
+                const index_in_left_array = leftCardsPileRef.current.findIndex(element => 
+                    element.match_index === matchIndices.current[0]);
+                leftCardsPileRef.current.splice(index_in_left_array, 1, left_random_card)
+                //console.log(" left card pile ref after replacing matched card with random card:", leftCardsPileRef.current)
+                const tempArr = [...leftCardsPileRef.current]
+                setLeftCardsPile(tempArr)
+                //DO RIGHT CARDS
+                //use the random index for the left cards bank
+                const right_random_card = rightCardsBank.current[randomIndex]
+                rightCardsBank.current.splice(randomIndex, 1) 
+                const index_in_right_array = rightCardsPileRef.current.findIndex(element => 
+                    element.match_index === matchIndices.current[0]);
+                rightCardsPileRef.current.splice(index_in_right_array, 1, right_random_card)
+                const tempArr1 = [...rightCardsPileRef.current]
+                setRightCardsPile(tempArr1)
 
-                const index_in_right_array = rightCards.findIndex(element => element.match_index === choiceRight.match_index);
-                const right_random_card = rightCardsBank[randomIndex]
-                rightCardsBank.splice(randomIndex, 1) //remove random card from right cards bank
-                rightCards.splice(index_in_right_array, 1, right_random_card);
-                setRightCards(rightCards)      
-            }     
+                matchIndices.current.splice(0, 1)
+                
             }
-
-            if (choiceLeft && choiceRight ) {
+        }
+        if (choiceLeft && choiceRight ) {
                 if (choiceLeft.match_index === choiceRight.match_index) {
-                    setLeftCards(prevCards => {
+                    setLeftCardsPile(prevCards => {
                         return prevCards.map(card => {
                             if (card.match_index === choiceLeft.match_index) {
                                 return {...card, matched: true}
@@ -145,7 +182,8 @@ export function MatchGameContinuous({gameId}) {
                             }
                         })
                     })
-                    setRightCards(prevCards => {
+                    
+                    setRightCardsPile(prevCards => {
                         return prevCards.map(card => {
                             if (card.match_index === choiceRight.match_index) {
                                 return {...card, matched: true}
@@ -155,39 +193,33 @@ export function MatchGameContinuous({gameId}) {
                             }
                         })
                     })
+                    setMatched(true)
                     setNumMatches(prevNumMatches => prevNumMatches + 1)
-                    addPairTimeout.current = setTimeout(addPair, 2500);
-                    
+                    matchIndex.current = choiceLeft.match_index
+                    matchIndices.current.push(choiceLeft.match_index)
+                    testTimeout.current = setTimeout(addPair, 2500)
                     resetTurn()
                 }
                 else {
-                    resetTurn()
+                    
+                    //resetTurn()
                 }
-            }
-            return () => {
-                //clearTimeout(addPairTimeout.current)
-            }  
-    }, [choiceLeft, choiceRight, leftCards, rightCards, leftCardsBank, rightCardsBank])
+        }
+    }, [choiceLeft, choiceRight, leftCardsPile, rightCardsPile])
 
-    const resetTurn = () => {
-        setChoiceLeft(null)
-        setChoiceRight(null)
-        setTurns(prevTurns => prevTurns + 1)
-    }
-   
     useEffect(() => {
         if (numMatches) {
-            
-            if (numMatches === (leftCardsBank.length + 6)) {
-                setGameOver(true)
-                childRef.current.clearCount()
+            //console.log(" NUM MATCHES : ", numMatches)
+            if (leftCardsBank.current.length === 0) {  //card banks were emptied out
+                if (numMatches === dataSize) {
+                    //all cards in cards pile have been selected correctly.GAME OVER")
+                    setGameOver(true)
+                    clearTimeout(testTimeout.current)
+                    childRef.current.clearCount()
+                }
             }
-            else  {
-       
-            }
-            
         }
-    },[numMatches])
+    },[numMatches, leftCardsBank.current.length, dataSize])
 
     const handleChoiceLeft = (card) => {
         setChoiceLeft(card)
@@ -209,7 +241,7 @@ export function MatchGameContinuous({gameId}) {
                 </div>
             </div>
             <div className={styles.nav}>
-            
+                {matchIndex.current}
             </div>
            
             <div className={styles.main}>
@@ -219,10 +251,10 @@ export function MatchGameContinuous({gameId}) {
                     :
                     <>
                     <div className={styles.main__grid__item}>
-                        { leftCards.map (card => (
+                        { leftCardsPile.map (card => (
                                 <div key={card.match_index}>
                                 <div>
-                                <MatchCard card={card} handleChoice={handleChoiceLeft} />
+                                <TextCard card={card} handleChoice={handleChoiceLeft} />
                                 </div>
                                 </div>
                             ))
@@ -231,10 +263,10 @@ export function MatchGameContinuous({gameId}) {
                     <div 
                     className={rightCardHasImages ? styles.img_grid_style : styles.main__grid__item }
                     >
-                    { rightCards.map (card => (
+                    { rightCardsPile.map (card => (
                                 <div key={card.match_index}>
                                 <div>
-                                <MatchCard card={card} handleChoice={handleChoiceRight} />
+                                <TextCard card={card} handleChoice={handleChoiceRight} />
                                 </div>
                                 </div>
                             ))
@@ -247,7 +279,9 @@ export function MatchGameContinuous({gameId}) {
             <div>
                 <ChatPage />
             </div>
-            <footer className={styles.footer}>footer</footer>
+            <footer className={styles.footer}>
+              Data size: {dataSize} Num Matches: {numMatches}
+            </footer>
             </div>
         </>
     )

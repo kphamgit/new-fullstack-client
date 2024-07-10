@@ -12,7 +12,7 @@ const wordStyle = {
     userSelect: 'none'
 };
 
-export function TextCard({card, handle_click}) {
+export function TextCard({card, handleChoice}) {
     const msg = new SpeechSynthesisUtterance()
     msg.volume = 1; // From 0 to 1
     msg.rate = .8; // From 0.1 to 10
@@ -20,17 +20,12 @@ export function TextCard({card, handle_click}) {
     msg.lang = 'en';
 
     const handleClick = (target) => {
-        //console.log(target.style.borderColor)
-        //target.style.borderColor = 'brown'
-        //setTimeout(() => {
-           // target.style.borderColor = '#c9cca3'
-        //}, 600)
             if (card.language === 'en') {
                 msg.text = card.src
                 msg.voice = window.speechSynthesis.getVoices()[1];
                 window.speechSynthesis.speak(msg)
             }
-            handle_click(card)
+            handleChoice(card)
     }
 
     return (
