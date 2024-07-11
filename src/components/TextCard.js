@@ -20,6 +20,11 @@ export function TextCard({card, handleChoice}) {
     msg.lang = 'en';
 
     const handleClick = (target) => {
+            
+            target.style.borderColor = "red"
+            setTimeout(() => {
+                target.style.borderColor = "#c9cca3"
+            }, [700])
             if (card.language === 'en') {
                 msg.text = card.src
                 msg.voice = window.speechSynthesis.getVoices()[1];

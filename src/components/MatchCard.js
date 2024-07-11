@@ -22,7 +22,7 @@ export function MatchCard({card, handleChoice}) {
     //msg.pitch = 2; // From 0 to 2
     msg.lang = 'en';
     */
-   
+
     const handleClick = () => {
         handleChoice(card)
     }
@@ -35,10 +35,10 @@ export function MatchCard({card, handleChoice}) {
 
     if (hasImage) {
        return (
-            <ImageCard card={card} handle_click={handleClick} />
+            <ImageCard card={card} handleChoice={handleClick} />
        )
     }
     return (
-       <TextCard card={card} handle_click={handleClick} />
+       <TextCard card={card} handleChoice={handleClick} />
     )
 }

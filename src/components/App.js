@@ -131,12 +131,20 @@ function App() {
                <Route path="/quiz_attempts/take_quiz/:quiz_id" element = {<QuizAttempt username={user.username} />} />
                <Route path="/matching_games" element = {<Games />} />
         {
-            games && games.map(game => (
+            games && games.map(game => {
+              if (game.continuous) {
+              return (
                 <Route key={game.id} path={`/matching_games/play/${game.id}`} element={<MatchGameContinuous gameId={game.id} />} />
-            ))
+              )
+              }
+              else {
+                return (
+                  <Route key={game.id} path={`/matching_games/play/${game.id}`} element={<MatchGame gameId={game.id} />} />
+                )
+              }
+            })
         }
             </Routes>
-           
             </BrowserRouter>
             </SocketContext.Provider>
         </>

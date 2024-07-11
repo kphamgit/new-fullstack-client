@@ -201,8 +201,7 @@ export function MatchGameContinuous({gameId}) {
                     resetTurn()
                 }
                 else {
-                    
-                    //resetTurn()
+                    resetTurn()
                 }
         }
     }, [choiceLeft, choiceRight, leftCardsPile, rightCardsPile])
@@ -241,7 +240,7 @@ export function MatchGameContinuous({gameId}) {
                 </div>
             </div>
             <div className={styles.nav}>
-                {matchIndex.current}
+               
             </div>
            
             <div className={styles.main}>

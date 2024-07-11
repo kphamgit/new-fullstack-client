@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import { useFetcher } from 'react-router-dom'
 
-export function ImageCard({card, handle_click}) {
+export function ImageCard({card, handleChoice}) {
     const [imgSrc, setImgSrc] = useState(null)
     const handleClick = () => {
-        handle_click(card)
+        handleChoice(card)
     }
 
     useEffect(() => {
