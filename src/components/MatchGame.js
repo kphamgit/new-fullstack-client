@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { MatchCard } from './MatchCard';
 import styles from "./MatchGame.module.css";
-import ChatPage from './chat/ChatPage';
 import { Link } from 'react-router-dom';
 import  Counter  from './Counter'
 //make cards outside of component so that it won't get recreated
@@ -175,9 +174,6 @@ export function MatchGame({gameId}) {
                 }
             </div>
           
-            <div>
-                <ChatPage />
-            </div>
             <footer className={styles.footer}>footer</footer>
             </div>
         </>

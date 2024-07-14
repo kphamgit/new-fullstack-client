@@ -1,14 +1,9 @@
 import React, {useContext,useEffect, useState} from 'react'
-//mport Container from 'react-bootstrap/Container';
-//import Row from 'react-bootstrap/Row';
-//import Col from 'react-bootstrap/Col';
 import { SocketContext } from './App.js';
-import ChatPage from './chat/ChatPage'
+
 import RecordViewStudent from './RecordViewStudent.js'
 import { setLiveQuizFlag } from '../redux/livequizflag.js';
 import { useDispatch, useSelector } from 'react-redux';
-//import { Button } from 'react-bootstrap';
-//import { Button } from 'flowbite-react';
 import { setLiveQuizId } from '../redux/livequizid.js';
 import { clearLiveQuizId } from '../redux/livequizid.js';
 import { Link } from 'react-router-dom';

@@ -1,11 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import {SocketContext}  from './App.js';
+import ChatPage from './chat/ChatPage'
 import { setLiveQuizId } from '../redux/livequizid.js';
 import { useDispatch, useSelector } from 'react-redux';
-import ChatPageTailwind from './chat/ChatPageTailwind.js';
-import { Button, TextInput } from 'flowbite-react';
 
-export function HomeTeacher(props) {
+export function HomeTeacherSave(props) {
     const socket = useContext(SocketContext);
     const [studentsList, setStudentsList] = useState([])
     const [studentsLisFromServer, setStudentsListFromServer] = useState([])
@@ -51,9 +53,7 @@ export function HomeTeacher(props) {
         //eslint-disable-next-line 
     }, [studentsList])
 //
-/*
 useEffect(() => {
-    
     socket.on('enable_button_acknowledged', arg => {
         console.log(" enable_button_acknowledged. arg: ",arg)
         setEnableNextQuestionAck([...enableNextQuestionAck, arg])
@@ -64,7 +64,7 @@ useEffect(() => {
     }   
     //eslint-disable-next-line 
 }, [enableNextQuestionAck])
-*/
+
     useEffect(() => {
         socket.on('user_disconnected', arg => {
             const filtered_list = studentsList.filter((user) => user.id !== arg.disconnected_user.id)
@@ -95,27 +95,52 @@ useEffect(() => {
 
     return (
         <>
-        <div className="flex flex-col  h-80 gap-5 bg-green-100">
-            <div className="flex flex-row h-72 gap-3 bg-red-200 justify-between">
-                <div className="flex h-11 flex-row gap-4 ">
-                  <Button onClick={enableLiveQuiz}>Turn Live Quiz On</Button>
-                  <TextInput type='text' value={livequizid} size="7" 
-                    onChange={(e) => dispatch(setLiveQuizId(e.target.value))}/>
-                    <Button onClick={enableNextButton} >Enable Next Button</Button>
+        <h3>Teacher</h3>
+        <Container style ={ { backgroundColor: 'brown'} }>
+        <Row style = {{height: "70vh"}}>
+        <Col style ={ {width: "80%", backgroundColor: 'green' }}>
+                <div>{livequizid}</div>
+                <div><button onClick={enableNextButton} >Enable Next Button</button>&nbsp;
+                <div>
+                <select name="targetstudentchoice" onChange={event => handleTargetStudentChoiceChange(event.target.value)}>
+                <option id="0" >For everyone:</option>
+                <option id="1" >For only:</option>
+                <option id="2" >For everyone except: </option>
+                </select>
+                <input type="text" value={targetStudent} onChange={e => setTargetStudent(e.target.value)} />
+                <button onClick={cleartargetStudent} >Clear</button>
                 </div>
-                <div className='bg-green-200'>
-                   <ChatPageTailwind />
+                   
                 </div>
-            </div>
-        </div>
-        <div>
-        <div>Students list from server:</div>
+                <div><button onClick={enableLiveQuiz} >Enable Live Quiz</button>&nbsp;
+                    <input type="text"  onChange={e => dispatch(setLiveQuizId(e.target.value) ) } />
+                </div>
+            </Col>
+            <Col style ={ {width: "20%" , backgroundColor: 'pink' }} >
+                <ChatPage />
+                 <br />
+            </Col>
+      </Row>
+      <Row style = {{height: "30vh"}}>
+        <Col>
+        <div>Logged-in students:</div>
+        {
+            studentsList.map((student, index) =>
+             <li style={{color:"yellow"}} key={ index }>{ student.username }, {student.id }</li>
+             )
+         }
+         <div>Students list from server:</div>
         {
            studentsLisFromServer.map((student, index) =>
-            <li style={{color:"green"}} key={ index }>{ student.username }, {student.id }</li>
+            <li style={{color:"yellow"}} key={ index }>{ student.username }, {student.id }</li>
             )
         }
-        </div>
+        </Col>
+        <Col>
+        <div>Recordingss</div>
+            </Col>
+        </Row>
+    </Container>
     </>
     )
 }

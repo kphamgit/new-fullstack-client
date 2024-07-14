@@ -43,7 +43,7 @@ const ChatFooterTailwind = ({socket}) => {
           onKeyDown={(e) => handleKeyDown(e)}
         />
          
-        <div><Button>Send</Button></div>
+        <div><Button onClick={sendMessage}>Send</Button></div>
       </form>
     </div>
   );

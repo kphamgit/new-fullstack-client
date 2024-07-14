@@ -14,7 +14,7 @@ import axios from "axios";
 import { SocketContext } from "./App.js";
 import { setNextButtonFlag } from "../redux/nextbuttonflag.js";
 import LiveScoreBoard from "./LiveScoreBoard.js";
-import ChatPageNew from "./chat/ChatPageNew.js";
+
 
 export default function QuizAttempt(props) {
   const rootpath = useSelector((state) => state.rootpath.value)  
