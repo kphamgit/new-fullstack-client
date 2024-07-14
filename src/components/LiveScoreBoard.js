@@ -47,7 +47,7 @@ const chunk = (arr, size) =>
         <>
         <div>Live Scoreboard</div>
         <br />
-        <div className='scoreboard'>
+        <div>
                 {livescores.map((score_data, index) => (
                     <div key={index}>
                             <ScoreRow score_data={score_data} index={index} 

@@ -1,12 +1,11 @@
 import React, { useContext } from 'react'
-import ChatBody from './ChatBody'
-import ChatFooter from './ChatFooter'
+import ChatBodyTailwind from './ChatBodyTailwind'
 import { useEffect, useState } from 'react';
-//import { SocketContext } from '../Home';
 import { SocketContext } from '../App';
+import ChatFooterTailwind from './ChatFooterTailwind';
 
 
-const ChatPage = () => {
+const ChatPageTailwind = () => {
 
     const socket = useContext(SocketContext);
     const [messages, setMessages] = useState([]);
@@ -21,14 +20,12 @@ const ChatPage = () => {
 
 
     return (
-      
-        <div>
-          <ChatBody messages={messages}  />
+        <div className='w-60'  >
+            <ChatBodyTailwind messages={messages}  />
           <p></p>
-          <ChatFooter socket={socket} />
+            <ChatFooterTailwind socket={socket}/>
         </div>
-     
     );
   };
   
-  export default ChatPage;
+  export default ChatPageTailwind;

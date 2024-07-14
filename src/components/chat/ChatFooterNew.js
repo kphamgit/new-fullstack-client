@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styles from "./ChatPageNew.module.css";
 //import ControlledTextarea from './ControlledTextarea';
 
-const ChatFooter = ({socket}) => {
+const ChatFooterNew = ({socket}) => {
   const [message, setMessage] = useState('');
   const user = useSelector((state) => state.user.value)
 
@@ -34,8 +34,9 @@ const ChatFooter = ({socket}) => {
   
 
   return (
-    <div className={styles.chat__footer}>
+    <span style={{display:"flex"}}>
       <form className="form" onSubmit={handleSendMessage}>
+        <div style={{display:"flex"}}>
         <textarea
           type="text"
           placeholder="Write message"
@@ -44,11 +45,12 @@ const ChatFooter = ({socket}) => {
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => handleKeyDown(e)}
         />
-         
-        <div><button className={styles.sendBtn}>Send</button></div>
+        
+        <button className={styles.sendBtn}>Send</button>
+        </div>
       </form>
-    </div>
+    </span>
   );
 };
 
-export default ChatFooter;
+export default ChatFooterNew;

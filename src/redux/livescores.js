@@ -19,7 +19,7 @@ export const scoreSlice = createSlice({
       state.value =  state.value.map((item, index) => {
           return {
             ...item,  // copy the existing item
-            question_number: null,  // replace the email addr
+            question_number: null,  // 
             score: null,
             total_score: null
           }
@@ -44,12 +44,13 @@ export const scoreSlice = createSlice({
     },
     setScores: (state, action ) => {
       state.value =  state.value.map((item, index) => {
-        //console.log("XXXXXXXXXXX", action.payload)
+
         // Find the item with the matching id
         if(item.student_name === action.payload.student_name) {
           // Return a new object
           return {
             ...item,  // copy the existing item
+            question_number: action.payload.question_number,
             score: action.payload.score,  // replace the score
             total_score: action.payload.total_score
           }

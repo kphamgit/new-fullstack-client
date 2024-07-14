@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 //import { setAnswer } from '../../redux/answer.js'
-import { useDispatch, useSelector } from 'react-redux'
+//import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button'
 import SubmitButton from './SubmitButton'
 //import LiveSubmitButton from './LiveSubmitButton'

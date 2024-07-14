@@ -9,7 +9,7 @@ export const mySlice = createSlice({
   initialState,
   reducers: {
     clearLiveQuizId: (state) => {
-      state.value = null
+      state.value = ''
     },
     setLiveQuizId: (state, action) => {
       state.value = action.payload

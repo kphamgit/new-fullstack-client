@@ -5,7 +5,8 @@ import {setRootPath} from '../redux/rootpath';
 import Login from './auth/Login'
 import Logout from './auth/Logout';
 import Home from './Home';
-import NavBarComponent from './NavBarComponent';
+//import NavBarComponent from './NavBarComponent';
+import NavBarTailWind from './NavBarTailwind';
 import Subcategory from './Subcategory';
 import QuizAttempt from './QuizAttempt';
 //import axios from 'axios';
@@ -119,13 +120,12 @@ function App() {
     <>
     <SocketContext.Provider value={socket}>
           <BrowserRouter>
-            <NavBarComponent categories={categories} />
-            
+          
             <Routes>
-              <Route path="/" element = {<Home socket={socket}/>} />
+              <Route path="/" element = {<Home categories={categories} socket={socket}/>} />
               <Route path="/logout" element = {<Logout setToken={setToken} setAuth = {setAuth} />} />
              { subcategories.map(subcat => (
-                <Route key={subcat.id} path={`/sub_categories/${subcat.id}/*`} element={<Subcategory id = {subcat.id} name={subcat.name}/>} />
+                <Route key={subcat.id} path={`/sub_categories/${subcat.id}`} element={<Subcategory id = {subcat.id} name={subcat.name}/>} />
               ))
              }
                <Route path="/quiz_attempts/take_quiz/:quiz_id" element = {<QuizAttempt username={user.username} />} />

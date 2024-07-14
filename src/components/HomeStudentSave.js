@@ -1,20 +1,17 @@
 import React, {useContext,useEffect, useState} from 'react'
-//mport Container from 'react-bootstrap/Container';
-//import Row from 'react-bootstrap/Row';
-//import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { SocketContext } from './App.js';
 import ChatPage from './chat/ChatPage'
 import RecordViewStudent from './RecordViewStudent.js'
 import { setLiveQuizFlag } from '../redux/livequizflag.js';
 import { useDispatch, useSelector } from 'react-redux';
-//import { Button } from 'react-bootstrap';
-//import { Button } from 'flowbite-react';
+import { Button } from 'react-bootstrap';
 import { setLiveQuizId } from '../redux/livequizid.js';
 import { clearLiveQuizId } from '../redux/livequizid.js';
 import { Link } from 'react-router-dom';
-import { Button, Label, TextInput } from "flowbite-react";
-import ChatPageTailwind from './chat/ChatPageTailwind.js';
-export function HomeStudent({user}) {
+export function HomeStudentSave({user}) {
     const socket = useContext(SocketContext);
     const dispatch = useDispatch()
     const [showRecordView, setShowRecordView] = useState(false)
@@ -69,21 +66,53 @@ export function HomeStudent({user}) {
 //  
     return (
         <>
+    <h5>Live quiz: <span style={{color: livequizflag ? "green" : "brown"  }}>
+        {livequizflag ? "ON" : "OFF"}
+        </span>
+        </h5>
+      <div>
+        { livequizflag &&
+          <span>&nbsp; Quiz id: &nbsp;{livequizid}</span>
+        }
+    </div>
+    <Container style ={ { backgroundColor: '#f2caa7'} }>
+      <Row style ={ { backgroundColor: 'red', height:"90vh" }}>
+        <Col style ={ { backgroundColor: '#f2caa7' }} xs={9}>
+        <Row>
+        <Col xs={4}>
+          <Button variant="info" onClick={enableLiveQuiz}>Turn Live Quiz On</Button>
+          </Col>
+          <Col><input type='text' value={livequizid} size="7" 
+            onChange={(e) => dispatch(setLiveQuizId(e.target.value))}/></Col>
+          <Col xs={4}>
+          <Button variant="danger" onClick={disableLiveQuiz}>Turn Off Live Quiz</Button>
+          </Col>
+          <Col>
+          <div style={{display:"flex",  justifyContent:"flex-end"}}><Link to={`/matching_games/`}>Games</Link></div></Col>
+        </Row>
+        <br />
+       
+        <div  dangerouslySetInnerHTML={{ __html: user.teacher_message }}></div>
         
-        <div className="flex flex-col  h-80 gap-5 bg-green-100">
-            <div className='h-1'>Live quiz: {livequizflag ? "ON" : "OFF"}<span> &nbsp; Quiz id: {livequizid}</span></div>
-            <div className="flex flex-row h-72 gap-3 bg-red-200 justify-between">
-                <div className="flex h-11 flex-row gap-4 ">
-                  <Button onClick={enableLiveQuiz}>Turn Live Quiz On</Button>
-                  <TextInput type='text' value={livequizid} size="7" 
-                    onChange={(e) => dispatch(setLiveQuizId(e.target.value))}/>
-                  <Button onClick={disableLiveQuiz}>Turn Live Quiz Off</Button>
-                </div>
-                <div className='bg-green-200'>
-                   <ChatPageTailwind />
-                </div>
-            </div>
-        </div>
+        <Button onClick={toggleRecord}>Show Record</Button>
+          {showRecordView && <>
+          <Row style ={ { backgroundColor: 'green', height:"30vh" } } >
+          <RecordViewStudent />
+          </Row>
+         
+          </> }
+        </Col>
+       
+        <Col style={{ height: "90vh", backgroundColor: "#e0b8c3"}} xs={3}>
+              <ChatPage />
+        </Col>
+      </Row>
+     <Row>
+     <span>&nbsp; Live quiz id: &nbsp;{livequizid}</span>
+     </Row>
+       
+    </Container>
+    
         </>
     )
 }

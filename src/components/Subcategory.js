@@ -2,13 +2,15 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Unit from './Unit';
+//import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { ListGroup } from 'react-bootstrap';
+//import { ListGroup } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { setSubcategory } from '../redux/subcategory';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+//import Container from 'react-bootstrap/Container';
+//import Row from 'react-bootstrap/Row';
+//import Col from 'react-bootstrap/Col';
+import {Link} from 'flowbite-react'
 
 
 //import { BrowserRouter } from 'react-router-dom';
@@ -34,23 +36,21 @@ export default function Subcategory({id, name}) {
   }, [url]);
  
   return(
-    <>
-      <Container>
-          <Row>
-            <Col style={{backgroundColor: "#f5ebe4"}}>
-            
-            {post.units && 
-              <ul>
+    <div style={{marginTop:"20px", marginLeft:"80px", marginRight:"50px"}}>
+     
+     <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"><a href='/' >Home</a></div>
+     <br />
+        <div className="grid grid-rows-1 gap-2 bg-indigo-200">
+        {post.units && 
+              <>
                 {post.units.map((unit) =>  
-                (<ListGroup key = {unit.id}>
+                (<span key = {unit.id}>
                   <Unit content={unit}/>
-                </ListGroup> 
+                </span> 
                 )
                 )}
-              </ul>}
-            </Col>
-          </Row>
-      </Container>
-      </>
+              </>}
+        </div>
+      </div>
   );
 }

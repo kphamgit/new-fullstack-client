@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 //import CEditor from './code_editor/CEditor.js'
-import io from "socket.io-client";
-import { clear } from  '../redux/subcategory.js';
+//import io from "socket.io-client";
+//import { clear } from  '../redux/subcategory.js';
 import Container  from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col  from 'react-bootstrap/Col';
@@ -9,11 +9,15 @@ import { HomeStudent } from './HomeStudent.js';
 import { HomeTeacher } from './HomeTeacher.js';
 import { useSelector } from 'react-redux';
 import { ConnectionState } from './ConnectionState';
-
-function Home({socket}) {
+//import NavBarComponent from './NavBarComponent.js';
+import NavBarTailWind from './NavBarTailwind.js';
+function Home({categories, socket}) {
   const user = useSelector( state => state.user.value )
   const [isConnected, setIsConnected] = useState(socket.connected);
   
+  useEffect(() => {
+    console.log("in Home categories: ", categories)
+  },[])
 useEffect(() =>{
   function onConnect() {
     setIsConnected(true);
@@ -43,18 +47,17 @@ useEffect(() =>{
   return (
     <>
     
-    <Container style ={ { backgroundColor: 'orange'} }>
-      <Row>
-        <Col>
-        { user.role === 'teacher' ?
+    <div className="flex flex-col m-3 px-5">
+    <div><NavBarTailWind categories={categories}/></div>
+    <div>
+    { user.role === 'teacher' ?
         <HomeTeacher />
         :
         <HomeStudent user = {user} />
         }
-        </Col>
-      </Row>
-      <ConnectionState isConnected={ isConnected } />
-    </Container>
+       </div>
+      <div><ConnectionState isConnected={ isConnected } /></div>
+    </div>
     </>
   )
 }

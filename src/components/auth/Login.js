@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from '../../redux/user';
 import { setLiveQuizFlag } from '../../redux/livequizflag';
 import {login} from '../services/list'
+import { Button } from "flowbite-react";
   
 export default function Login({setToken, setAuth}) {
   const [showPassword, setShowPassword] = useState(false);
@@ -49,11 +50,12 @@ export default function Login({setToken, setAuth}) {
       <form onSubmit={handleSubmit}>
         <label>
           <p>Username</p>
-          <input type="text" onChange={e => setUserName(e.target.value)} />
+          <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          type="text" onChange={e => setUserName(e.target.value)} />
         </label>
         <label>
           <p>Password</p>
-          <input 
+          <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           type={
             showPassword ? "text" : "password"
           }
@@ -69,7 +71,8 @@ export default function Login({setToken, setAuth}) {
                     }
                 />
         <div>
-          <button type="submit">Submit</button>
+          <br />
+          <Button onClick={handleSubmit}>Submit</Button>
         </div>
       </form>
     </div>

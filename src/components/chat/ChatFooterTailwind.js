@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import styles from "./ChatPageNew.module.css";
-//import ControlledTextarea from './ControlledTextarea';
+import { Button, Textarea } from "flowbite-react";
 
-const ChatFooter = ({socket}) => {
+const ChatFooterTailwind = ({socket}) => {
   const [message, setMessage] = useState('');
   const user = useSelector((state) => state.user.value)
 
@@ -34,21 +33,20 @@ const ChatFooter = ({socket}) => {
   
 
   return (
-    <div className={styles.chat__footer}>
-      <form className="form" onSubmit={handleSendMessage}>
-        <textarea
+    <div className='bg-red-300'>
+      <form onSubmit={handleSendMessage}>
+        <Textarea
           type="text"
           placeholder="Write message"
-          className={styles.message}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => handleKeyDown(e)}
         />
          
-        <div><button className={styles.sendBtn}>Send</button></div>
+        <div><Button>Send</Button></div>
       </form>
     </div>
   );
 };
 
-export default ChatFooter;
+export default ChatFooterTailwind;

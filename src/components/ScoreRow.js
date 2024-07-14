@@ -22,10 +22,9 @@ function ScoreRow({score_data }) {
                 //console.log("IT S ME")
                 //console.log("user match ScoreRow live score receive arg",arg)
                // console.log("NewScoreRow live_score for ", score_data.student_name)
-                dispatch(setScores({student_name: arg.user, score: arg.score, total_score: arg.total_score}))
+                dispatch(setScores({student_name: arg.user, question_number: arg.livequestionnumber, score: arg.score, total_score: arg.total_score}))
             }
         })
-        
         return () => {
             socket.off("live_score")
         }   
@@ -56,7 +55,6 @@ function ScoreRow({score_data }) {
 
     useEffect(() => {
         socket.on('next_question_fetched', (arg) => {
-           
             //console.log("I am a ScoreRow. My student name is: "+score_data.student_name)
             //console.log(` I am ${it_s_me() === true ? ' ' : "NOT"} the current logged in user`)
             //console.log("I just received a live question acknowledgement from this user: ",arg.user_name)

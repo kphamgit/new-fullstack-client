@@ -95,7 +95,7 @@ useEffect(() => {
 
     return (
         <>
-        <h3>Teacddher</h3>
+        <h3>Teacher</h3>
         <Container style ={ { backgroundColor: 'brown'} }>
         <Row style = {{height: "70vh"}}>
         <Col style ={ {width: "80%", backgroundColor: 'green' }}>

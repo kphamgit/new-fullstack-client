@@ -31,6 +31,10 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
     setUserAnswer(value)
   }
 
+  //useEffect(() => {
+   // console.log(" Starting question attempt")
+  //})
+
   useEffect(() => {
       if(livequizflag) {
         socket.emit('question_attempt_started', {
@@ -54,15 +58,10 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
       var url1 = rootpath + '/api/question_attempts/' + questionAttemptId + '/process_attempt'
       const response = await axios.post(url1,{user_answer: user_answer})
       const data = response.data
-      //  socket.emit('live_score', {livequestionnumber: question.question_number, 
-      //score: response_data.question_attempt_results.score, total_score: my_current_total,
-      // user: user.user_name})
-      //
-//socket.emit('live_score', {livequestionnumber: question.question_number, score: response_data.question_attempt_results.score, total_score: my_current_total, user: user.user_name})
-      if(livequizflag) {
+       if(livequizflag) {
         socket.emit('live_score', {
           livequestionnumber: data.question_number, 
-          score: 5, 
+          score: data.question_attempt_results.score, 
           total_score: data.accumulated_score, user: user.user_name
         })
       }
