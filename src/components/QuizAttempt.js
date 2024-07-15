@@ -113,6 +113,7 @@ export default function QuizAttempt(props) {
       setQuestionAttemptId(response.data.question_attempt_id)
       dispatch(setQuizAttemptId(response.data.quiz_attempt_id))
       if (livequizflag) {
+        console.log("response.data=", response.data)
         const params = {
             user_name: user.user_name,
             livequestionnumber: response.data.question.question_number
@@ -141,7 +142,6 @@ const setShowQuestionFlag = (value) => {
         <div style={{marginTop:"20px", marginLeft:"80px", marginRight:"50px"}}>
          <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
           <Link to='/' >Home</Link>
-         
          </div>
          <br />
          <div className="flex flex-row gap-2 bg-slate-200 justify-between">
