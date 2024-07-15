@@ -1,12 +1,5 @@
 import React from 'react'
-////import Nav from 'react-bootstrap/Nav'
-//import Navbar from 'react-bootstrap/Navbar';
-//import Container from 'react-bootstrap/Container';
 import { Link, Outlet } from 'react-router-dom';
-//import "bootstrap/dist/css/bootstrap.min.css"
-//import NavBarButton from './NavBarButton';
-//import Button from 'react-bootstrap/Button';
-//import { setTokenValue } from '../redux/token';
 import {  useSelector } from 'react-redux';
 import { Navbar } from "flowbite-react";
 import { TailWindDropDown } from './TailWindDropDown';

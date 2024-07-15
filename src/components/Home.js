@@ -15,10 +15,6 @@ function Home({categories, socket}) {
   const user = useSelector( state => state.user.value )
   const [isConnected, setIsConnected] = useState(socket.connected);
   
-  useEffect(() => {
-    console.log("in Home categories: ", categories)
-  },[categories])
-
 useEffect(() =>{
   function onConnect() {
     setIsConnected(true);

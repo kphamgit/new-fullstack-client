@@ -1,17 +1,14 @@
 import React, {useState, useRef, useEffect} from 'react';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
-import { useSelector, useDispatch} from "react-redux";
+import { useDispatch} from "react-redux";
 import {setRootPath} from '../redux/rootpath';
 import Login from './auth/Login'
 import Logout from './auth/Logout';
 import Home from './Home';
-//import NavBarComponent from './NavBarComponent';
-import NavBarTailWind from './NavBarTailwind';
 import Subcategory from './Subcategory';
 import QuizAttempt from './QuizAttempt';
-//import axios from 'axios';
-import {newGetCategories } from './services/list'
-import { getGames } from './services/list';
+
+import { getGames, getQuizzes, newGetCategories } from './services/list';
 import io from "socket.io-client";
 import Games from './Games';
 import { MatchGame } from './MatchGame';
@@ -45,14 +42,11 @@ const socket = io.connect(URL, {
 
 function App() {
 
-  //const userAuth = useRef(null)
   const [token, setToken] = useState()
-  //const subcategory = useSelector((state) => state.subcategory.value)
-  
   const [categories, setCategories] = useState([])
   const [subcategories, setSubcategories] = useState([])
-  const user = useSelector((state) => state.user.value)
   const [games, setGames] = useState(null)
+  const [quizzes, setQuizzes] = useState(null)
   const mounted = useRef(true);
 
   const dispatch = useDispatch()
@@ -92,10 +86,15 @@ function App() {
       getGames()
       .then (response => {
         if(mounted.current) {
-            //console.log("RRRRRRRRR", response.data)
             setGames(response.data);
         }
           
+      })
+      getQuizzes()
+      .then (response => {
+        if(mounted.current) {
+            setQuizzes(response.data);
+        }
       })
       return () => mounted.current = false;
     //}
@@ -127,9 +126,16 @@ function App() {
                 <Route key={subcat.id} path={`/sub_categories/${subcat.id}`} element={<Subcategory id = {subcat.id} name={subcat.name}/>} />
               ))
              }
-            <Route path="/quiz_attempts/take_quiz/:quiz_id" element = {<QuizAttempt username={user.username} />} />
             <Route path="/matching_games" element = {<Games />} />
-        {
+          {
+            quizzes && quizzes.map(quiz => {
+              return (
+                <Route key={quiz.id} path={`/quiz_attempts/take_quiz/${quiz.id}`} element={<QuizAttempt quizId={quiz.id} />} />
+              )
+            })
+          }
+
+          {
             games && games.map(game => {
               if (game.continuous) {
               return (
@@ -142,7 +148,7 @@ function App() {
                 )
               }
             })
-        }
+          }
             </Routes>
             </BrowserRouter>
             </SocketContext.Provider>

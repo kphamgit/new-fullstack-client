@@ -13,14 +13,31 @@ console.log("invalid NODE_ENV ")
 }
 
 export async function newGetCategories() {
-     let url = `${newrootpath}/api/categories` 
+     const url = `${newrootpath}/api/categories` 
      const response = await axios.get(url)
      return response
   
 }
 
 export async function getGames() {
-  let url = `${newrootpath}/api/matching_games` 
+  const url = `${newrootpath}/api/matching_games` 
+  const response = await axios.get(url)
+  return response
+}
+
+export async function getQuizzes() {
+  const url = `${newrootpath}/api/quizzes` 
+  const response = await axios.get(url)
+  return response
+}
+export async function getStudentsInClass(class_id) {
+  const url = `${newrootpath}/api/classes/${class_id}` 
+  const response = await axios.get(url)
+  return response
+}
+//const url = rootpath + "/api/quiz_attempts/find_create/" + quizId + '/' + user.user_name
+export async function findCreateQuizAttempt(quiz_id, user_name) {
+  const url = `${newrootpath}/api/quiz_attempts/find_create/${quiz_id}/${user_name}`
   const response = await axios.get(url)
   return response
 }

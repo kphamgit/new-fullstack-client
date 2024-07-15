@@ -1,23 +1,20 @@
 import React, {useState, useContext, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import QuestionAttempt from './QuestionAttempt.js'
-import { useLocation } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import {setQuizAttemptId} from "../redux/quiz_att_id.js"
 import QuestionResponse from "./QuestionResponse.js";
 import NextButton from "./NextButton.js";
 import useExitPrompt from './useExitPrompt.js'
-import axios from "axios";
+import {findCreateQuizAttempt} from './services/list.js'
 import { SocketContext } from "./App.js";
 import { setNextButtonFlag } from "../redux/nextbuttonflag.js";
 import LiveScoreBoard from "./LiveScoreBoard.js";
 
 
-export default function QuizAttempt(props) {
-  const rootpath = useSelector((state) => state.rootpath.value)  
+export default function QuizAttempt({quizId}) {
   const user = useSelector((state) => state.user.value) 
   const livequizflag = useSelector((state) => state.livequizflag.value) 
-  const livequizid = useSelector(state => state.livequizid.value)
   
   const dispatch = useDispatch()  
     const [currentquestionnumber, setCurrentQuestionNumber] = useState(null)
@@ -31,12 +28,6 @@ export default function QuizAttempt(props) {
     //const [livequizready, setLiveQuizReady] = useState(false)
     
     const socket = useContext(SocketContext);
-
-    const location = useLocation()
-    //console.log("MMMMMM location",location)
-    const parts = location.pathname.split('/')
-    const quizid = parts[parts.length-1]
-    const url = rootpath + "/api/quiz_attempts/find_create/" + quizid + '/' + user.user_name
    /*
    const handleClick = (e) => {
     e.preventDefault();
@@ -47,25 +38,23 @@ export default function QuizAttempt(props) {
   */
 
   useEffect(() => {
-      console.log("MMMMMMM", livequizflag.toString())
-      console.log("MMMMMMMNNNNNNNN", rootpath)
-  },[livequizflag, rootpath])
-
-  useEffect(() => {
     socket.on('enable_next_button', (arg, callback) => {
-        //console.log(" in QuizAttempt received next button arg: ", arg)
-        //console.log("current question number:"+currentquestionnumber)
-        //callback({status: "I got the enable_next_button message. OK", user_name: user.user_name, last_question_number: currentquestionnumber});
-        if (!arg.to_student) {
-          //console.log("NO STUDENT")
+      //console.log(" QuizAttempt got enable_next_button_ message arg=", arg)
+        //callback({status: "I got enable_next_button message. OK", user_name: user.user_name, last_question_number: currentquestionnumber});
+        if (arg.destination.indexOf("except") >= 0) {
+          if (arg.target_student !== user.user_name) {
+            dispatch(setNextButtonFlag(arg.enable_flag)) 
+          }
+        }
+        else if (arg.destination.indexOf('everybody') >= 0 ) { 
           dispatch(setNextButtonFlag(arg.enable_flag))
         }
-        else if (arg.to_student === user.user_name) {  ////is this for me?
-          dispatch(setNextButtonFlag(arg.enable_flag))
+        else if (arg.destination.indexOf('only') >= 0 ) {
+          if (arg.target_student === user.user_name) {
+            dispatch(setNextButtonFlag(arg.enable_flag)) 
+          }
         }
-        else {
-          //console.log("enable_next_button message is not intended for me or Error with student name in enable_next_button message")
-        }
+        
     })
     return () => {
       socket.off("enable_next_button")
@@ -73,15 +62,6 @@ export default function QuizAttempt(props) {
   },[socket, dispatch, user.user_name, currentquestionnumber])
   
   /*
-  <Row>
-       
-        <Col style={{ display: "flex", backgroundColor: "#e0b8c3"}} >
-              <ChatPageNew />
-        </Col>
-      
-      </Row>
-  */
-
   //NOTE: this similar to componentWillUnmount()
   /*
   useEffect(() => {
@@ -97,7 +77,6 @@ export default function QuizAttempt(props) {
         setShowQuestionAttemptResponse(false)
         
     }
-
     const setTheAttemptResponse = (value) => {
       //this function is called in QuestionAttempt after it finishes
       //processing the question attempt and a response is returned
@@ -106,14 +85,13 @@ export default function QuizAttempt(props) {
    }
 
   useEffect(() => {
-    axios.get(url).then((response) => {
-      //console.log("Starting quiz")
+    findCreateQuizAttempt(quizId, user.user_name)
+    .then((response) => {
       setTheNextQuestion(response.data.question)
       setShowQuestion(true)
       setQuestionAttemptId(response.data.question_attempt_id)
       dispatch(setQuizAttemptId(response.data.quiz_attempt_id))
       if (livequizflag) {
-        console.log("livequizflag is TRUE response.data=", response.data)
         const params = {
             user_name: user.user_name,
             livequestionnumber: response.data.question.question_number
@@ -125,7 +103,7 @@ export default function QuizAttempt(props) {
         console.log(error)
     });
     
-},[url, livequizflag, socket, user.user_name, dispatch]);
+},[livequizflag, socket, user.user_name, quizId, dispatch]);
 
 const setShowQuestionFlag = (value) => {
        setShowQuestion(value)
@@ -137,7 +115,7 @@ const setShowQuestionFlag = (value) => {
        setQuestionAttemptId(value)
     }
 
-      return ( 
+    return ( 
         <>
         <div style={{marginTop:"20px", marginLeft:"80px", marginRight:"50px"}}>
          <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
@@ -174,7 +152,7 @@ const setShowQuestionFlag = (value) => {
       </div>
       </div>
        </>
-       )
+    )
     
 }
 
