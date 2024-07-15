@@ -1,18 +1,16 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import SubmitButton from './SubmitButton'
 //import LiveSubmitButton from './LiveSubmitButton'
 //import Button from "react-bootstrap/Button"
+
 import format_cloze_question_content from './formatClozeQuestion'
 import getClozeQuestionUserAnswer from './GetClozeQuestionUAnswer'
-//import Button from "react-bootstrap/Button"
-//import Counter from './Counter'
 
 function ClozeQuestionAttempt({question, setUserAnswer, setElapsedTime}) {
     const [clozehtml, setClozehmtl] = useState('')
     
-    const livequizflag = useSelector((state) => state.livequizflag.value)
+    //const livequizflag = useSelector((state) => state.livequizflag.value)
     useEffect( () => {
         //console.log(" in useEffect quesiton=",question)
         const question_html = format_cloze_question_content(question)

@@ -104,14 +104,16 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
       <div>{question.coding && 
           <CEditor questionAttemptId={questionAttemptId} codeSnippet = {question.prompt} />
       }</div>
+      <br />
       { !question.coding &&
-      <TextareaAutosize id="prompt" cols="70" style={{ color:'#ebe7d8', backgroundColor:'#21043d'}} value={question.prompt} />
+      <TextareaAutosize className='bg-cyan-100' id="prompt" cols="70" value={question.prompt} />
     }
+    
       <div>
       {question.audio_src && <audio src={question.audio_src} controls />}
       </div> 
       {question.video_src && <ReactPlayer url={question.video_src} controls />}
-     <div>Question: <span>{question.question_number}</span></div>
+    
      {  renderCurrentQA(question)  }
       </>
     )

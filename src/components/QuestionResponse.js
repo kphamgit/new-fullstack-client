@@ -1,8 +1,4 @@
 import React from 'react'
-import { ListGroup } from 'react-bootstrap'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons'
 import { faX } from '@fortawesome/free-solid-svg-icons'
@@ -19,10 +15,8 @@ function displayReinforcement(question) {
 */
 
 function QuestionResponse({question, response_content}) {
-  //const livequestion = useSelector(state => state.livequestion.value)
-
   function formatClozeQuestion() {
-    var regExp = /\[.*?\]/g
+    //var regExp = /\[.*?\]/g
     var content_with_new_lines = question.content.replace(/#/g,' ')
     //replace bracket contents with '__________'
     var temp_sentence_with_stars = content_with_new_lines.replace(/ *\[[^\]]*]/g, ' ______ ');
@@ -111,7 +105,6 @@ function QuestionResponse({question, response_content}) {
                     <FontAwesomeIcon icon={faCheckSquare} size="lg" />
                     :
                     <FontAwesomeIcon icon={faX} size="lg" style={{ color: 'red' }} />
-
          }
         </div>
         </>
@@ -125,18 +118,18 @@ function QuestionResponse({question, response_content}) {
       //words_scramble_direction
       if (response_content.words_scramble_direction === 'y')
       return (
-     <ListGroup>
+     <ul>
         {marr.map((item, index) =>  
-              (<ListGroup.Item key = {index}>
+              (<li key = {index}>
                 { item }
-              </ListGroup.Item> 
+              </li> 
               )
           )}
-      </ListGroup>
+      </ul>
       )
       else 
         return (
-          <div style = {{color:'blue'}}>
+          <div>
              {marr.map((item, index) =>  
                  (<span key = {index}>
                    { item } &nbsp;
@@ -164,7 +157,7 @@ function QuestionResponse({question, response_content}) {
     //window.speechSynthesis.speak(msg)
       return ( 
         <>
-        <div style = {{color:'blue'}}>{response_content.question_attempt_results.correct_answer}</div>
+        <div>{response_content.question_attempt_results.correct_answer}</div>
         </>
       )
     }
@@ -193,56 +186,51 @@ function QuestionResponse({question, response_content}) {
   }
   return (
     <>
-    
-   <Container>
-      
-            <Row xs={2} md={3} lg={9}>
-                <Col lg = {11} className='bg-success text-white'>
-                <Row>
-                  <Container>
+   <div> 
+            <div>
+                <div  className= 'bg-cyan-200'>
+                  <div>
                     <div>Question {response_content.question_number }</div>
                     <div>The question is (Câu hỏi là) :</div>
                     <div>{question.prompt}</div>
                     <br />
                     <pre>{displayQuestionContent() } </pre>
-                  </Container>
-                </Row>
-                </Col>
-                <Col lg = {1} className='bg-warning'>
-                  <Row>
-                    <p>Score:</p>
-                    <div>&nbsp;</div>
-                    <div>{response_content.accumulated_score}</div>
-                    </Row>
-                    <Row  className='bg-primary text-white'>
-                    <div>Time elapsed:</div>
-                    <div>&nbsp;</div>
-                    <div>{displayElapsedTime()}</div>
-                    </Row>
-                </Col>
+                  </div>
+                </div>
                
-            </Row>
+                <div>
+                  <div>
+                    <span>Score:
+                    &nbsp;{response_content.accumulated_score}</span>
+                    </div>
+                    <div>
+                      <p>&nbsp;</p>
+                    <div>Time elapsed:<span>
+                    {displayElapsedTime()}</span>
+                    </div>
+                    <p>&nbsp;</p>
+                    </div>
+                </div>
+            </div>
  
-            <Row xs="9">
-                <Col className='bg-success text-white'>
+            <div className='bg-orange-200'>
+                <div>
                 <div>Your answer is (Bạn trả lời là):</div>
                 <pre>{displayResponse() } </pre>
-      
-                </Col>
-    
-            </Row>
+                </div>
+            </div>
             { response_content.question_attempt_results.error_flag &&
-            <Row xs="9">
-                <Col className='bg-warning'>
-                  <br />
+            <div className='bg-cyan-200'>
+                <div>
+                <br />
                 <div>The correct answer is (Câu trả lời đúng là):</div>
                 <br />
                 <pre>{displayCorrectAnswer(response_content) } </pre> 
                 <div>{question.help1}</div>
-                </Col>
-            </Row>
+                </div>
+            </div>
             }
-        </Container>
+        </div>
     
     </>
   )

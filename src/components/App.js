@@ -120,7 +120,6 @@ function App() {
     <>
     <SocketContext.Provider value={socket}>
           <BrowserRouter>
-          
             <Routes>
               <Route path="/" element = {<Home categories={categories} socket={socket}/>} />
               <Route path="/logout" element = {<Logout setToken={setToken} setAuth = {setAuth} />} />
@@ -128,8 +127,8 @@ function App() {
                 <Route key={subcat.id} path={`/sub_categories/${subcat.id}`} element={<Subcategory id = {subcat.id} name={subcat.name}/>} />
               ))
              }
-               <Route path="/quiz_attempts/take_quiz/:quiz_id" element = {<QuizAttempt username={user.username} />} />
-               <Route path="/matching_games" element = {<Games />} />
+            <Route path="/quiz_attempts/take_quiz/:quiz_id" element = {<QuizAttempt username={user.username} />} />
+            <Route path="/matching_games" element = {<Games />} />
         {
             games && games.map(game => {
               if (game.continuous) {

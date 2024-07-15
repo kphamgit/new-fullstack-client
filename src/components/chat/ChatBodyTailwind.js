@@ -26,7 +26,7 @@ const ChatBodyTailwind = ({messages}) => {
   return (
     <>
       {/*This shows messages sent from you*/}
-      <div className='m-1 h-40 bg-green-200 overflow-scroll'>
+      <div className='m-1 h-40 text-sm bg-green-200 overflow-scroll'>
       <div>
         {messages.map((message) =>
             <div key={message.id}>

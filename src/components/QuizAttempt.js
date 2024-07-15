@@ -6,9 +6,6 @@ import { Link } from 'react-router-dom';
 import {setQuizAttemptId} from "../redux/quiz_att_id.js"
 import QuestionResponse from "./QuestionResponse.js";
 import NextButton from "./NextButton.js";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import useExitPrompt from './useExitPrompt.js'
 import axios from "axios";
 import { SocketContext } from "./App.js";
@@ -20,6 +17,7 @@ export default function QuizAttempt(props) {
   const rootpath = useSelector((state) => state.rootpath.value)  
   const user = useSelector((state) => state.user.value) 
   const livequizflag = useSelector((state) => state.livequizflag.value) 
+  const livequizid = useSelector(state => state.livequizid.value)
   
   const dispatch = useDispatch()  
     const [currentquestionnumber, setCurrentQuestionNumber] = useState(null)
@@ -47,6 +45,11 @@ export default function QuizAttempt(props) {
   //use a Button to toggle showExitPrompt. For now, showExitPrompt is always set to true
   https://dev.to/eons/detect-page-refresh-tab-close-and-route-change-with-react-router-v5-3pd
   */
+
+  useEffect(() => {
+      console.log("MMMMMMM", livequizflag.toString())
+      console.log("MMMMMMMNNNNNNNN", rootpath)
+  },[livequizflag, rootpath])
 
   useEffect(() => {
     socket.on('enable_next_button', (arg, callback) => {
@@ -132,20 +135,18 @@ const setShowQuestionFlag = (value) => {
       //from the server
        setQuestionAttemptId(value)
     }
-//as={Link} to={`/sub_categories/${subcat.id}`}
+
       return ( 
         <>
-        <Container>
-          <br />
-        <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
-          <Link to={`/`}>Home</Link>
-        </div>
-        <br />
-      <Row>
-      
+        <div style={{marginTop:"20px", marginLeft:"80px", marginRight:"50px"}}>
+         <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
+          <Link to='/' >Home</Link>
          
-      <Col style={{backgroundColor:'#e6d3c3'}} xs={10}>
-        {(showQuestion) ?
+         </div>
+         <br />
+         <div className="flex flex-row gap-2 bg-slate-200 justify-between">
+         <div>
+         {(showQuestion) ?
           <QuestionAttempt 
             question={question} 
             setShowQuestion={setShowQuestionFlag}
@@ -153,7 +154,7 @@ const setShowQuestionFlag = (value) => {
             questionAttemptId={questionAttemptId}
           />
           :
-          <>
+          <div>
             {showAttemptResponse && <QuestionResponse question={question} response_content={attemptResponse} />}
           <NextButton 
               next_question_number={currentquestionnumber +1} 
@@ -162,17 +163,16 @@ const setShowQuestionFlag = (value) => {
               setQuestionAttemptId={setTheQuestionAttemptId}
             />
             
-          </>
+          </div>
         }
-        </Col>
-        <Col style={{backgroundColor:'#92cfd6'}} xs={2}>
-          { livequizflag &&
-            <LiveScoreBoard />
+         </div>
+         <div className="bg-green-200">
+         { livequizflag &&
+            <span>LIVE SCORE BOARD</span>
           }
-        </Col>
-      </Row>
-    
-    </Container>   
+         </div>
+      </div>
+      </div>
        </>
        )
     

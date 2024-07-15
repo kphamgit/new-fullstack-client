@@ -6,8 +6,8 @@ const wordStyle = {
     backgroundColor:"yellow",
     borderRadius:"5px",
     textDecorationSkipInk: 'none',
-    padding: "5px",
-    margin: '40px 0px 40px 30px',
+    padding: "3px",
+    margin: '20px 0px 30px 30px',
     border: "solid", 
     borderColor: "#c9cca3",
     userSelect: 'none'

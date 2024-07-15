@@ -17,7 +17,8 @@ function Home({categories, socket}) {
   
   useEffect(() => {
     console.log("in Home categories: ", categories)
-  },[])
+  },[categories])
+
 useEffect(() =>{
   function onConnect() {
     setIsConnected(true);
@@ -29,7 +30,7 @@ useEffect(() =>{
     };
     //eslint-disable-next-line
 },[user.user_name])
-
+//<div><ConnectionState isConnected={ isConnected } /></div>
   useEffect(() => {
     // no-op if the socket is already connected
     //console.log(" ChatPage connecting to server")
@@ -56,7 +57,7 @@ useEffect(() =>{
         <HomeStudent user = {user} />
         }
        </div>
-      <div><ConnectionState isConnected={ isConnected } /></div>
+      
     </div>
     </>
   )

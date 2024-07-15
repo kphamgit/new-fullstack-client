@@ -3,7 +3,7 @@ import MicRecorder from 'mic-recorder-to-mp3';
 import { useEffect, useState , useContext } from 'react';
 import { useSelector } from 'react-redux';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-//import { SocketContext } from './Home';
+import { Button } from "flowbite-react";
 import { SocketContext } from './App';
 import Form from 'react-bootstrap/Form';
 
@@ -109,20 +109,21 @@ export default function RecordViewStudent()  {
       <option value="vi-VN">Vietnamese</option>
     </Form.Select>
         </div>
-          <div style={{color:'white'}}>
+          <div style={{color:'blue'}}>
                 <p>{listening && 'Listening...'}</p>
-                <span style={{color:'white'}}>{transcript}</span>
-              </div>
-          <button 
-              style={{backgroundColor: isRecording ? "green" : "red"  }} 
+                <span style={{color:'black'}}>{transcript}</span>
+          </div>
+          <div className='flex flex-1'>
+            <Button className='bg-red-600 px-0'
               onClick={start} disabled={isRecording}>Record
-          </button>
-          &nbsp;&nbsp;
-          <button onClick={stop} disabled={!isRecording}>Stop</button>
-          &nbsp;&nbsp;
-          <button onClick={send} disabled={hasbeenSent} >Send</button>
-          <br />
-          <audio src={blobURL} controls="controls" />
+            </Button>
+            &nbsp;&nbsp;
+            <Button onClick={stop} disabled={!isRecording}>Stop</Button>
+              &nbsp;&nbsp;
+            <Button onClick={send} disabled={hasbeenSent} >Send</Button>
+          </div>
+              <br />
+            <audio src={blobURL} controls="controls" />
     </div>
     </>
   );

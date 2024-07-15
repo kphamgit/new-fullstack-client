@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 //import { Image } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import styles from './Games.module.css'
 //mport {GamePage}
 import axios from 'axios'
 
@@ -36,25 +35,22 @@ function Games() {
  
   return (
    <>
-   
-    <div className={styles.container}>
-        <div className={styles.header}>
-        
-        </div>
-        <div className={styles.nav}></div>
-        <div className={styles.main}>
+     <div className="m-16 underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
+          <Link to='/' >Home</Link>
+         </div>
+    <div className='flex flex-wrap gap-10 m-16'>
         { 
           games.map((game) => (
             <div>
-            <Link to={`/matching_games/play/${game.id}`}>
+            <Link to={`/matching_games/play/${game.id}`}
+            className="underline text-blue-600 hover:text-blue-800 visited:text-green-600"
+            >
                 {game.name}
             </Link>
             </div>
         ))
         }
-        </div>
-        <div className={styles.aside}></div>
-        <div className={styles.footer}></div>
+      
     </div>
     </>
   )

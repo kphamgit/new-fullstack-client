@@ -1,10 +1,6 @@
 import React, {useState} from 'react'
-//import { setAnswer } from '../../redux/answer.js'
-//import { useDispatch, useSelector } from 'react-redux'
-import Button from 'react-bootstrap/Button'
+import {Button} from 'flowbite-react'
 import SubmitButton from './SubmitButton'
-//import LiveSubmitButton from './LiveSubmitButton'
-import "bootstrap/dist/css/bootstrap.min.css"
 
 function ButtonSelectQuestionAttempt({question,setUserAnswer}) {
     const [selectedItem, setSelectedItem] = useState(null)
@@ -25,9 +21,9 @@ function ButtonSelectQuestionAttempt({question,setUserAnswer}) {
 
   return (
     <> 
-    <ul>
+    <ul className='flex flex-1 gap-3'>
     {items.map(item => 
-            <Button style={{margin:"5px"}} variant="primary" key={item} onClick={() => setSelectedItem(item)}>{item}</Button>
+            <Button className='bg-indigo-500' key={item} onClick={() => setSelectedItem(item)}>{item}</Button>
       )}
       </ul>
       <div style={{width:"60px"}}>

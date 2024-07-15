@@ -59,7 +59,7 @@
                     else { //fill in the blank
                          let intput_length = length_of_longest_word + 1;
                      //cloze_question_form += `<input type="text" id= "cloze_answer_${bracket_index}" name= "answer_${bracket_index}" size = "${intput_length}">`
-                     cloze_question_form += `<input type="text" class = "cloze_answer" id= "${id}" name= "${name}" size = "${intput_length}">`
+                     cloze_question_form += `<input type="text" style="border-radius:5px" class = "cloze_answer" id= "${id}" name= "${name}" size = "${intput_length}">`
                     }
               bracket_index++;
              }

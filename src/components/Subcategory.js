@@ -2,21 +2,24 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Unit from './Unit';
-//import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 //import { ListGroup } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { setSubcategory } from '../redux/subcategory';
+import livequizid from '../redux/livequizid';
 //import Container from 'react-bootstrap/Container';
 //import Row from 'react-bootstrap/Row';
 //import Col from 'react-bootstrap/Col';
-import {Link} from 'flowbite-react'
+
 
 
 //import { BrowserRouter } from 'react-router-dom';
 export default function Subcategory({id, name}) {
   
   const rootpath = useSelector((state) => state.rootpath.value)
+  const livequizflag = useSelector(state => state.livequizflag.value)
+  const livequizid = useSelector(state => state.livequizid.value)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(setSubcategory(name))
@@ -37,10 +40,10 @@ export default function Subcategory({id, name}) {
  
   return(
     <div style={{marginTop:"20px", marginLeft:"80px", marginRight:"50px"}}>
-     
-     <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"><a href='/' >Home</a></div>
+     <div>Live quiz: {livequizflag.toString()}&nbsp; {livequizid}</div>
+     <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"><Link to='/' >Home</Link></div>
      <br />
-        <div className="grid grid-rows-1 gap-2 bg-indigo-200">
+        <div className="flex flex-col gap-2 bg-indigo-200">
         {post.units && 
               <>
                 {post.units.map((unit) =>  

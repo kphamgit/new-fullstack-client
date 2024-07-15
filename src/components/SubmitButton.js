@@ -1,5 +1,5 @@
 import React, { useRef} from 'react'
-import Button from "react-bootstrap/Button"
+import {Button} from 'flowbite-react'
 import Counter from './Counter'
 import { clearNextButtonFlag } from '../redux/nextbuttonflag';
 import { useDispatch } from 'react-redux';
@@ -17,9 +17,9 @@ function SubmitButton({handleClick}) {
   return (
     <>
     <Counter ref={childRef} />
-    <div style={{width:"60px"}}>
+    <div>
         <br />
-          <Button variant="success" onClick={onHandleClick}>Submit</Button>
+          <Button className='bg-green-600' onClick={onHandleClick}>Submit</Button>
     </div>
     </>
   )

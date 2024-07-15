@@ -2,7 +2,6 @@ import React, {cloneElement, useEffect, useRef, useState} from 'react'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { TextCard } from './TextCard';
-import styles from "./MatchGame.module.css";
 import { Link } from 'react-router-dom';
 import  Counter  from './Counter'
 //make cards outside of component so that it won't get recreated
@@ -229,26 +228,22 @@ export function MatchGameContinuous({gameId}) {
 
     return (
         <>
-           <div className={styles.container}>
-            <div className={styles.header}>
-                <h3>Play and Learn</h3>
-                <div><Link to={`/matching_games/`}>
+           <div className="m-11">
+          <Link to='/' 
+            className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" >Home</Link>&nbsp;&nbsp;
+          <Link to={`/matching_games/`}
+          className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+          >
                     Games</Link>
-            
-                <Counter ref={childRef} />
-                </div>
-            </div>
-            <div className={styles.nav}>
-               
-            </div>
-           
-            <div className={styles.main}>
+         </div>
+         <div className='m-11'><Counter /></div>
+           <div className='flex flex-row justify-center bg-gray-50'>
            
                 { (gameover) ?
                     <h3>Game Over</h3>
                     :
                     <>
-                    <div className={styles.main__grid__item}>
+                    <div className='flex flex-col align-text-bottom m-2 gap-3 bg-green-300'>
                         { leftCardsPile.map (card => (
                                 <div key={card.match_index}>
                                 <div>
@@ -259,7 +254,7 @@ export function MatchGameContinuous({gameId}) {
                         }
                     </div>
                     <div 
-                    className={rightCardHasImages ? styles.img_grid_style : styles.main__grid__item }
+                    className ='flex flex-col m-2 gap-3 bg-green-300'
                     >
                     { rightCardsPile.map (card => (
                                 <div key={card.match_index}>
@@ -272,11 +267,6 @@ export function MatchGameContinuous({gameId}) {
                     </div>
                     </>
                 }
-            </div>
-
-            <footer className={styles.footer}>
-              Data size: {dataSize} Num Matches: {numMatches}
-            </footer>
             </div>
         </>
     )

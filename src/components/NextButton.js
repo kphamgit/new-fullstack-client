@@ -1,16 +1,10 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from 'axios';
-import { useState } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 //import { setQuestion } from "../../redux/question.js";
-//import { setQuestionAttemptId } from "../../redux/question_att_id.js";
-import styled from 'styled-components'
 import { SocketContext } from './App.js';
-const Button = styled.button`
-background-color:brown;
-color:white;
-padding:5px 15px;
-`
+import { Button } from 'flowbite-react';
+
 
 function NextButton({ next_question_number, setNextQuestion, setShowQuestion,setQuestionAttemptId  }) {
     

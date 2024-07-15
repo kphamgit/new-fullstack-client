@@ -65,19 +65,30 @@ export function HomeStudent({user}) {
     return (
         <>
         
-        <div className="flex flex-col  h-80 gap-5 bg-green-100">
+        <div className="flex flex-col m-10 h-80 gap-5 bg-green-100">
             <div className='h-1'>Live quiz: {livequizflag ? "ON" : "OFF"}<span> &nbsp; Quiz id: {livequizid}</span></div>
             <div className="flex flex-row h-72 gap-3 bg-red-200 justify-between">
-                <div className="flex h-11 flex-row gap-4 ">
-                  <Button onClick={enableLiveQuiz}>Turn Live Quiz On</Button>
+                <div className="flex m-2 h-11 flex-row gap-4 ">
+                  <Button className='m-0' onClick={enableLiveQuiz}>Turn Live Quiz On</Button>
                   <TextInput type='text' value={livequizid} size="7" 
                     onChange={(e) => dispatch(setLiveQuizId(e.target.value))}/>
-                  <Button onClick={disableLiveQuiz}>Turn Live Quiz Off</Button>
+                  <Button className='m-0' onClick={disableLiveQuiz}>Turn Live Quiz Off</Button>
+                  <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
+                    <Link to='/matching_games' >Games</Link>
+                  </div>
                 </div>
                 <div className='bg-green-200'>
                    <ChatPageTailwind />
                 </div>
             </div>
+            <div  dangerouslySetInnerHTML={{ __html: user.teacher_message }}></div>  
+            <Button className='w-36 bg-amber-600' onClick={toggleRecord}>Show Record</Button>
+            {showRecordView && 
+            <div className='bg-blue-300' >
+              <RecordViewStudent />
+            </div>
+            }
+            
         </div>
         </>
     )

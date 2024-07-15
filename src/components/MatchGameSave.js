@@ -17,7 +17,7 @@ const img_grid_style={
     }
 */
 //className={completed ? 'text-strike' : null}
-export function MatchGame({gameId}) {
+export function MatchGameSave({gameId}) {
     const rootpath = useSelector(state => state.rootpath.value)
     const [leftCards , setLeftCards] = useState([])
     const [rightCards , setRightCards] = useState([])
@@ -163,7 +163,8 @@ export function MatchGame({gameId}) {
                             ))
                         }
                     </div>
-                    <div className='flex flex-row'
+                    <div 
+                    className={rightCardHasImages ? styles.img_grid_style : styles.main__grid__item }
                     >
                     { rightCards.map (card => (
                                 <div key={card.match_index}>
