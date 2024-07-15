@@ -113,7 +113,7 @@ export default function QuizAttempt(props) {
       setQuestionAttemptId(response.data.question_attempt_id)
       dispatch(setQuizAttemptId(response.data.quiz_attempt_id))
       if (livequizflag) {
-        console.log("response.data=", response.data)
+        console.log("livequizflag is TRUE response.data=", response.data)
         const params = {
             user_name: user.user_name,
             livequestionnumber: response.data.question.question_number
