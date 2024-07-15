@@ -87,11 +87,13 @@ export default function QuizAttempt({quizId}) {
   useEffect(() => {
     findCreateQuizAttempt(quizId, user.user_name)
     .then((response) => {
+      console.log("return from findCreateQuiz...response.data =", response.data)
       setTheNextQuestion(response.data.question)
       setShowQuestion(true)
       setQuestionAttemptId(response.data.question_attempt_id)
       dispatch(setQuizAttemptId(response.data.quiz_attempt_id))
       if (livequizflag) {
+        console.log("LIVE QUIX FLAG IS TRUE")
         const params = {
             user_name: user.user_name,
             livequestionnumber: response.data.question.question_number

@@ -66,7 +66,7 @@ export function HomeStudent({user}) {
         <>
         
         <div className="flex flex-col m-10 h-80 gap-5 bg-green-100">
-            <div className='h-1'>Live quiz: {livequizflag ? "ON" : "OFF"}<span> &nbsp; Quiz id: {livequizid}</span></div>
+            <div className='h-1'>LLive quiz: {livequizflag ? "ON" : "OFF"}<span> &nbsp; Quiz id: {livequizid}</span></div>
             <div className="flex flex-row h-72 gap-3 bg-red-200 justify-between">
                 <div className="flex m-2 h-11 flex-row gap-4 ">
                   <Button className='m-0' onClick={enableLiveQuiz}>Turn Live Quiz On</Button>
