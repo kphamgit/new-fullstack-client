@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from "react";
+import React, {useState, useContext, useRef, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import QuestionAttempt from './QuestionAttempt.js'
 import { Link } from 'react-router-dom';
@@ -15,6 +15,7 @@ import LiveScoreBoard from "./LiveScoreBoard.js";
 export default function QuizAttempt({quizId}) {
   const user = useSelector((state) => state.user.value) 
   const livequizflag = useSelector((state) => state.livequizflag.value) 
+
   
   const dispatch = useDispatch()  
     const [currentquestionnumber, setCurrentQuestionNumber] = useState(null)
@@ -24,9 +25,10 @@ export default function QuizAttempt({quizId}) {
     const [questionAttemptId, setQuestionAttemptId] = useState(null)
     const [attemptResponse, setAttemptResponse] = useState(null)
     //const [showExitPrompt, setShowExitPrompt] = useExitPrompt(true);
-    
+    const mounted = useRef(true);
     //const [livequizready, setLiveQuizReady] = useState(false)
-    
+    //mounted.current = true;
+    //if(mounted.current) {
     const socket = useContext(SocketContext);
    /*
    const handleClick = (e) => {
@@ -85,26 +87,30 @@ export default function QuizAttempt({quizId}) {
    }
 
   useEffect(() => {
+    mounted.current = true;
+    console.log(" in useEffect quizId ="+quizId)
     findCreateQuizAttempt(quizId, user.user_name)
     .then((response) => {
-      console.log("return from findCreateQuiz...response.data =", response.data)
-      setTheNextQuestion(response.data.question)
-      setShowQuestion(true)
-      setQuestionAttemptId(response.data.question_attempt_id)
-      dispatch(setQuizAttemptId(response.data.quiz_attempt_id))
-      if (livequizflag) {
-        console.log("LIVE QUIX FLAG IS TRUE")
-        const params = {
+      if(mounted.current) {
+        console.log("return from findCreateQuiz...response.data =", response.data)
+        setTheNextQuestion(response.data.question)
+        setShowQuestion(true)
+        setQuestionAttemptId(response.data.question_attempt_id)
+        dispatch(setQuizAttemptId(response.data.quiz_attempt_id))
+        if (livequizflag) {
+         console.log("LIVE QUIX FLAG IS TRUE")
+          const params = {
             user_name: user.user_name,
             livequestionnumber: response.data.question.question_number
+          }
+          socket.emit("next_question_fetched", params)
         }
-        socket.emit("next_question_fetched", params)
       }
     })
     .catch(error => {
         console.log(error)
     });
-    
+    return () => mounted.current = false;
 },[livequizflag, socket, user.user_name, quizId, dispatch]);
 
 const setShowQuestionFlag = (value) => {
