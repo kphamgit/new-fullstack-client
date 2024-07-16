@@ -86,6 +86,27 @@ export default function QuizAttempt({quizId}) {
       setShowQuestionAttemptResponse(true)
    }
 
+   useEffect(() => {
+    mounted.current = true;
+    if (!livequizflag) {
+      findCreateQuizAttempt(quizId, user.id)
+      .then((response) => {
+        if(mounted.current) {
+          console.log("return from findCreateQuiz...response.data =", response.data)
+          setTheNextQuestion(response.data.question)
+          setShowQuestion(true)
+          setQuestionAttemptId(response.data.question_attempt_id)
+          dispatch(setQuizAttemptId(response.data.quiz_attempt_id))
+        }
+      })
+      .catch(error => {
+          console.log(error)
+      });
+    }
+    return () => mounted.current = false;
+   },[livequizflag])
+
+   /*
   useEffect(() => {
     mounted.current = true;
     console.log(" in useEffect quizId ="+quizId)
@@ -112,7 +133,7 @@ export default function QuizAttempt({quizId}) {
     });
     return () => mounted.current = false;
 },[livequizflag, socket, user.user_name, quizId, dispatch]);
-
+*/
 const setShowQuestionFlag = (value) => {
        setShowQuestion(value)
     }

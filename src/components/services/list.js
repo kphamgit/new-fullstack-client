@@ -36,10 +36,10 @@ export async function getStudentsInClass(class_id) {
   return response
 }
 //const url = rootpath + "/api/quiz_attempts/find_create/" + quizId + '/' + user.user_name
-export async function findCreateQuizAttempt(quiz_id, user_name) {
-  console.log(" ENTRY findCreateQuizAttempt quiz_id ="+quiz_id + " user name="+user_name)
+export async function findCreateQuizAttempt(quiz_id, user_id) {
+  console.log(" ENTRY findCreateQuizAttempt quiz_id ="+quiz_id + " user id="+user_id)
   console.log(" in findCreateQuizAttempt rootpath ="+newrootpath)
-  const url = `${newrootpath}/api/quiz_attempts/find_create/${quiz_id}/${user_name}`
+  const url = `${newrootpath}/api/quiz_attempts/find_create_new/${quiz_id}/${user_id}`
   console.log(" in findCreateQuizAttempt url before calling axios ="+url)
   const response = await axios.get(url)
   return response
