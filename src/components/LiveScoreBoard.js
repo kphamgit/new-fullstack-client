@@ -1,8 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import { useSelector, useDispatch} from 'react-redux';
-import { addScore } from '../redux/livescores';
+import React, {useEffect, useRef, useState} from 'react'
 import ScoreRow from './ScoreRow';
-import { resetLiveScores } from '../redux/livescores';
 import {getStudentsInClass} from './services/list.js'
 //import { setQuestion } from '../redux/livequestion';
 //import {clearScores} from '../redux/livescores'
@@ -16,36 +13,30 @@ const chunk = (arr, size) =>
 */
  function LiveScoreBoard({class_id}) {
   
-    const livescores = useSelector((state) => state.livescore.value)
-    const dispatch = useDispatch()
- 
+    const [students, setStudents] = useState([])
+    const mounted = useRef(true);
     useEffect(() => {
+      mounted.current = true;
       getStudentsInClass(class_id)
       .then((response) => {
-        if (response.data) {
-          dispatch(resetLiveScores())
-          response.data.users.map((student, index) => {
-              dispatch(addScore({student_name: student.user_name, question_number: null, score: null, total_score: null}))
-          })
-        }
-        else {
-  
+        if(mounted.current) {
+          setStudents(response.data.users)
         }
       })
       .catch(error => {
           console.log(error)
       });
-    },[class_id, dispatch])
+      return () => mounted.current = false;
+    },[class_id])
 
   return ( 
         <>
         <div>Live Li ve Scoreboard</div>
         <br />
         <div>
-                {livescores.map((score_data, index) => (
+               { students.map((student, index) => (
                     <div key={index}>
-                            <ScoreRow score_data={score_data} index={index} 
-                           />  
+                        <ScoreRow student_name = {student.user_name} />
                     </div>
                 ))}
        </div>

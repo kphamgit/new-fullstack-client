@@ -93,7 +93,7 @@ export default function QuizAttempLive({quizId}) {
           setMyNextButtonFlag(false)  
           const params = {
                user_name: user.user_name,
-               livequestionnumber: response.data.question.question_number
+               question_number: 1
           }
           socket.emit("next_question_fetched", params)
         }

@@ -11,6 +11,14 @@ function NextButtonLive({ quiz_id, next_question_number, setNextQuestion, setSho
     const user = useSelector(state => state.user.value)
     const [endofquiz, setEndofquiz] = useState(false)
     
+    /*
+          const params = {
+               user_name: user.user_name,
+               question_number: 1
+          }
+          socket.emit("next_question_fetched", params)
+    */
+
     const get_next_question = () => {
     getNextQuestion(quiz_id, next_question_number)
       .then((response) => {
@@ -23,7 +31,7 @@ function NextButtonLive({ quiz_id, next_question_number, setNextQuestion, setSho
           resetNextButtonFlag(false)
           const params = {
             user_name: user.user_name,
-            livequestionnumber: response.data.question.question_number
+            question_number: next_question_number
           }
           socket.emit("next_question_fetched", params)
         }

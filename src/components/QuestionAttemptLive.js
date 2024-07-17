@@ -31,7 +31,7 @@ function QuestionAttemptLive({question, setShowQuestion, setAttemptResponse  }) 
     //console.log("QUestionAttempt setTheUserAnswer value=", value)
     setUserAnswer(value)
   }
-
+/*
   useEffect(() => {
         socket.emit('question_attempt_started', {
           user_name: user.user_name,
@@ -39,7 +39,7 @@ function QuestionAttemptLive({question, setShowQuestion, setAttemptResponse  }) 
         })
        //eslint-disable-next-line
   },[ user.user_name, question.question_number])
-
+*/
   useEffect(() => {
     const process_question_attempt = async (user_answer) => {
       //console.log("in process ........1 user_answer=",user_answer)
@@ -47,9 +47,9 @@ function QuestionAttemptLive({question, setShowQuestion, setAttemptResponse  }) 
       const response = await axios.post(url,{user_answer: user_answer, question_id: question.id})
       //console.log("in process ........2 response data=",response.data)
       const live_score_params = {
-        livequestionnumber: response.data.question_number, 
+        question_number: response.data.question_number, 
         score: response.data.question_attempt_results.score, 
-        total_score: 0, user: user.user_name
+        total_score: 0, user_name: user.user_name
       }
       //console.log("Emiting live score params =", live_score_params)
       socket.emit('live_score', live_score_params)

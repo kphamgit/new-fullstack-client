@@ -1,6 +1,5 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import ButtonSelectQuestionAttempt from './ButtonSelectQA';
-import { SocketContext } from "./App.js";
 import ClozeQuestionAttempt from './ClozeQA';
 import { Radio } from './Radio';
 import WordsScrambler from './WordsScrambler';
@@ -18,13 +17,9 @@ import CEditor from './code_editor/CEditor';
 import TextareaAutosize from 'react-textarea-autosize'
 
 function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questionAttemptId  }) {
-   const [user_answer, setUserAnswer] = useState(null)
+  const [user_answer, setUserAnswer] = useState(null)
   const [elapsedTime, setElapsedTime] = useState(null)
   const rootpath = useSelector((state) => state.rootpath.value)
-  const livequizflag = useSelector((state) => state.livequizflag.value)
-  const user = useSelector((state) => state.user.value)
-
-  const socket = useContext(SocketContext);
   
   const setTheUserAnswer = (value) => {
     //console.log("QUestionAttempt setTheUserAnswer value=", value)
@@ -34,16 +29,6 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
   //useEffect(() => {
    // console.log(" Starting question attempt")
   //})
-
-  useEffect(() => {
-      if(livequizflag) {
-        socket.emit('question_attempt_started', {
-          user_name: user.user_name,
-          question_number: question.question_number
-        })
-      }
-       //eslint-disable-next-line
-  },[livequizflag, user.user_name, question.question_number])
 
   useEffect(() => {
     if (user_answer != null) {
