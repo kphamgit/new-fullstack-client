@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useSelector, useDispatch} from 'react-redux';
 import { addScore } from '../redux/livescores';
 import ScoreRow from './ScoreRow';
 import { resetLiveScores } from '../redux/livescores';
-import axios from 'axios';
+import {getStudentsInClass} from './services/list.js'
 //import { setQuestion } from '../redux/livequestion';
 //import {clearScores} from '../redux/livescores'
 
@@ -14,38 +14,32 @@ const chunk = (arr, size) =>
     arr.slice(i * size, i * size + size)
   );
 */
- function LiveScoreBoard() {
+ function LiveScoreBoard({class_id}) {
   
     const livescores = useSelector((state) => state.livescore.value)
-    const rootpath = useSelector((state) => state.rootpath.value)
-    const user = useSelector((state) => state.user.value)
     const dispatch = useDispatch()
-  
+ 
     useEffect(() => {
-        async function fetchData() {
-          // You can await here
-            const url = rootpath + `/api/classes/${user.class_id}`
-            const response = await axios.get(url)
-            //console.log("LiveScoreBoard XXXXXXXXXXXX fetch student data response=", response.data)
-            dispatch(resetLiveScores())
-            response.data.forEach( (name) => {
-                dispatch(addScore({student_name: name, question_number: null, score: null, total_score: null}))
-            })
-            //convert response.data (list of student names) into a 2-dimentional array for display
-            //keep this to learn programming
-            //const newArr = [];
-            //while(response.data.length) newArr.push(response.data.splice(0,3));
-            //console.log(newArr);
-            //setScoresTable(newArr)
-            
+      getStudentsInClass(class_id)
+      .then((response) => {
+        if (response.data) {
+          dispatch(resetLiveScores())
+          response.data.users.map((student, index) => {
+              dispatch(addScore({student_name: student.user_name, question_number: null, score: null, total_score: null}))
+          })
         }
-        fetchData()
-    },[dispatch, rootpath, user.class_id])
-    
+        else {
+  
+        }
+      })
+      .catch(error => {
+          console.log(error)
+      });
+    },[class_id, dispatch])
 
   return ( 
         <>
-        <div>Live Scoreboard</div>
+        <div>Live Li ve Scoreboard</div>
         <br />
         <div>
                 {livescores.map((score_data, index) => (

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 
-export default function Unit(props) {
+export default function UnitSave(props) {
   
   const livequizflag = useSelector(state => state.livequizflag.value)
   const livequizid = useSelector(state => state.livequizid.value)
@@ -19,7 +19,7 @@ export default function Unit(props) {
               (<li key = {quiz.id}>
                 Quiz {quiz.quiz_number} &nbsp;
                 { quiz.id === parseInt(livequizid) ?
-                <Link to={`/quiz_attempts/take_live_quiz/${quiz.id}`}
+                <Link to={`/quiz_attempts/take_quiz/${quiz.id}`}
                   className="font-serif text-normal text-green-800 dark:text-blue-500 hover:underline"
                   >
                   {quiz.name}</Link>

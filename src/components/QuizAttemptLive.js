@@ -1,29 +1,30 @@
 import React, {useState, useContext, useRef, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
-import QuestionAttempt from './QuestionAttempt.js'
+import QuestionAttemptLive from './QuestionAttemptLive.js'
 import { Link } from 'react-router-dom';
-import {setQuizAttemptId} from "../redux/quiz_att_id.js"
 import QuestionResponse from "./QuestionResponse.js";
-import NextButton from "./NextButton.js";
+import NextButtonLive from "./NextButtonLive.js";
 import useExitPrompt from './useExitPrompt.js'
-import {findCreateQuizAttempt} from './services/list.js'
+import {getNextQuestion} from './services/list.js'
+import { SocketContext } from "./App.js";
+import LiveScoreBoard from "./LiveScoreBoard.js";
 
-export default function QuizAttempt({quizId}) {
+
+export default function QuizAttempLive({quizId}) {
   const user = useSelector((state) => state.user.value) 
   const livequizflag = useSelector((state) => state.livequizflag.value) 
 
+  
   const dispatch = useDispatch()  
     const [currentquestionnumber, setCurrentQuestionNumber] = useState(null)
     const [question, setQuestion] = useState(null) 
     const [showQuestion, setShowQuestion] = useState(false)
     const [showAttemptResponse, setShowQuestionAttemptResponse] = useState(false)
-    const [questionAttemptId, setQuestionAttemptId] = useState(null)
     const [attemptResponse, setAttemptResponse] = useState(null)
+    const [myNextButtonFlag, setMyNextButtonFlag] = useState(false)
     //const [showExitPrompt, setShowExitPrompt] = useExitPrompt(true);
     const mounted = useRef(true);
-    //const [livequizready, setLiveQuizReady] = useState(false)
-    //mounted.current = true;
-    //if(mounted.current) {
+    const socket = useContext(SocketContext);
    /*
    const handleClick = (e) => {
     e.preventDefault();
@@ -32,6 +33,33 @@ export default function QuizAttempt({quizId}) {
   //use a Button to toggle showExitPrompt. For now, showExitPrompt is always set to true
   https://dev.to/eons/detect-page-refresh-tab-close-and-route-change-with-react-router-v5-3pd
   */
+
+  useEffect(() => {
+    socket.on('enable_next_button', (arg, callback) => {
+       //console.log(" QuizAttempt got enable_next_button_ message arg=", arg)
+        //callback({status: "I got enable_next_button message. OK", user_name: user.user_name, last_question_number: currentquestionnumber});
+        if (arg.destination.indexOf("except") >= 0) {
+          if (arg.target_student !== user.user_name) {
+            //dispatch(setNextButtonFlag(arg.enable_flag)) 
+            setMyNextButtonFlag(true)
+          }
+        }
+        else if (arg.destination.indexOf('everybody') >= 0 ) { 
+          //dispatch(setNextButtonFlag(arg.enable_flag))
+          setMyNextButtonFlag(true)
+        }
+        else if (arg.destination.indexOf('only') >= 0 ) {
+          if (arg.target_student === user.user_name) {
+            //dispatch(setNextButtonFlag(arg.enable_flag)) 
+            setMyNextButtonFlag(true)
+          }
+        }
+        
+    })
+    return () => {
+      socket.off("enable_next_button")
+  }   
+  },[socket, dispatch, user.user_name, currentquestionnumber])
   
   /*
   //NOTE: this similar to componentWillUnmount()
@@ -47,7 +75,6 @@ export default function QuizAttempt({quizId}) {
         setQuestion(value)
         setCurrentQuestionNumber(value.question_number)
         setShowQuestionAttemptResponse(false)
-        
     }
     const setTheAttemptResponse = (value) => {
       //this function is called in QuestionAttempt after it finishes
@@ -56,37 +83,42 @@ export default function QuizAttempt({quizId}) {
       setShowQuestionAttemptResponse(true)
    }
 
-   useEffect(() => {
+    useEffect(() => {
     mounted.current = true;
-    if (!livequizflag) {
-      findCreateQuizAttempt(quizId, user.id)
+      getNextQuestion(quizId, 1)
       .then((response) => {
         if(mounted.current) {
           setTheNextQuestion(response.data.question)
-          setShowQuestion(true)
-          setQuestionAttemptId(response.data.question_attempt_id)
-          dispatch(setQuizAttemptId(response.data.quiz_attempt_id))
+          setShowQuestion(true)     
+          setMyNextButtonFlag(false)  
+          const params = {
+               user_name: user.user_name,
+               livequestionnumber: response.data.question.question_number
+          }
+          socket.emit("next_question_fetched", params)
         }
       })
       .catch(error => {
           console.log(error)
       });
-    }
-    return () => mounted.current = false;
-   },[livequizflag, dispatch, quizId, user.id])
 
-  const setShowQuestionFlag = (value) => {
+    return () => mounted.current = false;
+    },[dispatch, quizId, user.id, socket, user.user_name])
+
+    const setShowQuestionFlag = (value) => {
        setShowQuestion(value)
     }
 
-    const setTheQuestionAttemptId = (value) => {
+    const resetNextButtonFlag = () => {
       //this function is called in NextButton upon a question_attempt_id is created
       //from the server
-       setQuestionAttemptId(value)
+      //console.log("calling reset ...")
+       setMyNextButtonFlag(false)
     }
 
     return ( 
         <>
+        <div>{myNextButtonFlag.toString()}</div>
         <div style={{marginTop:"20px", marginLeft:"80px", marginRight:"50px"}}>
          <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
           <Link to='/' >Home</Link>
@@ -95,26 +127,30 @@ export default function QuizAttempt({quizId}) {
          <div className="flex flex-row gap-2 bg-slate-200 justify-between">
          <div>
          {(showQuestion) ?
-          <QuestionAttempt 
-            question={question} 
-            setShowQuestion={setShowQuestionFlag}
-            setAttemptResponse={setTheAttemptResponse}
-            questionAttemptId={questionAttemptId}
-          />
+           <QuestionAttemptLive 
+           question={question} 
+           setShowQuestion={setShowQuestionFlag}
+           setAttemptResponse={setTheAttemptResponse}
+           />
           :
           <div>
             {showAttemptResponse && <QuestionResponse question={question} response_content={attemptResponse} />}
-          <NextButton 
-              next_question_number={currentquestionnumber +1} 
-              setNextQuestion={setTheNextQuestion}
-              setShowQuestion={setShowQuestionFlag}
-              setQuestionAttemptId={setTheQuestionAttemptId}
-            />
-            
+            { myNextButtonFlag &&
+                <NextButtonLive quiz_id={quizId} 
+                next_question_number={question.question_number + 1} 
+                setNextQuestion={setTheNextQuestion}
+                setShowQuestion={setShowQuestionFlag}
+                resetNextButtonFlag = {resetNextButtonFlag}
+                />
+            }
           </div>
         }
          </div>
-  
+         <div className="bg-green-200">
+         { livequizflag &&
+            <span><LiveScoreBoard class_id={user.classId} /></span>
+          }
+         </div>
       </div>
       </div>
        </>

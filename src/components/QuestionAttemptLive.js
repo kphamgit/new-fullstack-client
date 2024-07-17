@@ -17,11 +17,12 @@ import { useSelector } from 'react-redux'
 import CEditor from './code_editor/CEditor';
 import TextareaAutosize from 'react-textarea-autosize'
 
-function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questionAttemptId  }) {
+function QuestionAttemptLive({question, setShowQuestion, setAttemptResponse  }) {
    const [user_answer, setUserAnswer] = useState(null)
   const [elapsedTime, setElapsedTime] = useState(null)
   const rootpath = useSelector((state) => state.rootpath.value)
-  const livequizflag = useSelector((state) => state.livequizflag.value)
+  //const livequizflag= useSelector((state) => state.livequizflag.value)
+  //const [totalScore, setTotalScore] = useState(0)
   const user = useSelector((state) => state.user.value)
 
   const socket = useContext(SocketContext);
@@ -31,35 +32,36 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
     setUserAnswer(value)
   }
 
-  //useEffect(() => {
-   // console.log(" Starting question attempt")
-  //})
-
   useEffect(() => {
-      if(livequizflag) {
         socket.emit('question_attempt_started', {
           user_name: user.user_name,
           question_number: question.question_number
         })
-      }
        //eslint-disable-next-line
-  },[livequizflag, user.user_name, question.question_number])
+  },[ user.user_name, question.question_number])
 
   useEffect(() => {
+    const process_question_attempt = async (user_answer) => {
+      //console.log("in process ........1 user_answer=",user_answer)
+      var url = `${rootpath}/api/question_attempts/process_live_attempt/${question.id}`
+      const response = await axios.post(url,{user_answer: user_answer, question_id: question.id})
+      //console.log("in process ........2 response data=",response.data)
+      const live_score_params = {
+        livequestionnumber: response.data.question_number, 
+        score: response.data.question_attempt_results.score, 
+        total_score: 0, user: user.user_name
+      }
+      console.log("live score params =", live_score_params)
+      socket.emit('live_score', live_score_params)
+      setAttemptResponse({...response.data})
+    } 
     if (user_answer != null) {
-      process_question_attempt(user_answer)
+      process_question_attempt(user_answer, question.id)
       setShowQuestion(false)
     }
     //eslint-disable-next-line
   },[user_answer])
 
-  const process_question_attempt = async (user_answer) => {
-    //console.log("in process ........1 user_answer=",user_answer)
-      var url = rootpath + '/api/question_attempts/' + questionAttemptId + '/process_attempt'
-      const response = await axios.post(url,{user_answer: user_answer})
-      const data = response.data
-      setAttemptResponse({...data, elapsed_time: elapsedTime})
-  }
 
   const renderCurrentQA = () => {
     //return <ButtonSelectQuestionAttempt question={question} setUserAnswer={setTheUserAnswer} />
@@ -94,13 +96,9 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
       <div>Question: <span>{question.question_number}</span></div>
       
       <div dangerouslySetInnerHTML={{ __html: question.instruction }}></div>
-      <div>{question.coding && 
-          <CEditor questionAttemptId={questionAttemptId} codeSnippet = {question.prompt} />
-      }</div>
+ 
       <br />
-      { !question.coding &&
       <TextareaAutosize className='bg-cyan-100' id="prompt" cols="70" value={question.prompt} />
-    }
     
       <div>
       {question.audio_src && <audio src={question.audio_src} controls />}
@@ -112,4 +110,4 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
     )
 }
 
-export default QuestionAttempt
+export default QuestionAttemptLive

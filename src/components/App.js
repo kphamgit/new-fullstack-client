@@ -7,6 +7,7 @@ import Logout from './auth/Logout';
 import Home from './Home';
 import Subcategory from './Subcategory';
 import QuizAttempt from './QuizAttempt';
+import QuizAttemptLive from './QuizAttemptLive';
 
 import { getGames, getQuizzes, newGetCategories } from './services/list';
 import io from "socket.io-client";
@@ -134,7 +135,13 @@ function App() {
               )
             })
           }
-
+       {
+            quizzes && quizzes.map(quiz => {
+              return (
+                <Route key={quiz.id} path={`/quiz_attempts/take_live_quiz/${quiz.id}`} element={<QuizAttemptLive quizId={quiz.id} />} />
+              )
+            })
+          }
           {
             games && games.map(game => {
               if (game.continuous) {

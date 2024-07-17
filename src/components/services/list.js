@@ -35,12 +35,21 @@ export async function getStudentsInClass(class_id) {
   const response = await axios.get(url)
   return response
 }
-//const url = rootpath + "/api/quiz_attempts/find_create/" + quizId + '/' + user.user_name
+
 export async function findCreateQuizAttempt(quiz_id, user_id) {
-  console.log(" ENTRY findCreateQuizAttempt quiz_id ="+quiz_id + " user id="+user_id)
-  console.log(" in findCreateQuizAttempt rootpath ="+newrootpath)
   const url = `${newrootpath}/api/quiz_attempts/find_create_new/${quiz_id}/${user_id}`
-  console.log(" in findCreateQuizAttempt url before calling axios ="+url)
+  const response = await axios.get(url)
+  return response
+}
+
+export async function getNextQuestion(quiz_id, question_number) {
+  const url = `${newrootpath}/api/quizzes/${quiz_id}/get_question/${question_number}`
+  const response = await axios.get(url)
+  return response
+}
+//   var url = rootpath + '/api/quiz_attempts/' + quiz_attempt_id + '/creat_next_question_attempt/' + next_question_number
+export async function createQuestionAttempt(quiz_attempt_id, question_number) {
+  const url = `${newrootpath}/api/quiz_attempts/${quiz_attempt_id}/creat_next_question_attempt/${question_number}`
   const response = await axios.get(url)
   return response
 }

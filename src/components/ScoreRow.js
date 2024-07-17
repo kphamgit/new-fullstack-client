@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { SocketContext } from './App.js';
 import { useDispatch } from 'react-redux';
 import { setQuestionNumber, setScores } from '../redux/livescores';
@@ -12,25 +12,81 @@ import { useSelector } from "react-redux";
 function ScoreRow({score_data }) {
     const socket = useContext(SocketContext);
     const dispatch = useDispatch()
+    const [rowStudentName, setRowStudentName] = useState(null)
     const user = useSelector((state) => state.user.value)
-   
+    const [totalScore, setTotalScore] = useState(null)
+    const [score, setScore] = useState(null)
+
+    useEffect(() => {
+        setRowStudentName(score_data.student_name)
+    },[score_data])
+
     useEffect(() => {
         socket.on('live_score', arg => {
-            //console.log("OOOOOOOOOOOOOO ScoreRow live score receive arg",arg)
+            
+            console.log("Live score received for user =", arg, "***")
+            console.log(" I am a row with student name:="+rowStudentName,"***")
+            
+            let it_s_for_me = false
+            if (arg.user.trim() === rowStudentName.trim()) {
+                it_s_for_me = true
+            }
+            
+            //const it_s_for_me = () => (arg.user.trim() === rowStudentName.trim()) doesn't work
+            if (it_s_for_me) {
+                console.log("YES YES YES ********** it's for me")
+                
+                setTotalScore(previous => {
+                    if (previous === null) {
+                        return arg.score
+                    }
+                    else {
+                        return previous + arg.score
+                    }
+                });
+                setScore(arg.score)
+                /*
+                dispatch(setScores({student_name: arg.user.trim(), question_number: arg.livequestionnumber, score: arg.score, total_score: totalScore}))
+                */
+            }
+            else {
+                console.log(" It is NOT for meme")
+            }
+            
+        })
+        return () => {
+            socket.off("live_score")
+        }   
+    }, [socket, dispatch, totalScore, rowStudentName])
+/*
+    useEffect(() => {
+        socket.on('live_score', arg => {
+            console.log(" Live score received. I am scorerow data: ", score_data)
+            console.log(" Log in name =", user.user_name)
+            console.log(" ScoreRow live score receive arg",arg)
             const it_s_me = () => user.user_name === score_data.student_name
             if(it_s_me() ) {
                 //console.log("IT S ME")
                 //console.log("user match ScoreRow live score receive arg",arg)
                // console.log("NewScoreRow live_score for ", score_data.student_name)
-                dispatch(setScores({student_name: arg.user, question_number: arg.livequestionnumber, score: arg.score, total_score: arg.total_score}))
+                setTotalScore(previous => {
+                    if (previous === null) {
+                        return arg.score
+                    }
+                    else {
+                        return previous + arg.score
+                    }
+                }); 
+                dispatch(setScores({student_name: arg.user, question_number: arg.livequestionnumber, score: arg.score, total_score: totalScore}))
             }
         })
         return () => {
             socket.off("live_score")
         }   
-        //eslint-disable-next-line 
-    }, [socket, dispatch, score_data.student_name])
-
+    }, [socket, dispatch, score_data, totalScore, user.user_name])
+    */
+//eslint-disable-next-line 
+/*
     useEffect(() => {
          //get max score(s)
          const total_score_eles = document.getElementsByClassName('total_score')
@@ -52,10 +108,11 @@ function ScoreRow({score_data }) {
          }
          
     },[score_data.total_score])
-
+    */
+/*
     useEffect(() => {
         socket.on('next_question_fetched', (arg) => {
-            //console.log("I am a ScoreRow. My student name is: "+score_data.student_name)
+            console.log("Next question fetched: I am a ScoreRow. My student name is: "+score_data.student_name)
             //console.log(` I am ${it_s_me() === true ? ' ' : "NOT"} the current logged in user`)
             //console.log("I just received a live question acknowledgement from this user: ",arg.user_name)
             
@@ -83,7 +140,7 @@ function ScoreRow({score_data }) {
         }   
         //eslint-disable-next-line
     },[socket, dispatch, score_data.student_name])
-
+*/
     useEffect(() => {
         socket.on('question_attempt_started', (arg) => {
             //console.log("I am a ScoreRow. My student name is: "+score_data.student_name)
@@ -97,11 +154,11 @@ function ScoreRow({score_data }) {
 
   return (
     <>
-        <span style={{color:"blue"}}>&nbsp;{score_data.student_name}</span>
+        <span style={{color:"blue"}}>&nbsp;{rowStudentName}</span>
         <span style={{color:"green"}}>&nbsp;&nbsp;{score_data.question_number}</span>
-        <span style={{color:"blue"}}>&nbsp;&nbsp;{score_data.score}</span>
+        <span style={{color:"blue"}}>&nbsp;&nbsp;{score}</span>
         <span>&nbsp;&nbsp;</span>
-        <span className='total_score' style={{color:"green"}}>{score_data.total_score}</span>
+        <span className='total_score' style={{color:"brown"}}>{totalScore}</span>
     </>
   )
 }
