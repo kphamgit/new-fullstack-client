@@ -3,11 +3,8 @@ import quizAttemptIdReducer from './quiz_att_id.js'
 import rootpathReducer from './rootpath.js'
 import subcategoryReducer from "./subcategory.js"
 import userReducer from "./user.js"
-import livescoreReducer from "./livescores.js"
 import livequizflagReducer from "./livequizflag.js"
 import livequizidReducer from "./livequizid.js"
-//import showlivequestionReducer from "./showlivequestion.js"
-import nextbuttonflagReducer from "./nextbuttonflag.js"
 //redux persist
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
@@ -29,8 +26,6 @@ export const store = configureStore({
         rootpath: persistedRootpathReducer,
         subcategory: subcategoryReducer,
         user: persistedUserReducer,
-        livescore: livescoreReducer,
-        nextbuttonflag: nextbuttonflagReducer,
         livequizflag: livequizflagReducer,
     }
 })

@@ -1,36 +1,17 @@
 import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 //import { Image } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
-//mport {GamePage}
-import axios from 'axios'
+import { getGames} from './services/list'
 
 function Games() {
-  const rootpath = useSelector((state) => state.rootpath.value)
   const [games, setGames] = useState([])
-  /*
-  const myStyle =  {
-    borderRadius: "5px",
-    marginBottom: "5px",
-    marginLeft: "10px",
   
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    padding: "10px 10px 10px 10px",
-    background: "cyan"
-}
-*/
-  useEffect(() => {
-    const url = `${rootpath}/api/matching_games`
-    axios.get(url).then((response) => {
-      //console.log(response.data)
-      setGames(response.data);
-    });
-  
-  },[rootpath])
-
+useEffect(() => {
+    getGames()
+    .then ( response => {
+        setGames(response.data);
+    })
+},[])
  //<Image src="https://kevinphambucket.s3.amazonaws.com/images/a/apple.jpeg" />
  
   return (
@@ -40,8 +21,8 @@ function Games() {
          </div>
     <div className='flex flex-wrap gap-10 m-16'>
         { 
-          games.map((game) => (
-            <div>
+          games.map((game, index) => (
+            <div key={index}>
             <Link to={`/matching_games/play/${game.id}`}
             className="underline text-blue-600 hover:text-blue-800 visited:text-green-600"
             >
@@ -50,7 +31,6 @@ function Games() {
             </div>
         ))
         }
-      
     </div>
     </>
   )

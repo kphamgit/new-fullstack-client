@@ -124,7 +124,7 @@ function App() {
               <Route path="/" element = {<Home categories={categories} socket={socket}/>} />
               <Route path="/logout" element = {<Logout setToken={setToken} setAuth = {setAuth} />} />
              { subcategories.map(subcat => (
-                <Route key={subcat.id} path={`/sub_categories/${subcat.id}`} element={<Subcategory id = {subcat.id} name={subcat.name}/>} />
+                <Route key={subcat.id} path={`/sub_categories/${subcat.id}`} element={<Subcategory subcat_id = {subcat.id} name={subcat.name}/>} />
               ))
              }
             <Route path="/matching_games" element = {<Games />} />

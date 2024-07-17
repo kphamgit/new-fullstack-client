@@ -24,7 +24,7 @@ export const Radio = ({question, setUserAnswer, live_flag}) => {
       {['radio'].map((type) => (
         <div key={`${type}`} className="mb-3">
           <Form.Check
-            label={question.radio.choice_1_text}
+            label={'  ' + question.radio.choice_1_text}
             name="radio"
             value="choice1"
             type={type}
@@ -32,7 +32,7 @@ export const Radio = ({question, setUserAnswer, live_flag}) => {
             onChange={onOptionChange}
           />
           <Form.Check
-            label={question.radio.choice_2_text}
+            label={'  ' + question.radio.choice_2_text}
             name="radio"
             value="choice2"
             type={type}
@@ -40,7 +40,7 @@ export const Radio = ({question, setUserAnswer, live_flag}) => {
             onChange={onOptionChange}
           />
             <Form.Check
-            label={question.radio.choice_3_text}
+            label={'  ' + question.radio.choice_3_text}
             name="radio"
             value="choice3"
             type={type}
@@ -49,7 +49,7 @@ export const Radio = ({question, setUserAnswer, live_flag}) => {
           />
           {question.radio.choice_4_text && (
           <Form.Check
-            label={question.radio.choice_4_text}
+            label={'  ' + question.radio.choice_4_text}
             name="radio"
             value="choice4"
             type={type}

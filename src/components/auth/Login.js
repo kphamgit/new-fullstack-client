@@ -14,20 +14,6 @@ export default function Login({setToken, setAuth}) {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
 
-  //const dispatch = useDispatch()
-/*
-  const handleSubmit_old = async e => {
-    e.preventDefault();
-    let url =  `${rootpath}/sessions`
-    const credentials =  {
-      username: username,
-      password
-    }
-    const response = await axios.post(url,credentials )
-    setToken(response.data.token);
-    setAuth({auth: response.data.token})
-  }
-*/
   const handleSubmit = async e => {
     e.preventDefault();
     login({username: username, password} )

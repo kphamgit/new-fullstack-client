@@ -4,31 +4,21 @@ import ClozeQuestionAttempt from './ClozeQA';
 import { Radio } from './Radio';
 import WordsScrambler from './WordsScrambler';
 import {SpeechRecognitionQA} from './SpeechRecognitionQA.js';
-
-
 import ReactPlayer from 'react-player';
 import WordsSelect from './WordsSelect';
 import RecordQuestionAttempt from './RecordQA';
-
-import axios from 'axios';
+import {processQuestionAttempt} from './services/list.js'
 //import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux'
 import CEditor from './code_editor/CEditor';
 import TextareaAutosize from 'react-textarea-autosize'
 
 function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questionAttemptId  }) {
   const [user_answer, setUserAnswer] = useState(null)
   const [elapsedTime, setElapsedTime] = useState(null)
-  const rootpath = useSelector((state) => state.rootpath.value)
   
   const setTheUserAnswer = (value) => {
-    //console.log("QUestionAttempt setTheUserAnswer value=", value)
     setUserAnswer(value)
   }
-
-  //useEffect(() => {
-   // console.log(" Starting question attempt")
-  //})
 
   useEffect(() => {
     if (user_answer != null) {
@@ -37,18 +27,18 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
     }
     //eslint-disable-next-line
   },[user_answer])
-
+  
   const process_question_attempt = async (user_answer) => {
-    //console.log("in process ........1 user_answer=",user_answer)
-      var url = rootpath + '/api/question_attempts/' + questionAttemptId + '/process_attempt'
-      const response = await axios.post(url,{user_answer: user_answer})
-      const data = response.data
-      setAttemptResponse({...data, elapsed_time: elapsedTime})
+    processQuestionAttempt(questionAttemptId, user_answer)
+    .then((response) => {
+      setAttemptResponse({...response.data, elapsed_time: elapsedTime})
+    })
+    .catch(error => {
+        console.log(error)
+    });
   }
 
   const renderCurrentQA = () => {
-    //return <ButtonSelectQuestionAttempt question={question} setUserAnswer={setTheUserAnswer} />
-    
     switch (question.format) {
       case 1:
         return <ClozeQuestionAttempt 

@@ -18,6 +18,31 @@ export async function newGetCategories() {
      return response
   
 }
+//const url = `${rootpath}/api/sub_categories/${subcat_id}`
+//fetchSubcatetoryUnits
+export async function fetchSubcatetoryUnits(subcat_id) {
+  const url = `${newrootpath}/api/sub_categories/${subcat_id}`
+  const response = await axios.get(url)
+  return response
+}
+
+//var url = rootpath + '/api/matching_games/' + gameId + '/play_fullstack'
+export async function startGame(game_id) {
+  const url = `${newrootpath}/api/matching_games/${game_id}/play_fullstack` 
+  const response = await axios.get(url)
+  let left_array = response.data.base.split('/').map((str, index) => {
+    return (
+        {src: str, matched: false, match_index: index, language: response.data.source_language}
+    )
+  });
+  let right_array = response.data.target.split('/').map((str, index) => {
+    return (
+      {src: str, matched: false, match_index: index, language: response.data.target_language }
+    )
+  });
+  return [left_array, right_array]
+}
+
 
 export async function getGames() {
   const url = `${newrootpath}/api/matching_games` 
@@ -51,6 +76,20 @@ export async function getNextQuestion(quiz_id, question_number) {
 export async function createQuestionAttempt(quiz_attempt_id, question_number) {
   const url = `${newrootpath}/api/quiz_attempts/${quiz_attempt_id}/creat_next_question_attempt/${question_number}`
   const response = await axios.get(url)
+  return response
+}
+
+
+
+export async function processQuestionAttempt(question_attempt_id, user_answer) {
+  const url = `${newrootpath}/api/question_attempts/${question_attempt_id}/process_attempt`
+  const response = await axios.post(url,{user_answer: user_answer})
+  return response
+}
+
+export async function processLiveQuestionAttempt(question_id, user_answer) {
+  const url = `${newrootpath}/api/question_attempts/process_live_attempt/${question_id}/`
+  const response = await axios.post(url,{user_answer: user_answer})
   return response
 }
 

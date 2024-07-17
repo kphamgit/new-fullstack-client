@@ -1,10 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react'
-import axios from 'axios';
-import { useSelector } from 'react-redux';
 import { MatchCard } from './MatchCard';
 import styles from "./MatchGame.module.css";
 import { Link } from 'react-router-dom';
 import  Counter  from './Counter'
+import {startGame} from './services/list.js'
 //make cards outside of component so that it won't get recreated
 //everytime component is refreshed.
 
@@ -18,10 +17,8 @@ const img_grid_style={
 */
 //className={completed ? 'text-strike' : null}
 export function MatchGame({gameId}) {
-    const rootpath = useSelector(state => state.rootpath.value)
     const [leftCards , setLeftCards] = useState([])
     const [rightCards , setRightCards] = useState([])
-    const [rightCardHasImages, setRightCardHasImages] = useState(false)
     const [turns, setTurns] = useState(0)
     const [nummatches, setNumMatches] = useState(0)
     const [gameover, setGameOver] = useState(false)
@@ -34,39 +31,20 @@ export function MatchGame({gameId}) {
 
     useEffect(() => {
         const clearInt = () => {
-            //console.log("Game Time is up...")
             setGameOver(true)
             childRef.current.clearCount()
             clearTimeout(myTimeout.current)
         }
-        const populateCards = () =>{
-            var url = rootpath + '/api/matching_games/' + gameId + '/play_fullstack'
-            axios.get(url).then((response) => {
-                //console.log(response.data)
-                    let myArray1 = response.data.base.split('/').map((str, index) => {
-                    return (
-                      {src: str, matched: false, match_index: index, language: response.data.source_language}
-                    )
-                });
-                setLeftCards(myArray1)
-                let myArray2 = response.data.target.split('/').map((str, index) => {
-                    return (
-                      {src: str, matched: false, match_index: index, language: response.data.target_language }
-                    )
-                });
-                setRightCards(myArray2.sort(() => Math.random() - 0.5 ))
-                if (myArray2[0].src.indexOf('jpeg') >= 0 ) {
-                    setRightCardHasImages(true)
-                }
-             })
-            setTurns(0)
-        } // end populate card
-        populateCards()
-        myTimeout.current = setTimeout(clearInt, 100000);
+        startGame(gameId)
+        .then(response => {
+            setLeftCards(response[0])
+            setRightCards(response[1])
+            myTimeout.current = setTimeout(clearInt, 100000);
+        })
         return () => {
             clearTimeout(myTimeout.current)
-        }  
-    },[rootpath, gameId])  //end useEffect
+        } 
+    },[gameId])
 
     useEffect(() => {
         return () => {
@@ -153,7 +131,7 @@ export function MatchGame({gameId}) {
                     <h3>Game Over</h3>
                     :
                     <>
-                    <div className='flex flex-col gap-6 m-2'>
+                    <div className='flex w-48 justify-center align-bottom flex-col gap-7 m-2'>
                         { leftCards.map (card => (
                                 <div key={card.match_index}>
                                 <div>
@@ -163,7 +141,7 @@ export function MatchGame({gameId}) {
                             ))
                         }
                     </div>
-                    <div className='flex flex-row'
+                    <div className='flex w-96 flex-row flex-wrap gap-4'
                     >
                     { rightCards.map (card => (
                                 <div key={card.match_index}>
