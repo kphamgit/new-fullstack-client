@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLiveQuizId } from '../redux/livequizid.js';
 import { clearLiveQuizId } from '../redux/livequizid.js';
 import { Link } from 'react-router-dom';
-import { Button, Label, TextInput } from "flowbite-react";
+import { Button, TextInput } from "flowbite-react";
 import ChatPageTailwind from './chat/ChatPageTailwind.js';
 export function HomeStudent({user}) {
     const socket = useContext(SocketContext);
@@ -15,7 +15,7 @@ export function HomeStudent({user}) {
     const [showRecordView, setShowRecordView] = useState(false)
     const livequizflag = useSelector(state => state.livequizflag.value)
     const livequizid = useSelector(state => state.livequizid.value)
-    const [myLiveQuizId, setMyLiveQuizId] = useState()
+    
     //const livescores = useSelector((state) => state.livescore.value)
 
 
@@ -81,7 +81,7 @@ export function HomeStudent({user}) {
                    <ChatPageTailwind />
                 </div>
             </div>
-            <div  dangerouslySetInnerHTML={{ __html: user.teacher_message }}></div>  
+            <div  dangerouslySetInnerHTML={{ __html: user.message }}></div>  
             <Button className='w-36 bg-amber-600' onClick={toggleRecord}>Show Record</Button>
             {showRecordView && 
             <div className='bg-blue-300' >

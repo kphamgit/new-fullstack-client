@@ -24,8 +24,8 @@ function ScoreRow({score_data }) {
     useEffect(() => {
         socket.on('live_score', arg => {
             
-            console.log("Live score received for user =", arg, "***")
-            console.log(" I am a row with student name:="+rowStudentName,"***")
+            console.log("Live score for user =", arg, "***")
+            console.log("Row's student name:="+rowStudentName,"***")
             
             let it_s_for_me = false
             if (arg.user.trim() === rowStudentName.trim()) {
@@ -34,7 +34,7 @@ function ScoreRow({score_data }) {
             
             //const it_s_for_me = () => (arg.user.trim() === rowStudentName.trim()) doesn't work
             if (it_s_for_me) {
-                console.log("YES YES YES ********** it's for me")
+                console.log("YES ********** it's for me")
                 
                 setTotalScore(previous => {
                     if (previous === null) {
@@ -44,7 +44,7 @@ function ScoreRow({score_data }) {
                         return previous + arg.score
                     }
                 });
-                setScore(arg.score)
+                //setScore(arg.score)
                 /*
                 dispatch(setScores({student_name: arg.user.trim(), question_number: arg.livequestionnumber, score: arg.score, total_score: totalScore}))
                 */
@@ -57,7 +57,7 @@ function ScoreRow({score_data }) {
         return () => {
             socket.off("live_score")
         }   
-    }, [socket, dispatch, totalScore, rowStudentName])
+    }, [socket, rowStudentName])
 /*
     useEffect(() => {
         socket.on('live_score', arg => {
