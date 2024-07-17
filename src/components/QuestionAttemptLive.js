@@ -22,7 +22,7 @@ function QuestionAttemptLive({question, setShowQuestion, setAttemptResponse  }) 
   const [elapsedTime, setElapsedTime] = useState(null)
   const rootpath = useSelector((state) => state.rootpath.value)
   //const livequizflag= useSelector((state) => state.livequizflag.value)
-  //const [totalScore, setTotalScore] = useState(0)
+  
   const user = useSelector((state) => state.user.value)
 
   const socket = useContext(SocketContext);
@@ -51,7 +51,7 @@ function QuestionAttemptLive({question, setShowQuestion, setAttemptResponse  }) 
         score: response.data.question_attempt_results.score, 
         total_score: 0, user: user.user_name
       }
-      console.log("live score params =", live_score_params)
+      //console.log("Emiting live score params =", live_score_params)
       socket.emit('live_score', live_score_params)
       setAttemptResponse({...response.data})
     } 

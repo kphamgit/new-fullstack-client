@@ -118,10 +118,10 @@ export default function QuizAttempLive({quizId}) {
 
     return ( 
         <>
-        <div>{myNextButtonFlag.toString()}</div>
+        
         <div style={{marginTop:"20px", marginLeft:"80px", marginRight:"50px"}}>
-         <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
-          <Link to='/' >Home</Link>
+         <div><span className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
+          <Link to='/' >Home</Link></span><span className="text-red-600">&nbsp;&nbsp;{user.user_name}</span>
          </div>
          <br />
          <div className="flex flex-row gap-2 bg-slate-200 justify-between">
