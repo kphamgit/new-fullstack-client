@@ -205,7 +205,7 @@ export function MatchGameContinuous({gameId}) {
           >
                     Games</Link>
          </div>
-         <div className='m-11'><Counter ref={counterRef}/></div>
+         <div className='mx-11'my-1><Counter ref={counterRef}/></div>
            <div className='flex flex-row justify-center bg-gray-50'>
            
                 { (gameover) ?

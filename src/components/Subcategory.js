@@ -27,11 +27,11 @@ export default function Subcategory({subcat_id, name}) {
     <div style={{marginTop:"20px", marginLeft:"80px", marginRight:"50px"}}>
      <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"><Link to='/' >Home</Link></div>
      <br />
-        <div className="flex flex-col gap-2 bg-indigo-200">
+        <div className="flex flex-col gap-1 bg-indigo-200">
         {post.units && 
               <>
                 {post.units.map((unit) =>  
-                (<span key = {unit.id}>
+                (<span className='mx-4 my-2' key = {unit.id}>
                   <Unit content={unit}/>
                 </span> 
                 )

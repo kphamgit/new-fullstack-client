@@ -187,7 +187,7 @@ function QuestionResponse({question, response_content}) {
   return (
     <>
    <div> 
-            <div>
+            <div className='flex flex-col m-4'>
                 <div  className= 'bg-cyan-200'>
                   <div>
                     <div>Question {response_content.question_number }</div>
@@ -197,23 +197,7 @@ function QuestionResponse({question, response_content}) {
                     <pre>{displayQuestionContent() } </pre>
                   </div>
                 </div>
-               
-                <div>
-                  <div>
-                    <span>Score:
-                    &nbsp;{response_content.accumulated_score}</span>
-                    </div>
-                    <div>
-                      <p>&nbsp;</p>
-                    <div>Time elapsed:<span>
-                    {displayElapsedTime()}</span>
-                    </div>
-                    <p>&nbsp;</p>
-                    </div>
-                </div>
-            </div>
- 
-            <div className='bg-orange-200'>
+                <div className='bg-orange-200'>
                 <div>
                 <div>Your answer is (Bạn trả lời là):</div>
                 <pre>{displayResponse() } </pre>
@@ -230,6 +214,20 @@ function QuestionResponse({question, response_content}) {
                 </div>
             </div>
             }
+              <div>
+                  <div>
+                    <span>Score:
+                    &nbsp;{response_content.accumulated_score}</span>
+                    </div>
+                    <div>
+                      <p>&nbsp;</p>
+                    <div>Time elapsed:<span>
+                    {displayElapsedTime()}</span>
+                    </div>
+                    <p>&nbsp;</p>
+                    </div>
+                </div>
+            </div>
         </div>
     
     </>

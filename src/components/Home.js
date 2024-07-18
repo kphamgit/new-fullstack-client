@@ -1,15 +1,8 @@
 import React, {useState, useEffect} from 'react'
-//import CEditor from './code_editor/CEditor.js'
-//import io from "socket.io-client";
-//import { clear } from  '../redux/subcategory.js';
-import Container  from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col  from 'react-bootstrap/Col';
 import { HomeStudent } from './HomeStudent.js';
 import { HomeTeacher } from './HomeTeacher.js';
 import { useSelector } from 'react-redux';
 import { ConnectionState } from './ConnectionState';
-//import NavBarComponent from './NavBarComponent.js';
 import NavBarTailWind from './NavBarTailwind.js';
 function Home({categories, socket}) {
   const user = useSelector( state => state.user.value )
@@ -44,9 +37,9 @@ useEffect(() =>{
   return (
     <>
     
-    <div className="flex flex-col m-3 px-5">
+    <div className="flex flex-col mx-0 px-2 bg-gray-200">
     <div><NavBarTailWind categories={categories}/></div>
-    <div>
+    <div className='bg'>
     { user.role === 'teacher' ?
         <HomeTeacher />
         :

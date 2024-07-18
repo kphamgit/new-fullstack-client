@@ -31,9 +31,10 @@ const chunk = (arr, size) =>
 
   return ( 
         <>
-        <div>Live Li ve Scoreboard</div>
-        <br />
-        <div>
+       
+    
+        <div className='mx-2 my-3 gap-1 flex flex-col'>
+              <div>Scoreboard</div>
                { students.map((student, index) => (
                     <div key={index}>
                         <ScoreRow student_name = {student.user_name} />

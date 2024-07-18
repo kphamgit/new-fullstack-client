@@ -126,7 +126,7 @@ useEffect(() => {
         <>
         <div>DD {destination}</div>
         <div className="flex flex-col  h-80 gap-5 bg-green-100">
-            <div className="flex flex-row h-72 gap-3 bg-red-200 justify-between">
+            <div className="flex flex-row h-72 gap-3 bg-green-200 justify-between">
                 <div className="flex h-12 flex-col gap-4 ">
                   <Button className='m-1' onClick={enableLiveQuiz}>Turn Live Quiz On</Button>
                   <TextInput type='text' value={livequizid} size="7" 

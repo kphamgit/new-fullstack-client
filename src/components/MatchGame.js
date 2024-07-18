@@ -107,31 +107,27 @@ export function MatchGame({gameId}) {
 
     return (
         <>
-        <div className="m-10">
+        <div className='m-9'>
           <Link to='/' 
             className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" >Home</Link>&nbsp;&nbsp;
           <Link to={`/matching_games/`}
           className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
           >
-                    Games</Link>
-         </div>
-           <div className={styles.container}>
-            <div className={styles.header}>
-                <div>
+            Games</Link>
+        </div>
+
+        <div className='mx-9 my-0'>
+            <div>
                 <Counter ref={childRef} />
-                </div>
             </div>
-            <div className={styles.nav}>
-            
-            </div>
-           
-            <div className={styles.main}>
-           
+        </div>
+
+            <div>
                 { (gameover) ?
-                    <h3>Game Over</h3>
+                    <h3 className='mx-10 my-0 text-xl'>Game Over</h3>
                     :
-                    <>
-                    <div className='flex w-48 justify-center align-bottom flex-col gap-7 m-2'>
+                    <div className='mx-44 my-10 grid grid-cols-2 gap-3 w-2/4 bg-yellow-200'>
+                        <div className='flex flex-col gap-3 justify-center' >
                         { leftCards.map (card => (
                                 <div key={card.match_index}>
                                 <div>
@@ -140,10 +136,10 @@ export function MatchGame({gameId}) {
                                 </div>
                             ))
                         }
-                    </div>
-                    <div className='flex w-96 flex-row flex-wrap gap-4'
-                    >
-                    { rightCards.map (card => (
+                        </div>
+                        
+                        <div className='grid grid-cols-2 gap-x-3 gap-y-3 bg-green-300'>
+                        { rightCards.map (card => (
                                 <div key={card.match_index}>
                                 <div>
                                 <MatchCard card={card} handleChoice={handleChoiceRight} />
@@ -151,13 +147,12 @@ export function MatchGame({gameId}) {
                                 </div>
                             ))
                         }
+                        
+                        </div>
                     </div>
-                    </>
                 }
             </div>
-          
-            <footer className={styles.footer}>footer</footer>
-            </div>
+        
         </>
     )
 }

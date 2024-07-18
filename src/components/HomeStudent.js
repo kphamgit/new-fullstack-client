@@ -65,14 +65,14 @@ export function HomeStudent({user}) {
     return (
         <>
         
-        <div className="flex flex-col m-10 h-80 gap-5 bg-green-100">
-            <div className='h-1'>LLive quiz: {livequizflag ? "ON" : "OFF"}<span> &nbsp; Quiz id: {livequizid}</span></div>
-            <div className="flex flex-row h-72 gap-3 bg-red-200 justify-between">
+        <div className="flex flex-col mx-10 my-5 h-80 gap-5 bg-green-100 rounded-md">
+            <div className='h-1'>Live quiz: {livequizflag ? "ON" : "OFF"}<span> &nbsp; Quiz id: {livequizid}</span></div>
+            <div className="flex flex-row h-72 gap-3 bg-gray-200 justify-between">
                 <div className="flex m-2 h-11 flex-row gap-4 ">
-                  <Button className='m-0' onClick={enableLiveQuiz}>Turn Live Quiz On</Button>
-                  <TextInput type='text' value={livequizid} size="7" 
+                <Button className='md: w-full px-0' onClick={enableLiveQuiz} >Turn Live Quiz On</Button>
+                  <TextInput type='text' value={livequizid} size='auto' 
                     onChange={(e) => dispatch(setLiveQuizId(e.target.value))}/>
-                  <Button className='m-0' onClick={disableLiveQuiz}>Turn Live Quiz Off</Button>
+                  <Button className='m-0 w-full scroll-px-0' onClick={disableLiveQuiz}>Turn Live Quiz Off</Button>
                   <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
                     <Link to='/matching_games' >Games</Link>
                   </div>

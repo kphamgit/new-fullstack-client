@@ -1,7 +1,23 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { SocketContext } from './App.js';
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+
+const myComponentStyle = {
+        display: "inline",
+        height: "15px",
+        width: "0.5em",
+        lineHeight: "1.7em",
+        bordeRadius: "10px",
+        backgroundColor: "#ad8266",
+        color: "white",
+        textAlign: "center",
+        paddingLeft: "0.1em", 
+        paddingRight: "0.1em", 
+        paddingTop: "0em", 
+        paddingBottom: "0em", 
+        margin: "0.5em"
+ }
+ 
 
 function ScoreRow({student_name }) {
     const socket = useContext(SocketContext);
@@ -9,7 +25,10 @@ function ScoreRow({student_name }) {
     const [questionNumber, setQuestionNumber] = useState(null)
     const [score, setScore] = useState(null)
     const [totalScore, setTotalScore] = useState(null)
-    
+    /*
+
+    */
+
     useEffect(() => {
         socket.on('live_score', arg => {
             let it_s_for_me = false
@@ -46,6 +65,7 @@ function ScoreRow({student_name }) {
             }
             if (it_s_for_me) {
                 setQuestionNumber(arg.question_number)
+                setScore(null)
             }
             
         })
@@ -57,10 +77,9 @@ function ScoreRow({student_name }) {
 
   return (
     <>
-        <span style={{color:"blue"}}>&nbsp;{studentName}</span>
-        <span style={{color:"green"}}>&nbsp;&nbsp;{questionNumber}</span>
-        <span style={{color:"blue"}}>&nbsp;&nbsp;{score}</span>
-        <span>&nbsp;&nbsp;</span>
+        <span className='text-blue-800'>&nbsp;{studentName}</span>
+        <span style={questionNumber && myComponentStyle}>{questionNumber}</span>
+        <span style={{color:"blue"}}>&nbsp;&nbsp;{score}&nbsp;&nbsp;</span>
         <span className='total_score' style={{color:"brown"}}>{totalScore}</span>
     </>
   )
