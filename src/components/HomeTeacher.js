@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import ChatPageTailwind from './chat/ChatPageTailwind.js';
 import { Button, TextInput } from 'flowbite-react';
 import { getStudentsInClass } from './services/list';
-//import { CategoriesManager } from './admin/CategoriesManager.js';
-import { Link } from 'react-router-dom';
 
 export function HomeTeacher(props) {
     const socket = useContext(SocketContext);
@@ -156,7 +154,7 @@ useEffect(() => {
                 &nbsp;<span><TextInput type='text' value={classId} size="7" 
                     onChange={(e) => setClassId(e.target.value)}/></span>
                 </div>
-                
+               
                 <ul>
                 { studentsInClass &&
                 studentsInClass.users.map((student, index) =>
@@ -164,7 +162,7 @@ useEffect(() => {
                 )
                 }
                 </ul>
-                <Link to="/manage_categories" >Manage Categories</Link>
+
             </div>
             <div> 
             <div>Connected students list from server:</div>

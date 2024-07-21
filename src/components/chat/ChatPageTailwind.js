@@ -20,12 +20,10 @@ const ChatPageTailwind = () => {
 
 
     return (
-        <div className='flex flex-col'>
-         <div className='w-60'  >
+        <div className='w-60'  >
             <ChatBodyTailwind messages={messages}  />
           <p></p>
             <ChatFooterTailwind socket={socket}/>
-        </div>
         </div>
     );
   };

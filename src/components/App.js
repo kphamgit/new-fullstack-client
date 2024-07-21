@@ -9,14 +9,11 @@ import Subcategory from './Subcategory';
 import QuizAttempt from './QuizAttempt';
 import QuizAttemptLive from './QuizAttemptLive';
 
-import { getGames, getQuizzes, getCategories } from './services/list';
+import { getGames, getQuizzes, newGetCategories } from './services/list';
 import io from "socket.io-client";
 import Games from './Games';
 import { MatchGame } from './MatchGame';
 import { MatchGameContinuous } from './MatchGameContinuous';
-import { CategoriesManager } from './admin/CategoriesManager';
-import { CategoryManager } from './admin/CategoryManager';
-import { SubCategoriesManager } from './admin/SubCategoriesManager';
 
 
 //const token = getToken();
@@ -74,7 +71,7 @@ function App() {
   useEffect(() => {
       mounted.current = true;
       if (!auth) return
-      getCategories()
+      newGetCategories()
       .then ( response => {
         if(mounted.current) {
           setCategories(response.data);    
@@ -126,10 +123,6 @@ function App() {
             <Routes>
               <Route path="/" element = {<Home categories={categories} socket={socket}/>} />
               <Route path="/logout" element = {<Logout setToken={setToken} setAuth = {setAuth} />} />
-              { categories.map(cat => (
-                <Route key={cat.id} path={`/manage_category/${cat.id}`} element={<CategoryManager id = {cat.id} name={cat.name}/>} />
-              ))
-             }
              { subcategories.map(subcat => (
                 <Route key={subcat.id} path={`/sub_categories/${subcat.id}`} element={<Subcategory subcat_id = {subcat.id} name={subcat.name}/>} />
               ))
@@ -142,7 +135,7 @@ function App() {
               )
             })
           }
-          {
+       {
             quizzes && quizzes.map(quiz => {
               return (
                 <Route key={quiz.id} path={`/quiz_attempts/take_live_quiz/${quiz.id}`} element={<QuizAttemptLive quizId={quiz.id} />} />
@@ -163,8 +156,6 @@ function App() {
               }
             })
           }
-          <Route path={`/manage_categories`} element={<CategoriesManager categories={categories} />} />
-         
             </Routes>
             </BrowserRouter>
             </SocketContext.Provider>

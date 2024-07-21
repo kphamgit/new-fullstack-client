@@ -197,7 +197,7 @@ export function MatchGameContinuous({gameId}) {
 
     return (
         <>
-           <div className="mx-11 my-4">
+           <div className="m-11">
           <Link to='/' 
             className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" >Home</Link>&nbsp;&nbsp;
           <Link to={`/matching_games/`}

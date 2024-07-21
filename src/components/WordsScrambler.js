@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useState } from "react";
 import { Reorder } from "framer-motion"
+import Button from "react-bootstrap/Button"
 import SubmitButton from './SubmitButton';
+//mport LiveSubmitButton from './LiveSubmitButton';
 import { useSelector } from 'react-redux';
 
 const LI = {
@@ -10,23 +12,17 @@ const LI = {
   primary: 'rebeccapurple',
 };
 
-const itemStyle =  {
-  borderRadius: "5px",
-  marginBottom: "5px",
-  marginLeft: "10px",
-  
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "center",
-  padding: "10px 10px 10px 10px",
-  background: "cyan"
-}
-
-
 function WordsScrambler({question, setUserAnswer}) {
-  const user = useSelector((state) => state.user.value)
-  const [bigfont, setBigFont] = useState(false)
-
+  const livequizflag = useSelector((state) => state.livequizflag.value)
+  /*
+  const question = useSelector(state => {
+    if (live_flag)
+        return state.live_question.value
+    else {
+        return state.question.value
+    }
+ })
+ */
 const handleClick = () => {
   const uanswer = document.getElementsByClassName('word_scrambler_items')
   //console.log("BBBBBBBBBBBBBBBBBBBBBBBBB")
@@ -48,6 +44,7 @@ const handleClick = () => {
     marray.forEach( (element, index) => {
         listItems.push({name: element, id: index})
     });
+    //console.log("XXXXXXXXXXXX",listItems)
 
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -55,29 +52,19 @@ const handleClick = () => {
         [array[i], array[j]] = [array[j], array[i]];
       }
     }   
-    
-    const randomIndex = Math.floor(Math.random() * 3);
+
     const [items, setItems] = useState(listItems);
-    const [color, setColor] = useState(['green', 'brown', "#b04381", '#b06e43'])
-    const itemStyleBig =  {
+    const itemStyle =  {
       borderRadius: "5px",
       marginBottom: "5px",
       marginLeft: "10px",
-      fontSize: "25px",
-      fontWeight: "bold",
-      color: "yellow", 
+      
       display: "flex",
       flexDirection: "row",
       justifyContent: "center",
-      padding: "2px 12px 5px 12px",
-      background: color[randomIndex]
+      padding: "10px 10px 10px 10px",
+      background: "cyan"
   }
-
-  useEffect(() => {
-      if (user.classId === 3) {
-         setBigFont(true)
-      }
-  },[user])
   
     if (question.words_scramble_direction === 'x') {
       return (
@@ -89,7 +76,7 @@ const handleClick = () => {
           >
           {items.map((item) => (
             // Change the li to Reorder.Item and add value prop
-            <Reorder.Item className="word_scrambler_items" style={ bigfont ? itemStyleBig : itemStyle }  key={item.id} value={item}>
+            <Reorder.Item className="word_scrambler_items" style={ itemStyle}  key={item.id} value={item}>
               {item.name}
             </Reorder.Item>
           ))}

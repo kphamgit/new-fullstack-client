@@ -37,15 +37,16 @@ useEffect(() =>{
   return (
     <>
     
-    <div className="grid grid-cols-1 w-screen bg-blue-100">
-    <div className='bg-orange-300 m-5'>
-    <div className='w-full'><NavBarTailWind categories={categories}/></div>
+    <div className="flex flex-col mx-0 px-2 bg-gray-200">
+    <div><NavBarTailWind categories={categories}/></div>
+    <div className='bg'>
     { user.role === 'teacher' ?
         <HomeTeacher />
         :
         <HomeStudent user = {user} />
         }
-    </div>
+       </div>
+      
     </div>
     </>
   )

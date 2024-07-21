@@ -8,7 +8,6 @@ import ReactPlayer from 'react-player';
 import WordsSelect from './WordsSelect';
 import RecordQuestionAttempt from './RecordQA';
 import {processQuestionAttempt} from './services/list.js'
-import { Textarea } from 'flowbite-react';
 //import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import CEditor from './code_editor/CEditor';
 import TextareaAutosize from 'react-textarea-autosize'
@@ -40,7 +39,6 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
   }
 
   const renderCurrentQA = () => {
-
     switch (question.format) {
       case 1:
         return <ClozeQuestionAttempt 
@@ -67,16 +65,25 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
   }
 
     return (
-      <div className='bg-green-200'>
-        <div dangerouslySetInnerHTML={{ __html: question.instruction }}></div>
-          <TextareaAutosize className='w-[70vw]' id="prompt" value={question.prompt} />
-          <div>
+      <>
+      <div>Question: <span>{question.question_number}</span></div>
+      
+      <div dangerouslySetInnerHTML={{ __html: question.instruction }}></div>
+      <div>{question.coding && 
+          <CEditor questionAttemptId={questionAttemptId} codeSnippet = {question.prompt} />
+      }</div>
+      <br />
+      { !question.coding &&
+      <TextareaAutosize className='bg-cyan-100' id="prompt" cols="70" value={question.prompt} />
+    }
+    
+      <div>
       {question.audio_src && <audio src={question.audio_src} controls />}
       </div> 
       {question.video_src && <ReactPlayer url={question.video_src} controls />}
     
      {  renderCurrentQA(question)  }
-      </div>
+      </>
     )
 }
 
