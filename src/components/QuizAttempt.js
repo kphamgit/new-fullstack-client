@@ -87,15 +87,15 @@ export default function QuizAttempt({quizId}) {
 
     return ( 
         <>
-        <div style={{marginTop:"20px", marginLeft:"80px", marginRight:"50px"}}>
+        <div className="m-12">
          <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
           <Link to='/' >Home</Link>
          </div>
          <br />
-         <div className="flex flex-row gap-2 bg-slate-200 justify-between">
+         <div className="flex flex-row gap-2 bg-slate-500">
          <div>
          {(showQuestion) ?
-          <QuestionAttempt 
+          <QuestionAttempt
             question={question} 
             setShowQuestion={setShowQuestionFlag}
             setAttemptResponse={setTheAttemptResponse}

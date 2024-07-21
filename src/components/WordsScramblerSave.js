@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useState } from "react";
 import { Reorder } from "framer-motion"
 import SubmitButton from './SubmitButton';
@@ -10,23 +10,8 @@ const LI = {
   primary: 'rebeccapurple',
 };
 
-const itemStyle =  {
-  borderRadius: "5px",
-  marginBottom: "5px",
-  marginLeft: "10px",
-  
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "center",
-  padding: "10px 10px 10px 10px",
-  background: "cyan"
-}
-
-
-function WordsScrambler({question, setUserAnswer}) {
-  const user = useSelector((state) => state.user.value)
-  const [bigfont, setBigFont] = useState(false)
-
+function WordsScramblerSave({question, setUserAnswer}) {
+  const livequizflag = useSelector((state) => state.livequizflag.value)
 const handleClick = () => {
   const uanswer = document.getElementsByClassName('word_scrambler_items')
   //console.log("BBBBBBBBBBBBBBBBBBBBBBBBB")
@@ -55,10 +40,9 @@ const handleClick = () => {
         [array[i], array[j]] = [array[j], array[i]];
       }
     }   
-    
-    const randomIndex = Math.floor(Math.random() * 3);
+
     const [items, setItems] = useState(listItems);
-    const [color, setColor] = useState(['green', 'brown', "#b04381", '#b06e43'])
+
     const itemStyleBig =  {
       borderRadius: "5px",
       marginBottom: "5px",
@@ -70,14 +54,20 @@ const handleClick = () => {
       flexDirection: "row",
       justifyContent: "center",
       padding: "2px 12px 5px 12px",
-      background: color[randomIndex]
+      background: "#b04381"
   }
 
-  useEffect(() => {
-      if (user.classId === 3) {
-         setBigFont(true)
-      }
-  },[user])
+    const itemStyle =  {
+      borderRadius: "5px",
+      marginBottom: "5px",
+      marginLeft: "10px",
+      
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "center",
+      padding: "10px 10px 10px 10px",
+      background: "cyan"
+  }
   
     if (question.words_scramble_direction === 'x') {
       return (
@@ -89,7 +79,7 @@ const handleClick = () => {
           >
           {items.map((item) => (
             // Change the li to Reorder.Item and add value prop
-            <Reorder.Item className="word_scrambler_items" style={ bigfont ? itemStyleBig : itemStyle }  key={item.id} value={item}>
+            <Reorder.Item className="word_scrambler_items" style={ itemStyleBig}  key={item.id} value={item}>
               {item.name}
             </Reorder.Item>
           ))}

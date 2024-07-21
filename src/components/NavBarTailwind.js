@@ -14,7 +14,7 @@ function NavBarTailWind({categories}) {
   const user = useSelector((state) => state.user.value)
   return (
     <>
-     <Navbar className='mx-10 my-2 bg-green-300 border-b-1 rounded-md'>
+     <Navbar className='bg-gradient-to-r from-green-500 to-green-900  border-b-1 text-yellow-200 rounded-md'>
      <Navbar.Brand as={Link} href="/">
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">TiengAnhTuyHoa</span>
       </Navbar.Brand>
@@ -33,7 +33,7 @@ function NavBarTailWind({categories}) {
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
-        <Navbar.Link as={Link} to="/logout" style={{color:"brown"}}>{user.user_name} Log out</Navbar.Link>
+        <Navbar.Link as={Link} to="/logout" style={{color:"white"}}>{user.user_name} Log out</Navbar.Link>
         {categories.map(cat => 
             <TailWindDropDown key = {cat.id} category_name ={cat.name} sub_categories={cat.sub_categories} />
         )}  

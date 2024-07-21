@@ -5,7 +5,7 @@ import { SocketContext } from '../App';
 import ChatFooterTailwind from './ChatFooterTailwind';
 
 
-const ChatPageTailwind = () => {
+const ChatPageTailwindSave = () => {
 
     const socket = useContext(SocketContext);
     const [messages, setMessages] = useState([]);
@@ -20,12 +20,10 @@ const ChatPageTailwind = () => {
 
 
     return (
-        <div className='flex flex-col'>
-         <div className='w-60'  >
+        <div className='w-60'  >
             <ChatBodyTailwind messages={messages}  />
           <p></p>
             <ChatFooterTailwind socket={socket}/>
-        </div>
         </div>
     );
   };

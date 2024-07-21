@@ -12,11 +12,18 @@ else {
 console.log("invalid NODE_ENV ")
 }
 
-export async function newGetCategories() {
+export async function getCategories() {
      const url = `${newrootpath}/api/categories` 
      const response = await axios.get(url)
      return response
   
+}
+
+export async function getCategoryWithSubCategories(cat_id) {
+  const url = `${newrootpath}/api/categories/get_sub_categories/${cat_id}` 
+  const response = await axios.get(url)
+  return response
+
 }
 //const url = `${rootpath}/api/sub_categories/${subcat_id}`
 //fetchSubcatetoryUnits

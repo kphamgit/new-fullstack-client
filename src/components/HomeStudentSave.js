@@ -9,16 +9,13 @@ import { clearLiveQuizId } from '../redux/livequizid.js';
 import { Link } from 'react-router-dom';
 import { Button, TextInput } from "flowbite-react";
 import ChatPageTailwind from './chat/ChatPageTailwind.js';
-export function HomeStudent({user}) {
+export function HomeStudentSave({user}) {
     const socket = useContext(SocketContext);
     const dispatch = useDispatch()
     const [showRecordView, setShowRecordView] = useState(false)
     const livequizflag = useSelector(state => state.livequizflag.value)
     const livequizid = useSelector(state => state.livequizid.value)
     
-    //const livescores = useSelector((state) => state.livescore.value)
-
-
     useEffect(() => {
       socket.on('enable_live_quiz', arg => {
           //console.log(" student receive scoreboard. arg.list: ",arg.list)
@@ -64,31 +61,32 @@ export function HomeStudent({user}) {
 //  
     return (
         <>
-            <div className="grid cols-1 w-full gap-4 bg-gradient-to-r from-cyan-400 to-orange-600 md:grid-cols-3 "
-            >
-                <div className='md:grid col-span-2'>
-                  <div className="flex bg-gray-300 flex-row gap-4 justify-between">
-                  <div className="flex m-2 h-11 flex-row gap-4 ">
-                     <Button className='md: w-full px-0' onClick={enableLiveQuiz} >Turn Live Quiz On</Button>
-                     <TextInput type='text' value={livequizid} size='auto' 
-                     onChange={(e) => dispatch(setLiveQuizId(e.target.value))}/>
-                     <Button className='m-0 w-full scroll-px-0' onClick={disableLiveQuiz}>Turn Live Quiz Off</Button>
+        
+        <div className="flex flex-col mx-10 my-5 h-80 gap-5 bg-green-100 rounded-md">
+            <div className='h-1'>Live quiz: {livequizflag ? "ON" : "OFF"}<span> &nbsp; Quiz id: {livequizid}</span></div>
+            <div className="flex flex-row h-72 gap-3 bg-gray-200 justify-between">
+                <div className="flex m-2 h-11 flex-row gap-4 ">
+                <Button className='md: w-full px-0' onClick={enableLiveQuiz} >Turn Live Quiz On</Button>
+                  <TextInput type='text' value={livequizid} size='auto' 
+                    onChange={(e) => dispatch(setLiveQuizId(e.target.value))}/>
+                  <Button className='m-0 w-full scroll-px-0' onClick={disableLiveQuiz}>Turn Live Quiz Off</Button>
                   <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
                     <Link to='/matching_games' >Games</Link>
                   </div>
-                 
                 </div>
-               
-                  </div>
-                  <RecordViewStudent />
-                  <div  dangerouslySetInnerHTML={{ __html: user.message }}></div>  
-                  <div className='h-1'>Live quiz: {livequizflag ? "ON" : "OFF"}<span> &nbsp; Quiz id: {livequizid}</span></div>
-                </div>
-                <div className='bg-gray-400 '>
+                <div className='bg-green-200'>
                    <ChatPageTailwind />
                 </div>
             </div>
-
+            <div  dangerouslySetInnerHTML={{ __html: user.message }}></div>  
+            <Button className='w-36 bg-amber-600' onClick={toggleRecord}>Show Record</Button>
+            {showRecordView && 
+            <div className='bg-blue-300' >
+              <RecordViewStudent />
+            </div>
+            }
+            
+        </div>
         </>
     )
 }
