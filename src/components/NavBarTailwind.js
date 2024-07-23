@@ -10,7 +10,6 @@ import { Button } from 'flowbite-react';
 //youtube coding cleverly 
 
 function NavBarTailWind({categories}) {
-    //const rootpath = useSelector((state) => state.rootpath.value)
   const user = useSelector((state) => state.user.value)
   return (
     <>

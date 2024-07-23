@@ -2,9 +2,6 @@
 import MicRecorder from 'mic-recorder-to-mp3';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-//import { SocketContext } from './Home';
-import axios from 'axios'
-//import SubmitButton2 from './SubmitButton2';
 import SubmitButtonRecordQA from './SubmitButtonRecordQA';
 //import { setTheBlob } from '../../redux/theblob';
 
@@ -24,7 +21,7 @@ export default function RecordQA()  {
 
   //const dispatch = useDispatch()
   
-  const rootpath = useSelector((state) => state.rootpath.value)
+  //const rootpath = useSelector((state) => state.rootpath.value)
   const username = useSelector((state) => state.username.value)
   
 
@@ -85,7 +82,7 @@ export default function RecordQA()  {
     //otherwise multer will NOT see it in the request (see upload.helper)
     formData.append("file", myFile);
     
-    var url = rootpath + '/api/uploads/do_upload_single_gcloud'
+    //var url = rootpath + '/api/uploads/do_upload_single_gcloud'
     //console.log("XXXXXXXXXXXXXXXXXXXXXXXx"+url)
     //console.log("YYYYYYYYYYYYYYYYYYYYYYY form data:")
     //for (var pair of formData.entries()) {
@@ -98,6 +95,7 @@ export default function RecordQA()  {
       }
   }
 
+  /*
   axios.post(url, formData, config )
   .then(function (response) {
     setHasBeenSent(true)
@@ -106,10 +104,8 @@ export default function RecordQA()  {
   .catch(function (error) {
     console.log(error);
   });
+  */
 
-  //const {response} = await axios.post(url, formData, config)
-   // console.log("BBBBBBBBBBBBBBB",response)
-   // setHasBeenSent(true)
   };
   
   return (

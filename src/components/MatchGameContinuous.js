@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from 'react'
 import { TextCard } from './TextCard';
 import { Link } from 'react-router-dom';
 import  Counter  from './Counter'
-import { startGame } from './services/list';
 //make cards outside of component so that it won't get recreated
 //everytime component is refreshed.
 
@@ -15,7 +14,7 @@ const img_grid_style={
     }
 */
 
-export function MatchGameContinuous({gameId}) {
+export function MatchGameContinuous({theLeftCards, theRightCards}) {
 
     const [leftCardsPile , setLeftCardsPile] = useState([])
     const [rightCardsPile , setRightCardsPile] = useState([])
@@ -26,7 +25,9 @@ export function MatchGameContinuous({gameId}) {
     const [gameover, setGameOver] = useState(false)
 
     const leftCardsBank = useRef([])
+    //leftCardsBank.current = theLeftCards
     const rightCardsBank = useRef([])
+    //rightCardsBank.current = theRightCards
     const counterRef = useRef();
     const myTimeout = useRef(null)
     const testTimeout = useRef(null)
@@ -46,42 +47,38 @@ export function MatchGameContinuous({gameId}) {
             counterRef.current.clearCount()
             clearTimeout(myTimeout.current)
         }
-        startGame(gameId)
-        .then(response => {
-            //response[0] = left cards  response[1] = right cards
             //get 6 random cards from left cards bank
-            setDataSize(response[0].length)
+            leftCardsBank.current = theLeftCards
+            rightCardsBank.current = theRightCards
+            setDataSize(leftCardsBank.current.length)
             let tempArr = []
             let randomIndices = []  //save random indices for use on right cards bank
             for(let i=0; i<6; i++) {
-                 const randomIndex = Math.floor(Math.random() * response[0].length);
+                 const randomIndex = Math.floor(Math.random() * leftCardsBank.current.length);
                  randomIndices.push(randomIndex)
-                 const random_card = response[0][randomIndex]
+                 const random_card = leftCardsBank.current[randomIndex]
                  tempArr.push(random_card)
                   //and remove it from left cards bank so it won't be reselected
-                 response[0].splice(randomIndex, 1)
+                 leftCardsBank.current.splice(randomIndex, 1)
             }
             setLeftCardsPile(tempArr)
-            leftCardsBank.current = [...response[0]]  //save left cards bank in a ref so that
             // MUST use refs to store left and right cards bank because function "addPair" that are
             // invoked after setTimeout expires (see line 167) does get the most updated states of a component
-
             // do right cards
             let tempArr1 = []
             randomIndices.forEach( random_index => {    //must use same random indices as for the left cards
-                const random_card = response[1][random_index]
+                const random_card = rightCardsBank.current[random_index]
                 //and remove it from right cards bank so it won't be reselected
                 tempArr1.push(random_card)
-                response[1].splice(random_index, 1)
+                rightCardsBank.current.splice(random_index, 1)
             })
             setRightCardsPile(tempArr1.sort(() => Math.random() - 0.5 ))
-            rightCardsBank.current = [...response[1]]
             myTimeout.current = setTimeout(clearInt, 100000);
-        })
+        
         return () => {
             clearTimeout(myTimeout.current)
         } 
-    },[gameId])
+    },[theLeftCards, theRightCards])
 
     useEffect(() => {
         return () => {
@@ -96,8 +93,6 @@ export function MatchGameContinuous({gameId}) {
         //console.log(" LEFT CARDS PILE LENGHT =", leftCardsPile.length)
     },[leftCardsPile, rightCardsPile])
 
-    
-    
     const resetTurn = () => {
         setChoiceLeft(null)
         setChoiceRight(null)

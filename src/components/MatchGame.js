@@ -1,158 +1,45 @@
-import React, {useEffect, useRef, useState} from 'react'
-import { MatchCard } from './MatchCard';
-import styles from "./MatchGame.module.css";
-import { Link } from 'react-router-dom';
-import  Counter  from './Counter'
-import {startGame} from './services/list.js'
-//make cards outside of component so that it won't get recreated
-//everytime component is refreshed.
+import React, { useEffect, useState, useRef } from 'react'
+import { getAGame } from './services/list'
+import { MatchGameNormal } from './MatchGameNormal'
+import { MatchGameContinuous } from './MatchGameContinuous'
 
-/*
-const img_grid_style={
-    display:"grid",
-    gridTemplateColumns: "1fr 1fr",
-    gridTemplateRows: "auto auto auto auto",
-    gridGap: "none"
-    }
-*/
-//className={completed ? 'text-strike' : null}
-export function MatchGame({gameId}) {
-    const [leftCards , setLeftCards] = useState([])
-    const [rightCards , setRightCards] = useState([])
-    const [turns, setTurns] = useState(0)
-    const [nummatches, setNumMatches] = useState(0)
-    const [gameover, setGameOver] = useState(false)
-
-    const childRef = useRef();
-    const myTimeout = useRef(null)
-
-    const [choiceLeft, setChoiceLeft] = useState(null)
-    const [choiceRight, setChoiceRight] = useState(null)
-
+export function MatchGame({id}) {
+    const [leftCardsBank, setLeftCardsBank] = useState([])
+    const [rightCardsBank, setRightCardsBank] = useState([])
+    const [continuous, setContinuous] = useState(false)
+    const mounted = useRef(true);
     useEffect(() => {
-        const clearInt = () => {
-            setGameOver(true)
-            childRef.current.clearCount()
-            clearTimeout(myTimeout.current)
-        }
-        startGame(gameId)
-        .then(response => {
-            setLeftCards(response[0])
-            setRightCards(response[1])
-            myTimeout.current = setTimeout(clearInt, 100000);
-        })
-        return () => {
-            clearTimeout(myTimeout.current)
-        } 
-    },[gameId])
-
-    useEffect(() => {
-        return () => {
-            clearTimeout(myTimeout.current)
-          }  
-    },[gameover])
-
-    useEffect (() => {
-            if (choiceLeft && choiceRight ) {
-                if (choiceLeft.match_index === choiceRight.match_index) {
-                    setLeftCards(prevCards => {
-                        return prevCards.map(card => {
-                            if (card.match_index === choiceLeft.match_index) {
-                                return {...card, matched: true}
-                            }
-                            else {
-                                return card
-                            }
-                        })
-                    })
-                    setRightCards(prevCards => {
-                        return prevCards.map(card => {
-                            if (card.match_index === choiceRight.match_index) {
-                                return {...card, matched: true}
-                            }
-                            else {
-                                return card
-                            }
-                        })
-                    })
-                    setNumMatches(prevNumMatches => prevNumMatches + 1)
-                    resetTurn()
-                }
-                else {
-                    resetTurn()
-                }
+     
+        getAGame(id)
+        .then ((response) => {
+            if (mounted.current) {
+                //console.log(response.data.continuous)
+                setContinuous(response.data.continuous)
+              const left_array = response.data.base.split('/').map((str, index) => {
+                return (
+                    {src: str, matched: false, match_index: index, language: response.data.source_language}
+                )
+              });
+              
+              setLeftCardsBank(left_array)
+              const right_array = response.data.target.split('/').map((str, index) => {
+                return (
+                  {src: str, matched: false, match_index: index, language: response.data.target_language }
+                )
+              });
+              setRightCardsBank(right_array)
             }
-    }, [choiceLeft, choiceRight])
-
-    const resetTurn = () => {
-        setChoiceLeft(null)
-        setChoiceRight(null)
-        setTurns(prevTurns => prevTurns + 1)
-    }
-   
-    useEffect(() => {
-        if (nummatches === 8) {
-            setGameOver(true)
-            childRef.current.clearCount()
-        }
-    },[nummatches])
-
-    const handleChoiceLeft = (card) => {
-        setChoiceLeft(card)
-    }
-
-    const handleChoiceRight = (card) => {
-       setChoiceRight(card)
-    }
+        })
+        return () => mounted.current = false;
+    },[id])
 
     return (
         <>
-        <div className='m-9'>
-          <Link to='/' 
-            className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" >Home</Link>&nbsp;&nbsp;
-          <Link to={`/matching_games/`}
-          className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-          >
-            Games</Link>
-        </div>
-
-        <div className='mx-9 my-0'>
-            <div>
-                <Counter ref={childRef} />
-            </div>
-        </div>
-
-            <div>
-                { (gameover) ?
-                    <h3 className='mx-10 my-0 text-xl'>Game Over</h3>
-                    :
-                    <div className='mx-44 my-10 grid grid-cols-2 gap-3 w-2/4 bg-yellow-200'>
-                        <div className='flex flex-col gap-3 justify-center' >
-                        { leftCards.map (card => (
-                                <div key={card.match_index}>
-                                <div>
-                                <MatchCard card={card} handleChoice={handleChoiceLeft} />
-                                </div>
-                                </div>
-                            ))
-                        }
-                        </div>
-                        
-                        <div className='grid grid-cols-2 gap-x-3 gap-y-3 bg-green-300'>
-                        { rightCards.map (card => (
-                                <div key={card.match_index}>
-                                <div>
-                                <MatchCard card={card} handleChoice={handleChoiceRight} />
-                                </div>
-                                </div>
-                            ))
-                        }
-                        
-                        </div>
-                    </div>
-                }
-            </div>
-        
+            { continuous ?
+            <MatchGameContinuous theLeftCards={leftCardsBank} theRightCards={rightCardsBank} />
+            :
+            <MatchGameNormal theLeftCards={leftCardsBank} theRightCards={rightCardsBank} />
+            }
         </>
     )
 }

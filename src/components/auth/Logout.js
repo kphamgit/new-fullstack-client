@@ -12,26 +12,14 @@ import { SocketContext } from '../App.js';
 
 export default function Logout ({setToken, setAuth}) {
     const socket = useContext(SocketContext);
-    //const rootpath = useSelector((state) => state.rootpath.value)
-    //const dispatch = useDispatch()
-/*
-    useEffect(() => {
-        return () => {
-          console.log("Socket disconnecting")
-            socket.disconnect();
-          };
-        //socket.disconnect();
-    },[socket])
-*/
+
     const navigate = useNavigate()
     useEffect(() => {
       async function logout() {
         //console.log("in logout")
-        //dispatch(clearUserName())
         setToken(null)
         //setAuth(null)
         sessionStorage.clear()
-        //fetch(`${rootpath}/logout`)
         socket.disconnect();
         navigate('/')
       }

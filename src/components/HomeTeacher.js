@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ChatPageTailwind from './chat/ChatPageTailwind.js';
 import { Button, TextInput } from 'flowbite-react';
 import { getStudentsInClass } from './services/list';
+import { Link } from 'react-router-dom';
 
 export function HomeTeacher(props) {
     const socket = useContext(SocketContext);
@@ -162,7 +163,8 @@ useEffect(() => {
                 )
                 }
                 </ul>
-
+                <Link to="/manage_categories" >Manage Categories</Link>
+                <Link to="/manage_quiz_attempts" >Manage Quiz Attempts</Link>
             </div>
             <div> 
             <div>Connected students list from server:</div>
