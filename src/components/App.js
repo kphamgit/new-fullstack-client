@@ -16,6 +16,9 @@ import { MatchGame } from './MatchGame';
 
 import { QuizAttemptsManager } from './admin/QuizAttemptsManager';
 import { CategoriesManager } from './admin/CategoriesManager';
+import { UnitsManager } from './admin/UnitsManager';
+import { QuizzesManager } from './admin/QuizzesManager';
+import { QuestionsManager } from './admin/QuestionsManager';
 
 function setAuth(userToken) {
   //console.log(JSON.stringify({ x: 5, y: 6 }));
@@ -67,6 +70,7 @@ export function App(props) {
         setSubCategoryIds(response.data.sub_category_ids)
         setQuizIds(response.data.quiz_ids)
         setGameIds(response.data.game_ids)
+        setUnitIds(response.data.unit_ids)
     })
     return () => mounted.current = false;
   },[auth])
@@ -82,17 +86,24 @@ export function App(props) {
               <Route path="/" element = {<Home categories={categories} socket={socket}/>} />
               <Route path="/logout" element = {<Logout setToken={setToken} setAuth = {setAuth} />} />
               { subCategoryIds.map(subcat_id => (
+                <>
                   <Route key={subcat_id.id} path={`/sub_categories/${subcat_id.id}`} element={<Subcategory subcat_id = {subcat_id.id} />} />
+                  <Route key={subcat_id.id} path={`/sub_categories/manage_units/${subcat_id.id}`} element={<UnitsManager subcat_id = {subcat_id.id} />} />
+                  </>
                   ))
               }
               { unitIds.map(unit_id => (
+                <>
                   <Route key={unit_id} path={`/units/${unit_id}`} element={<Unit it = {unit_id} />} />
+                  <Route key={unit_id} path={`/units/manage_quizzes/${unit_id}`} element={<QuizzesManager unit_id = {unit_id} />} />
+                </>
                   ))
               }
               {
                 quizIds && quizIds.map(quiz_id => {
                 return (
                   <>
+                  <Route key={quiz_id} path={`/quizzes/manage_questions/${quiz_id}`} element={<QuestionsManager quiz_id={quiz_id} />} />
                   <Route key={quiz_id} path={`/quiz_attempts/take_quiz/${quiz_id}`} element={<QuizAttempt quizId={quiz_id} />} />
                   <Route key={quiz_id} path={`/quiz_attempts/take_live_quiz/${quiz_id}`} element={<QuizAttemptLive quizId={quiz_id} />} />
                   </>

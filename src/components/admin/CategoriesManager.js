@@ -24,7 +24,7 @@ export function CategoriesManager({categories}) {
     }, []);
 */
     return (
-        <div className='bg-gray-300'>
+        <div className='bg-gray-300 m-16'>
             <table>
                 <tbody>
                 { categories.map(cat => (
@@ -47,7 +47,7 @@ export function CategoriesManager({categories}) {
                                     <tr key={sub_cat.id}>
                                         <td>{sub_cat.sub_category_number}</td>
                                         <td>{sub_cat.name} </td>
-                                        <td><Link to={`/manage_units/${sub_cat.id}`}>Manage Units</Link></td>
+                                        <td><Link to={`/sub_categories/manage_units/${sub_cat.id}`}>Manage Units</Link></td>
                                     </tr>
                                 </tbody>
                             )

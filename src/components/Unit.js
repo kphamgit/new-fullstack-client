@@ -8,6 +8,7 @@ export default function Unit(props) {
   
   const livequizflag = useSelector(state => state.livequizflag.value)
   const livequizid = useSelector(state => state.livequizid.value)
+  const user = useSelector(state => state.user.value)
 
   if (livequizflag) {
         return (
@@ -39,7 +40,13 @@ export default function Unit(props) {
     else {
       return(
         <>
-        <div className="text-amber-700 text-lg">Unit{props.content.unit_number}.&nbsp;&nbsp;{props.content.name}</div>
+        <div className="text-amber-700 text-lg">Unit{props.content.unit_number}.&nbsp;&nbsp;{props.content.name}
+        { user.role === 'teacher' && 
+          <span>
+             <Link to={`/units/manage_quizzes/${props.content.id}`}>Manage Quizzes</Link>
+          </span>
+        }
+        </div>
         <div>
         {props.content.quizzes && <ul>
         {props.content.quizzes.map((quiz) =>  
@@ -50,6 +57,9 @@ export default function Unit(props) {
                   className="font-normal text-green-800 dark:text-blue-500 hover:underline"
                   >
                   {quiz.name}</Link>
+                  { (user.role === 'teacher') &&
+                    <span style={{color:"red"}}>&nbsp;&nbsp;&nbsp; {quiz.id}</span>
+                  }
               </li> 
               )
           )}
@@ -61,3 +71,4 @@ export default function Unit(props) {
     }
   }
   
+  //http://localhost:3000/units/manage_quizzes/16

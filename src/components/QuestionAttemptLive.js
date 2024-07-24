@@ -10,6 +10,7 @@ import {processLiveQuestionAttempt} from './services/list.js'
 import ReactPlayer from 'react-player';
 import WordsSelect from './WordsSelect';
 import RecordQuestionAttempt from './RecordQA';
+import ChatPageTailwind from './chat/ChatPageTailwind.js';
 
 //import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux'
@@ -90,6 +91,8 @@ useEffect(() => {
       {question.video_src && <ReactPlayer url={question.video_src} controls />}
     
      {  renderCurrentQA(question)  }
+     <br />
+     <div><ChatPageTailwind layout = "flex_column"/></div>
       </>
     )
 }

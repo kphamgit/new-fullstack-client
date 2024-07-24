@@ -15,7 +15,6 @@ export default function Subcategory({subcat_id}) {
   useEffect(() => {
     fetchSubcatetoryUnits(subcat_id)
     .then (response => {
-        //console.log("EEEEEEEEEEEEEEEEEEEEEE XXXXXXXXXXXXXXX ", response.data)
         response.data.units.sort( (a,b) => { return a.unit_number - b.unit_number; } )
         setUnits(response.data.units)
         dispatch(setSubcategory(response.data.name))

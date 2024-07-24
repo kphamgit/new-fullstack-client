@@ -78,7 +78,7 @@ export function HomeStudent({user}) {
                   </div>
                 </div>
                 <div className='bg-green-200'>
-                   <ChatPageTailwind />
+                   <ChatPageTailwind layout = "flex_row" />
                 </div>
             </div>
             <div  dangerouslySetInnerHTML={{ __html: user.message }}></div>  

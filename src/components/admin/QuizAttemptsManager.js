@@ -1,13 +1,12 @@
 import React, {useEffect, useState, useRef } from 'react'
-import { Link } from 'react-router-dom';
-import { deleteQuizAttempts, getQuizAttempts } from '../services/list';
-import { compose } from '@reduxjs/toolkit';
+import { deleteQuizAttempts, getQuestionAttempts, getQuizAttempts } from '../services/list';
 import { Button } from 'flowbite-react';
 
 export function QuizAttemptsManager({categories}) {
     const [quizAttempts, setQuizAttempts] = useState(null)
     
     const mounted = useRef(true);
+   
     useEffect(() => {
         mounted.current = true;
         getQuizAttempts()
@@ -25,21 +24,31 @@ td><%= quiz_attempt.user_name %></td>
 <td><%= quiz_attempt.questions_exhausted %></td>
 <td><%= quiz_attempt.score %></td>
     */
-   const handleDelete = (quiz_attempt_id) => {
-       
-       deleteQuizAttempts(quiz_attempt_id)
-       .then((response) => {
-          console.log("EEEEE", response.data)
-       })
-       .catch((error) =>{
-          console.log("ERROR delete quiz attempt id = ", quiz_attempt_id)
-       })
+ 
+const getAllQuestionAttempts = () => {
+  getQuestionAttempts()
+  .then(response => {
+    console.log("Total number of question attempts",response.data.length)
+  }) 
+}
+const handleDeleteAll = () => {
+  const els = document.getElementsByTagName('tr')
+  let quiz_attempt_ids = []
+  Array.from(els).forEach(function (element) {
+    //console.log("**** "+element.children.length + "*****")
+    if(element.tagName === 'TR') {
+      if (element.children[0].tagName !== 'TH') {
+        //console.log(element.children[0].innerHTML)
+        quiz_attempt_ids.push(parseInt(element.children[0].innerHTML))
+      }
    }
-
-   const handleDeleteAll = () => {
-       
-    
-   }
+});
+console.log(quiz_attempt_ids)
+deleteQuizAttempts(quiz_attempt_ids)
+.then((response) => {
+  console.log(response)
+})
+}
 
     //<td><Link to={`/manage_category/${cat.id}`}>Manage Category</Link></td>
     return (
@@ -58,19 +67,19 @@ td><%= quiz_attempt.user_name %></td>
                 <tbody>
               
                 { quizAttempts && quizAttempts.map(quiz_attempt => (
-                     <tr key={quiz_attempt.id }>
-                          <td>{quiz_attempt.id }&nbsp;&nbsp;</td>
+                     <tr  key={quiz_attempt.id }>
+                          <td >{quiz_attempt.id }</td>
                           <td className='text-blue-600'>{quiz_attempt.user_name }&nbsp;&nbsp;</td>
                           <td>{quiz_attempt.completion_status }&nbsp;&nbsp;</td>
                           <td>{quiz_attempt.score }&nbsp;&nbsp;</td>
                           <td>{quiz_attempt.createdAt}&nbsp;&nbsp;</td>
-                          <td><Button className='bg-blue-700' onClick={() => handleDelete(quiz_attempt.id)}>Delete</Button></td>
+                        
                       </tr>
                 ))
                 }
                 </tbody>
             </table>
-            
+            <div><Button className='bg-green-800' onClick={() => getAllQuestionAttempts()}>get All Question Attempts</Button></div>
         </div>
     )
 }

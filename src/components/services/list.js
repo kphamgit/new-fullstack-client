@@ -26,19 +26,39 @@ export async function getCategories() {
   
 }
 
+export async function getUnitWithQuizzes(id) {
+  const url = `${newrootpath}/api/units/${id}` 
+  const response = await axios.get(url)
+  return response
+
+}
+
+export async function getQuizWithQuestions(id) {
+  const url = `${newrootpath}/api/quizzes/${id}` 
+  const response = await axios.get(url)
+  return response
+
+}
+
+export async function getQuestionAttempts() {
+  const url = `${newrootpath}/api/question_attempts/find_all` 
+  const response = await axios.get(url)
+  return response
+}
+
 export async function getQuizAttempts() {
   const url = `${newrootpath}/api/quiz_attempts` 
   const response = await axios.get(url)
   return response
 }
-//   url: "/api/quiz_attempts/" + quiz_attempt_id,
-export async function deleteQuizAttempts(id) {
-  const url = `${newrootpath}/api/quiz_attempts/${id}` 
-  const response = await axios.delete(url)
+
+export async function deleteQuizAttempts(quiz_attempt_ids) {
+  const url = `${newrootpath}/api/quiz_attempts` 
+  const response = await axios.delete(url, {params: { ids : JSON.stringify(quiz_attempt_ids)}} )
   return response
 }
 
-//fetchSubcatetoryUnits
+
 export async function fetchSubcatetoryUnits(subcat_id) {
   const url = `${newrootpath}/api/sub_categories/${subcat_id}`
   const response = await axios.get(url)
@@ -46,6 +66,7 @@ export async function fetchSubcatetoryUnits(subcat_id) {
 }
 
 export async function getIds() {
+  //get ALL game ids, sub_category ids, unit ids, quizzes id
   const url = `${newrootpath}/api/utils/get_ids` 
   const response = await axios.get(url)
   return response
