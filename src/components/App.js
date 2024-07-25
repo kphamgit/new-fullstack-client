@@ -68,7 +68,7 @@ export function App(props) {
     })
     getIds()
     .then((response) => {
-        console.log("BBBBBBBBBBBBBBBBBBBBB", response.data)
+        console.log("BBBBBBBBBBBBBBBB**** BBBBBWWWWWWWWWWWW", response.data)
         setSubCategoryIds(response.data.sub_category_ids)
         setQuizIds(response.data.quiz_ids)
         setGameIds(response.data.game_ids)
