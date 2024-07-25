@@ -1,9 +1,7 @@
 import React from 'react'
 import { useState } from "react";
 import { Reorder } from "framer-motion"
-import Button from "react-bootstrap/Button"
 import SubmitButton from './SubmitButton';
-//mport LiveSubmitButton from './LiveSubmitButton';
 import { useSelector } from 'react-redux';
 
 const LI = {

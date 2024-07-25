@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import SubmitButton from './SubmitButton'
-//import LiveSubmitButton from './LiveSubmitButton'
-//import Button from "react-bootstrap/Button"
 
 import format_cloze_question_content from './formatClozeQuestion'
 import getClozeQuestionUserAnswer from './GetClozeQuestionUAnswer'

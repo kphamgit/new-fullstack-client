@@ -19,6 +19,7 @@ import { CategoriesManager } from './admin/CategoriesManager';
 import { UnitsManager } from './admin/UnitsManager';
 import { QuizzesManager } from './admin/QuizzesManager';
 import { QuestionsManager } from './admin/QuestionsManager';
+import { QuestionEditor } from './admin/QuestionEditor';
 
 function setAuth(userToken) {
   //console.log(JSON.stringify({ x: 5, y: 6 }));
@@ -49,6 +50,7 @@ export function App(props) {
   const [gameIds, setGameIds] = useState([])
   const [unitIds, setUnitIds] = useState([])
   const [quizIds, setQuizIds] = useState([])
+  const [questionIds, setQuestionIds] = useState([])
   const mounted = useRef(true);
 
   const auth = getAuth();
@@ -66,11 +68,12 @@ export function App(props) {
     })
     getIds()
     .then((response) => {
-        //console.log("BBBBBBBBBBBBBBBBBBBBB", response.data)
+        console.log("BBBBBBBBBBBBBBBBBBBBB", response.data)
         setSubCategoryIds(response.data.sub_category_ids)
         setQuizIds(response.data.quiz_ids)
         setGameIds(response.data.game_ids)
         setUnitIds(response.data.unit_ids)
+        setQuestionIds(response.data.question_ids)
     })
     return () => mounted.current = false;
   },[auth])
@@ -110,6 +113,12 @@ export function App(props) {
                   )
                 })
              }
+             { questionIds.map(question_id => (
+                <>
+                  <Route key={question_id.id} path={`/questions/edit/${question_id.id}`} element={<QuestionEditor id = {question_id.id} />} />
+                  </>
+                ))
+              }
              { gameIds && gameIds.map(game_id => {
               return (
                 <Route key={game_id} path={`/matching_games/play/${game_id}`} element={<MatchGame id={game_id} />} />

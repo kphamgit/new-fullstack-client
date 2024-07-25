@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
-//import { Image } from 'react-bootstrap'
 import { getGames} from './services/list'
 
 function Games() {

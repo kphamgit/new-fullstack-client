@@ -30,8 +30,6 @@ export function MatchGameNormal({theLeftCards, theRightCards}) {
     //const mounted = useRef(true);
 
     useEffect(() => {
-        //mounted.current = true
-        //console.log("MMMMMMM", leftCards)
         const clearInt = () => {
             setGameOver(true)
             childRef.current.clearCount()
