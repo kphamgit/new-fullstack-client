@@ -113,12 +113,7 @@ export function App(props) {
                   )
                 })
              }
-             { questionIds.map(question_id => (
-                <>
-                  <Route key={question_id.id} path={`/questions/edit/${question_id.id}`} element={<QuestionEditor id = {question_id.id} />} />
-                  </>
-                ))
-              }
+   
              { gameIds && gameIds.map(game_id => {
               return (
                 <Route key={game_id} path={`/matching_games/play/${game_id}`} element={<MatchGame id={game_id} />} />
