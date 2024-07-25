@@ -113,6 +113,15 @@ export function App(props) {
                   )
                 })
              }
+                          {
+              questionIds && questionIds.map(question_id => {
+                return (
+                  <>
+                  <Route key={question_id.id} path={`/questions/edit/${question_id.id}`} element={<QuestionEditor id={question_id.id} />} />
+                 </>
+                  )
+                })
+             }
    
              { gameIds && gameIds.map(game_id => {
               return (

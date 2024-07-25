@@ -2,33 +2,14 @@ import React from 'react'
 import { useState } from "react";
 import { Reorder } from "framer-motion"
 import SubmitButton from './SubmitButton';
-import { useSelector } from 'react-redux';
-
-const LI = {
-  text: 'black',
-  background: 'white',
-  primary: 'rebeccapurple',
-};
 
 function WordsScrambler({question, setUserAnswer}) {
-  const livequizflag = useSelector((state) => state.livequizflag.value)
-  /*
-  const question = useSelector(state => {
-    if (live_flag)
-        return state.live_question.value
-    else {
-        return state.question.value
-    }
- })
- */
+  
 const handleClick = () => {
   const uanswer = document.getElementsByClassName('word_scrambler_items')
-  //console.log("BBBBBBBBBBBBBBBBBBBBBBBBB")
   var temp_arr = []
   for (let i = 0; i < uanswer.length; i++) {
     var word = uanswer[i].innerHTML
-    //console.log("QQQQQQQQQQQQQQQQQQQQQQQ")
-    //console.log("IIIIIIIIIII"+mvalue)
     temp_arr.push(word)
   }
   //user_answer = temp_arr.join('/')
