@@ -1,6 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit"
 import quizAttemptIdReducer from './quiz_att_id.js'
-import subcategoryReducer from "./subcategory.js"
 import userReducer from "./user.js"
 import livequizflagReducer from "./livequizflag.js"
 import livequizidReducer from "./livequizid.js"
@@ -22,7 +21,6 @@ export const store = configureStore({
     reducer: {
         quiz_attempt_id: quizAttemptIdReducer,
         livequizid: livequizidReducer,
-        subcategory: subcategoryReducer,
         user: persistedUserReducer,
         livequizflag: livequizflagReducer,
     }

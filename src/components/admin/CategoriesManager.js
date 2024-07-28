@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
 
 export function CategoriesManager({categories}) {
@@ -16,7 +16,6 @@ export function CategoriesManager({categories}) {
                 all_sub_categories.push(sub_cat)
               })
             })
-            //setSubcategories(all_sub_categories)
           }
         })
         return () => mounted.current = false;
@@ -63,21 +62,3 @@ export function CategoriesManager({categories}) {
         </div>
     )
 }
-
-/*
-
-
-
-<td><Link to={`/manage_category/${cat.id}`}>Manage Category</Link></td>
-   {props.content.quizzes.map((quiz) =>  
-              (<li key = {quiz.id}>
-                Quiz {quiz.quiz_number} &nbsp;
-  
-                <Link to={`/quiz_attempts/take_quiz/${quiz.id}`}
-                  className="font-normal text-green-800 dark:text-blue-500 hover:underline"
-                  >
-                  {quiz.name}</Link>
-              </li> 
-              )
-          )}
-*/

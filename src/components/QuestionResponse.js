@@ -2,6 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckSquare } from '@fortawesome/free-solid-svg-icons'
 import { faX } from '@fortawesome/free-solid-svg-icons'
+import ChatPageTailwind from './chat/ChatPageTailwind'
 
 /*
 function displayReinforcement(question) {
@@ -229,6 +230,8 @@ function QuestionResponse({question, response_content}) {
                 </div>
             </div>
         </div>
+        <br />
+     <div><ChatPageTailwind layout = "flex_column"/></div>
     
     </>
   )

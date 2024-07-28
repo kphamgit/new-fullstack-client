@@ -4,7 +4,7 @@ import Login from './auth/Login'
 import Logout from './auth/Logout';
 import Home from './Home';
 import Subcategory from './Subcategory';
-import Unit from './Unit';
+import Unit from './UnitStudent';
 import QuizAttempt from './QuizAttempt';
 import QuizAttemptLive from './QuizAttemptLive';
 
@@ -19,7 +19,8 @@ import { CategoriesManager } from './admin/CategoriesManager';
 import { UnitsManager } from './admin/UnitsManager';
 import { QuizzesManager } from './admin/QuizzesManager';
 import { QuestionsManager } from './admin/QuestionsManager';
-import { QuestionEditor } from './admin/QuestionEditor';
+import { QuestionEditor } from './admin/edit_question/QuestionEditor';
+import { NewQuestion } from './admin/new_question/NewQuestion';
 
 function setAuth(userToken) {
   //console.log(JSON.stringify({ x: 5, y: 6 }));
@@ -57,7 +58,6 @@ export function App(props) {
   //console.log("after calling getTToken ttoken=", auth)
 
   useEffect(() => {
-    //console.log(" App starting EEEEYYYYYYYYYYYEEEEEEEEEEEEEEE")
     mounted.current = true;
     if (!auth) return
     getCategories()
@@ -68,7 +68,6 @@ export function App(props) {
     })
     getIds()
     .then((response) => {
-        console.log("BBBBBBBBBBBBBBBB**** BBBBBWWWWWWWWWWWW", response.data)
         setSubCategoryIds(response.data.sub_category_ids)
         setQuizIds(response.data.quiz_ids)
         setGameIds(response.data.game_ids)
@@ -109,6 +108,7 @@ export function App(props) {
                   <Route key={quiz_id} path={`/quizzes/manage_questions/${quiz_id}`} element={<QuestionsManager quiz_id={quiz_id} />} />
                   <Route key={quiz_id} path={`/quiz_attempts/take_quiz/${quiz_id}`} element={<QuizAttempt quizId={quiz_id} />} />
                   <Route key={quiz_id} path={`/quiz_attempts/take_live_quiz/${quiz_id}`} element={<QuizAttemptLive quizId={quiz_id} />} />
+                  <Route key={quiz_id} path={`/questions/create/:format`} element={<NewQuestion quiz_id ={quiz_id} />} />
                   </>
                   )
                 })
@@ -129,6 +129,7 @@ export function App(props) {
               )
               })
             }
+            
             <Route path="/matching_games" element = {<Games />} />
             <Route path={`/manage_categories`} element={<CategoriesManager categories={categories} />} />
             <Route path={`/manage_quiz_attempts`} element={<QuizAttemptsManager />} />

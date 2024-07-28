@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 
-export default function Unit(props) {
+export default function UnitStudent({unit}) {
   
   const livequizflag = useSelector(state => state.livequizflag.value)
   const livequizid = useSelector(state => state.livequizid.value)
@@ -12,11 +12,11 @@ export default function Unit(props) {
   if (livequizflag) {
         return (
           <>
-        <div className="text-amber-700 text-lg">Unit{props.content.unit_number}.&nbsp;&nbsp;{props.content.name}</div>
+        <div className="text-amber-700 text-lg">Unit{unit.unit_number}.&nbsp;&nbsp;{unit.name}</div>
         <div>
-        {props.content.quizzes && 
+        {unit.quizzes && 
         <ul>
-        {props.content.quizzes.map((quiz) =>  
+        {unit.quizzes.map((quiz) =>  
               (<li key = {quiz.id}>
                 Quiz {quiz.quiz_number} &nbsp;
                 { quiz.id === parseInt(livequizid) ?
@@ -39,16 +39,16 @@ export default function Unit(props) {
     else {
       return(
         <>
-        <div className="text-amber-700 text-lg">Unit{props.content.unit_number}.&nbsp;&nbsp;{props.content.name}
+        <div className="text-amber-700 text-lg">Unit{unit.unit_number}.&nbsp;&nbsp;{unit.name}
         { user.role === 'teacher' && 
           <span>
-             <Link to={`/units/manage_quizzes/${props.content.id}`}>Manage Quizzes</Link>
+             <Link to={`/units/manage_quizzes/${unit.id}`}>Manage Quizzes</Link>
           </span>
         }
         </div>
         <div>
-        {props.content.quizzes && <ul>
-        {props.content.quizzes.map((quiz) =>  
+        {unit.quizzes && <ul>
+        {unit.quizzes.map((quiz) =>  
               (<li key = {quiz.id}>
                 Quiz {quiz.quiz_number} &nbsp;
   
