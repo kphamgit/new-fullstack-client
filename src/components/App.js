@@ -113,7 +113,7 @@ export function App(props) {
                   )
                 })
              }
-                          {
+                        {
               questionIds && questionIds.map(question_id => {
                 return (
                   <>
@@ -122,7 +122,7 @@ export function App(props) {
                   )
                 })
              }
-   
+             
              { gameIds && gameIds.map(game_id => {
               return (
                 <Route key={game_id} path={`/matching_games/play/${game_id}`} element={<MatchGame id={game_id} />} />

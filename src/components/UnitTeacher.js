@@ -20,29 +20,67 @@ export default function UnitTeacher({unit}) {
   
         return (
           <>
-          <div>Teacher</div>
+        <div className="text-amber-700 text-lg">
+          <span>Unit&nbsp;{unit.unit_number}.&nbsp;&nbsp;{unit.name}</span>
+          <span>&nbsp;&nbsp;
           <Link to={`/units/manage_quizzes/${unit.id}`}
                   className="font-serif text-normal text-blue-800 dark:text-blue-500 hover:underline"
                   >
                   Manage quizzes</Link>
-        <div className="text-amber-700 text-lg">Unit{unit.unit_number}.&nbsp;&nbsp;{unit.name}</div>
+          </span>
+        </div>
         <div>
-        {unit.quizzes && 
-        <ul>
-        {unit.quizzes.map((quiz) =>  
-              (<li key = {quiz.id}>
-                <span>{quiz.id}</span>
-                Quiz number: {quiz.quiz_number} &nbsp;
-                <span>Name: {quiz.name}</span>
-                <button className='underline text-red-800' onClick={ (quiz_id) => toQuestionsManager(quiz.id)} >Manage Questions</button>
-              </li> 
+
+        <table >
+            <thead>
+                <tr className="text-cyan-700 text-sm">
+                   <th className="text-left">ID</th>
+                   <th className="text-left">Quiz Number</th>
+                   <th className="text-left">Quiz Name</th>
+                </tr>
+              </thead>
+            <tbody>
+                 {unit.quizzes.map((quiz) =>  
+              (<tr key = {quiz.id}>
+                <td>{quiz.id}</td>
+                <td className="text-center">{quiz.quiz_number}</td>
+                <td>{quiz.name}</td>
+                <td><button className='underline text-red-800' onClick={ (quiz_id) => toQuestionsManager(quiz.id)} >
+                  Manage Questions
+                </button>
+                </td>
+              </tr> 
               )
           )}
-      </ul>}
-        
+            </tbody>
+  </table>
         </div>
         </>
         )
   }
   
-  //http://localhost:3000/units/manage_quizzes/16
+/*
+  <table >
+            <thead>
+                <tr>
+                   <th>ID</th>
+                   <th>Quiz Number</th>
+                   <th>Quiz Name</th>
+                </tr>
+              </thead>
+            <tbody>
+                 {unit.quizzes.map((quiz) =>  
+              (<tr key = {quiz.id}>
+                <td>{quiz.id}</td>
+                <td>{quiz.quiz_number}</td>
+                <td>Name: {quiz.name}</td>
+                <td><button className='underline text-red-800' onClick={ (quiz_id) => toQuestionsManager(quiz.id)} >
+                  Manage Questions
+                </button>
+                </td>
+              </tr> 
+              )
+          )}
+            </tbody>
+  </table>
+*/

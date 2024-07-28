@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect} from 'react'
-import { Link } from 'react-router-dom'
 import {reOrderRows, deleteQuestion, cloneQuestion}  from './services/list'
+import { Link } from 'react-router-dom'
 
-export function DragDropTable({headers, data_rows, data_type}) {
+export function DragDropTable({headers, data_rows, data_type, parentFunc}) {
     const [dataRows, setDataRows] = useState([])
     useEffect(() => {
         setDataRows(data_rows)
@@ -35,6 +35,10 @@ export function DragDropTable({headers, data_rows, data_type}) {
         })
     }
 
+    const create = (id) => {
+        alert("crate")
+    }
+
     const clone = (id) => {
         //console.log("HEEEEEEE")
         cloneQuestion(id)
@@ -44,6 +48,17 @@ export function DragDropTable({headers, data_rows, data_type}) {
         })
     }
 
+    const handleFormatChange = (value) => {
+        if (value.indexOf('Cloze') >= 0 ) {
+            //setDestination('everybody except')
+            //setTargetStudent('')
+        }
+        else if (value.indexOf('Radio') >= 0 ) {
+            //setDestination('everybody')
+            //setTargetStudent('everybody')
+        }
+
+}
     const paginate = () => {
         const els = document.getElementsByTagName('tr')
         let item_ids = []
@@ -84,12 +99,12 @@ export function DragDropTable({headers, data_rows, data_type}) {
     }
     return (
         <div className='flex flex-col mt-5 mx-1 items-left space-y-4'>
-            <button className='text-red-200 bg-orange-900 w-1/6' onClick={paginate}>Paginate</button>
-            <table>
+            <button className='text-red-200 bg-blue-500 w-1/6' onClick={paginate}>Paginate</button>
+            <table >
             <thead>
                 <tr>
                     {headers && headers.map((heading, index) => (
-                        <th>{heading}</th>
+                        <th className='bg-green-800 text-red-200 text-left'>{heading}</th>
                     ))}
                 </tr>
               </thead>
@@ -103,19 +118,28 @@ export function DragDropTable({headers, data_rows, data_type}) {
                      onDragEnter={() => (draggedOverRow.current = index)}
                      onDragEnd={handleSort}
                      onDragOver={(e) => e.preventDefault()}
-                    >{row[0]}</td> {/* constraint: row[0] must be item id*/}
-                    <td>{row[1]}</td> {/* constraint: row[1] must be item number*/}
-                    <td>{row[2]}</td> {/* constraint: row[2] must be item name or format for question*/}
+                    >{row[0]}</td>{/* constraint: row[0] must be item id*/}
+                    <td>{row[1]}</td>{/* constraint: row[1] must be item number*/}
+                    <td>{row[2]}</td>{/* constraint: row[2] must be item name or format for question*/}
                     <td>{row[3]}</td>
-                    <td className='underline'><Link to={`/${data_type}/edit/${row[0]}`}>Edit</Link></td>
+                    <td className='underline'><Link to={`/${data_type}/edit/${row[0]}`}>Old Edit</Link></td>
+                    <td><button className='bg-green-300' onClick={() => {parentFunc("EDIT", row[0], true)}}>Edit</button></td>
                     <td><button className='bg-green-300' onClick={() => {clone(row[0])}}>Clone</button></td>
+                    <td><button className='bg-green-300' onClick={() => {parentFunc("CREATE", true)}}>Create</button></td>
+                    <td>
+                    <select name="targetstudentchoice" onChange={event => handleFormatChange(event.target.value)}>
+                <option id="0" >Cloze</option>
+                <option id="1" >Radio</option>
+                <option id="2" >Button Select </option>
+                </select>
+                    </td>
                     <td><button className='bg-red-300'  onClick = {() => {deleteRow(row[0])}}>Delete</button></td>
                 </tr>
             ))
             }
             </tbody>
             </table>
-            <button className='text-red-200 bg-orange-900 w-1/6' onClick={paginate}>Paginate</button>
+            <button className='text-white bg-blue-500 w-1/6' onClick={paginate}>Paginate</button>
         </div>
     )
 }

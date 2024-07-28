@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState} from 'react'
 import { getAQuestion, updateQuestion } from '../../services/list'
-import { useNavigate, Link } from 'react-router-dom';
 import ReactQuill from 'react-quill-new';
 import 'react-quill/dist/quill.snow.css';
 import EditRadio from './EditRadio';
 
-export function QuestionEditor({id}) {
+export function QuestionEditorNew({id, parentFunc}) {
     const [format, setFormat] = useState(null)
     const [quizId, setQuizId] = useState(null)
     const [questionNumber, setQuestionNumber] = useState(null)
@@ -23,6 +22,7 @@ export function QuestionEditor({id}) {
     useEffect(() => {
         getAQuestion(id)
         .then((response) => {
+            
             setQuizId(response.data.quizId)
             setFormat(response.data.format)
             setQuestionNumber(response.data.question_number)
@@ -36,11 +36,6 @@ export function QuestionEditor({id}) {
             }
         })
     },[id])
-
-    const navigate = useNavigate()
-    const goToQuizQuestions =()=>{
-      navigate(-1);
-    }
 
     const get_answer_key = () => {
         setAnswerKey(childRef.current.getAnswerKey(questionContent) )
@@ -61,18 +56,16 @@ export function QuestionEditor({id}) {
         }
         updateQuestion(id, params )
         .then(response => {
-            goToQuizQuestions()
+            parentFunc(1, false)
         })
     }
 
     return (
         <>
-        <div className='m-10'>
-        <div className='underline'><Link to="/">Home</Link></div>
-        <h3>{format}</h3>
-        <div className='mx-5 mt-2'>
-            <button className='underline text-red-600 ' onClick={goToQuizQuestions}>Back</button>
-        <       div>Question: <span className='w-6 h-6 rounded-full border-2 border-black flex justify-center items-center'>{questionNumber}</span><span>&nbsp;Quiz Id: {quizId}</span>
+        <div className='m-4'>
+        <div className='mx-4 mt-1'>
+        
+        <div>Question: <span className='w-6 h-6 rounded-full border-2 border-black flex justify-center items-center'>{questionNumber}</span>
             </div>
        
             <ReactQuill theme="snow" value={instruction} onChange={setInstruction} />
@@ -92,6 +85,7 @@ export function QuestionEditor({id}) {
 
             <div>
             <button className='text-gray-900 bg-orange-400 w-1/6' onClick={updateAQuestion}>Update</button>
+            <button className='text-gray-900 bg-cyan-400 w-1/6' onClick={() => parentFunc("EDIT", 1 ,false)}>Cancel</button>
             </div>
             
             </div>
