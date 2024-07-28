@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect} from 'react'
 import {reOrderRows, deleteQuestion, cloneQuestion}  from './services/list'
 import { Link } from 'react-router-dom'
 
-export function DragDropTable({headers, data_rows, data_type, parentFunc}) {
+export function DragDropTableSave({headers, data_rows, data_type, parentFunc}) {
     const [dataRows, setDataRows] = useState([])
     useEffect(() => {
         setDataRows(data_rows)
@@ -125,6 +125,13 @@ export function DragDropTable({headers, data_rows, data_type, parentFunc}) {
                     <td><button className='bg-green-300' onClick={() => {parentFunc("EDIT", row[0], true)}}>Edit</button></td>
                     <td><button className='bg-green-300' onClick={() => {clone(row[0])}}>Clone</button></td>
                     <td><button className='bg-green-300' onClick={() => {parentFunc("CREATE",1, true)}}>Create</button></td>
+                    <td>
+                    <select name="targetstudentchoice" onChange={event => handleFormatChange(event.target.value)}>
+                <option id="0" >Cloze</option>
+                <option id="1" >Radio</option>
+                <option id="2" >Button Select </option>
+                </select>
+                    </td>
                     <td><button className='bg-red-300'  onClick = {() => {deleteRow(row[0])}}>Delete</button></td>
                 </tr>
             ))

@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useImperativeHandle} from 'react'
+import React, { forwardRef, useState, useEffect, useImperativeHandle} from 'react'
 //import { createQuestion} from '../../services/list'
 import { Label, Radio } from "flowbite-react";
 
@@ -6,16 +6,23 @@ import { Label, Radio } from "flowbite-react";
 //import 'react-quill/dist/quill.snow.css';
 import { NewQuestion } from './NewQuestion';
 
-    const NewRadio= forwardRef(function NewRadio({quiz_id}, ref) {
-    
+    const NewRadio= forwardRef(function NewRadio({question_content, set_answer_key}, ref) {
+        const [questionContent, setQuestionContent] = useState(null)
+     
         const [choice1Text, setChoice1Text] = useState('')
         const [choice2Text, setChoice2Text] = useState('')
         const [choice3Text, setChoice3Text] = useState('')
         const [choice4Text, setChoice4Text] = useState('')
         const [answerKey, setAnswerKey] = useState("choice1")
     
+    useEffect(() => {
+        setQuestionContent(question_content)
+        set_answer_key('choice1')
+    },[question_content])
+
     const handleChange = (value) => {
-        setAnswerKey(value)
+        //setAnswerKey(value)
+        set_answer_key(value)
     }
     useImperativeHandle(ref, () => ({
         getAnswerKey() {

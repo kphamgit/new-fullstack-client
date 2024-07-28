@@ -48,7 +48,6 @@ export function HomeTeacher(props) {
     //
     useEffect(() => {
         socket.on('new_user', arg => {
-            console.log(" new user. arg: ",arg)
            // setStudentsList([...studentsList, arg.new_user])
             //for testing only
             setStudentsListFromServer(arg.userlist)

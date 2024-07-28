@@ -1,20 +1,24 @@
-import React, { useState, useRef} from 'react'
+import React, { useState, useRef, useEffect} from 'react'
 import { createQuestion} from '../../services/list'
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import ReactQuill from 'react-quill-new';
 import 'react-quill/dist/quill.snow.css';
 import NewCloze  from './NewCloze';
 import NewRadio  from './NewRadio';
+import { NewButtonSelect } from './NewButtonSelect';
+import NewWordsScramble  from './NewWordsScramble';
+import getQuestionFormatStr from '../../getQuestionFormatStr';
 
 export function NewQuestion({quiz_id}) {
     const [questionNumber, setQuestionNumber] = useState(null)
     const [prompt, setPrompt] = useState('')
     const [questionContent, setQuestionContent] = useState('')
     const [answerKey, setAnswerKey] = useState('')
-    const [score, setScore] = useState(null)
+    const [score, setScore] = useState(5)
     const [instruction, setInstruction] = useState(null)
     const [help1, setHelp1] = useState(null)
     const [help2, setHelp2] = useState(null)
+    const [formatStr, setFormatStr] = useState(null)
    
     const childRef = useRef();
 
@@ -25,13 +29,17 @@ export function NewQuestion({quiz_id}) {
     }
 
     const currentLocation = useLocation()
-    //console.log("current Location", currentLocation.pathname)
     const arr = currentLocation.pathname.split('/')
     const format = arr[arr.length-1]
-    //console.log(format)
+    useEffect(() => {
+        console.log("OOOO",format)
+        setFormatStr(getQuestionFormatStr(parseInt(format)))
+    },[])
+ 
+    //setFormatStr()
 
     const get_answer_key = () => {
-        setAnswerKey(childRef.current.getAnswerKey(questionContent) )
+        //setAnswerKey(childRef.current.getAnswerKey(questionContent) )
     }
     //   
     const createAQuestion = () => {
@@ -48,14 +56,16 @@ export function NewQuestion({quiz_id}) {
         }
         if (format === "4") {  //format coming from route is a character
             params = childRef.current.addParams(params)
-            console.log(params)
         }
-        
+        if (format === '6') {
+            params = childRef.current.addParams(params)
+            
+        }
+        console.log("HHHHH", params)
         createQuestion(params )
         .then(response => {
             goToQuizQuestions()
         })
-        
     }
 
     return (
@@ -64,7 +74,7 @@ export function NewQuestion({quiz_id}) {
         <div className='underline'><Link to="/">Home</Link></div>
         <div className='mx-5 mt-2'>
             <button className='underline text-red-600 ' onClick={goToQuizQuestions}>Back</button>
-            <div>Quiz Id: {quiz_id}</div>
+            <div className='text-blue-600'>New {formatStr} </div>
             <ReactQuill theme="snow" value={instruction} onChange={setInstruction} />
        
             <div className='bg-orange-950 mx-0 flex flex-col'>
@@ -75,7 +85,7 @@ export function NewQuestion({quiz_id}) {
                 <input className='bg-slate-600 text-white' type="text" value={prompt} onChange={e => setPrompt(e.target.value)} />
                 <div className='mx-10 text-white'><span>Content:</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={questionContent} onChange={e => setQuestionContent(e.target.value)} />
-                <div className='mx-10 text-white'><span>Answer Key:</span><span>&nbsp;<button className='bg-green-600' onClick={get_answer_key}>Get Answer Key</button></span></div>
+                <div className='mx-10 text-white'><span>Answer Key:</span><span>&nbsp;</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={answerKey} onChange={e => setAnswerKey(e.target.value)} />
                 <div className='mx-10 text-white'><span>Score:</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={score} onChange={e => setScore(e.target.value)} />
@@ -90,11 +100,18 @@ export function NewQuestion({quiz_id}) {
         </div>
         </div>
         { (format === "1") && 
-            <NewCloze ref={childRef}/>
+            <NewCloze question_content={questionContent} set_answer_key ={setAnswerKey} />
+        }
+         { (format === "3") &&  
+        <NewButtonSelect ref={childRef} question_content={questionContent} set_answer_key ={setAnswerKey} />
         }
         { (format === "4") && 
         
-            <NewRadio ref={childRef}/>
+            <NewRadio ref={childRef} question_content={questionContent} set_answer_key ={setAnswerKey} />
+        }
+        { (format === "6") && 
+        
+        <NewWordsScramble ref={childRef} question_content={questionContent} set_answer_key ={setAnswerKey} />
         }
         </>
     )

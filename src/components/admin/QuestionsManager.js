@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { getQuizWithQuestions } from '../services/list'
 import {  Link, useLocation } from 'react-router-dom'
-//import {DragDrop} from '../DragDrop'
+import getQuestionFormatStr from '../getQuestionFormatStr'
 import { DragDropTable } from '../DragDropTable'
-import { QuestionEditorNew } from './edit_question/QuestionEditorNew'
-import { QuestionEditor } from './edit_question/QuestionEditor'
+import { QuestionEditorNew } from './edit_question/QuestionEditor'
+import { NewQuestionNew } from './new_question/NewQuestioNew'
 
 export function QuestionsManager({quiz_id}) {
     const [quizName, setQuizName] = useState(null)
@@ -33,32 +33,7 @@ export function QuestionsManager({quiz_id}) {
                     const td_data = []
                       td_data.push(question.id)
                       td_data.push(question.question_number)
-                      switch(question.format) {
-                        case 1:
-                            td_data.push('Cloze (1)')
-                          break;
-                        case 3:
-                            td_data.push('Button Select (3)')
-                            break;
-                        case 4:
-                                td_data.push('Radio (4)')
-                                break;
-                        case 6:
-                            td_data.push('Word Scramble (6)')
-                            break;
-                        case 7:
-                            td_data.push('Speech Recognition (7)')
-                            break;
-                        case 8:
-                                td_data.push('Words Select (8)')
-                                break;
-                        case 9:
-                            td_data.push('Recording (9)')
-                          break;
-                        default:
-                            td_data.push('Unknown format')
-                      }
-                      //td_data.push(question.format)
+                      td_data.push(getQuestionFormatStr(question.format))
                     rows.push(td_data)
                 });
                 setRowsData(rows)            
@@ -74,7 +49,7 @@ export function QuestionsManager({quiz_id}) {
                 setEditMode(flag)
               break;
             case "CREATE":
-                console.log("CREATE")
+                //console.log("CREATE flag =",flag)
                 setCreateMode(flag)
                 break;
             default:
@@ -103,17 +78,27 @@ export function QuestionsManager({quiz_id}) {
                 <span className='text-cyan-800'>&nbsp;{quizName}</span>
               </div>
               <div className='bg-gray-200 h-1/2'>
-                { editMode ? 
+                { (editMode || createMode) ? 
+                ( ( editMode ?
                   <QuestionEditorNew id={questionEditId} parentFunc = {parentFunction} />
+                  :
+                  <NewQuestionNew quiz_id={quiz_id} parentFunc = {parentFunction} />
+                )
+                )
                   :
                  (
                   <>  
                    <DragDropTable headers={headers} data_rows = {rowsData} data_type='questions' parentFunc ={parentFunction} />
-                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/1`}>Create Cloze Question</Link></div>
-                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/4`}>Create Radio Question</Link></div>
-                    </>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/1`}> Cloze Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/3`}> Button Select Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/4`}> Radio Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/6`}> Word Scramble Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/7`}> Speech Recognition Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/8`}> Words Select Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/9`}> Recording Question</Link></div></>
                    )
                 }
+                
               </div>
    
 

@@ -1,22 +1,16 @@
-import React, { forwardRef, useState, useEffect, useImperativeHandle} from 'react'
+import React, { forwardRef, useImperativeHandle} from 'react'
 //import { createQuestion} from '../../services/list'
 
 //import ReactQuill from 'react-quill-new';
 //import 'react-quill/dist/quill.snow.css';
 import { NewQuestion } from './NewQuestion';
-/*
-const onHandleClick = () => {
-    handleClick(childRef.current.getCount());
-  }
 
-*/
-export function NewCloze1({question_content, set_answer_key}) {
-        const [questionContent, setQuestionContent] = useState(null)
-        useEffect(() => {
-            setQuestionContent(question_content)
-        },[question_content])
+//export function NewCloze({quiz_id}) {
+    const NewCloze = forwardRef(function NewCloze({quiz_id}, ref) {
 
-        const getAnswerKey = () => {
+    useImperativeHandle(ref, () => ({
+        getAnswerKey(questionContent) {
+            //console.log(questionContent)
             var match_arr = questionContent.match(/\[([\u00C0-\u1EF9a-zA-Z^\'\/\s.,])*\]/g);
             if (match_arr == null) {
                 alert(" Please add question content");
@@ -53,16 +47,15 @@ export function NewCloze1({question_content, set_answer_key}) {
                     }
                }
             }
-             //console.log(answer_str)
-             set_answer_key(answer_str)
+            return answer_str
         }
-
+      }));
+      
     return (
         <>
-        NewCloze1
-        <div className='mx-10 text-white'><span>&nbsp;<button className='bg-green-600' onClick={getAnswerKey}>Get Answer Key</button></span></div>
+        NewCloze
         </>
     )
-}
+})
 
-export default NewCloze1
+export default NewCloze

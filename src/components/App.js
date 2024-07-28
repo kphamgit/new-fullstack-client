@@ -19,7 +19,6 @@ import { CategoriesManager } from './admin/CategoriesManager';
 import { UnitsManager } from './admin/UnitsManager';
 import { QuizzesManager } from './admin/QuizzesManager';
 import { QuestionsManager } from './admin/QuestionsManager';
-import { QuestionEditor } from './admin/edit_question/QuestionEditor';
 import { NewQuestion } from './admin/new_question/NewQuestion';
 
 function setAuth(userToken) {
@@ -113,16 +112,6 @@ export function App(props) {
                   )
                 })
              }
-                        {
-              questionIds && questionIds.map(question_id => {
-                return (
-                  <>
-                  <Route key={question_id.id} path={`/questions/edit/${question_id.id}`} element={<QuestionEditor id={question_id.id} />} />
-                 </>
-                  )
-                })
-             }
-             
              { gameIds && gameIds.map(game_id => {
               return (
                 <Route key={game_id} path={`/matching_games/play/${game_id}`} element={<MatchGame id={game_id} />} />

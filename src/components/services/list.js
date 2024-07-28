@@ -122,15 +122,6 @@ export async function createQuestion(params) {
   return response
 }
 
-/*
-export async function cloneQuestion(id, params) {
-  console.log("HERE params = ",params)
-  const url = `${rootpath}/api/questions/clone/${id}`
-  const response = await axios.put(url, params)
-  return response
-}
-*/
-
 export async function deleteQuestion(id) {
   const url = `${rootpath}/api/questions/${id}`
   const response = await axios.delete(url)
