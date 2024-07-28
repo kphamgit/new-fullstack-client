@@ -1,16 +1,6 @@
-import React, { forwardRef, useState, useEffect, useImperativeHandle} from 'react'
-//import { createQuestion} from '../../services/list'
+import React, { useState, useEffect, } from 'react'
 
-//import ReactQuill from 'react-quill-new';
-//import 'react-quill/dist/quill.snow.css';
-import { NewQuestion } from './NewQuestion';
-/*
-const onHandleClick = () => {
-    handleClick(childRef.current.getCount());
-  }
-
-*/
-export function NewCloze1({question_content, set_answer_key}) {
+export function NewCloze({question_content, set_answer_key}) {
         const [questionContent, setQuestionContent] = useState(null)
         useEffect(() => {
             setQuestionContent(question_content)
@@ -59,10 +49,9 @@ export function NewCloze1({question_content, set_answer_key}) {
 
     return (
         <>
-        NewCloze1
         <div className='mx-10 text-white'><span>&nbsp;<button className='bg-green-600' onClick={getAnswerKey}>Get Answer Key</button></span></div>
         </>
     )
 }
 
-export default NewCloze1
+export default NewCloze

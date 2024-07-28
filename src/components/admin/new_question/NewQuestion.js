@@ -32,16 +32,9 @@ export function NewQuestion({quiz_id}) {
     const arr = currentLocation.pathname.split('/')
     const format = arr[arr.length-1]
     useEffect(() => {
-        console.log("OOOO",format)
         setFormatStr(getQuestionFormatStr(parseInt(format)))
-    },[])
+    },[format])
  
-    //setFormatStr()
-
-    const get_answer_key = () => {
-        //setAnswerKey(childRef.current.getAnswerKey(questionContent) )
-    }
-    //   
     const createAQuestion = () => {
         let params = {
             format: format,
@@ -61,7 +54,6 @@ export function NewQuestion({quiz_id}) {
             params = childRef.current.addParams(params)
             
         }
-        console.log("HHHHH", params)
         createQuestion(params )
         .then(response => {
             goToQuizQuestions()

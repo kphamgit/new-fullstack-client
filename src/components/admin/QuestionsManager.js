@@ -3,8 +3,7 @@ import { getQuizWithQuestions } from '../services/list'
 import {  Link, useLocation } from 'react-router-dom'
 import getQuestionFormatStr from '../getQuestionFormatStr'
 import { DragDropTable } from '../DragDropTable'
-import { QuestionEditorNew } from './edit_question/QuestionEditor'
-import { NewQuestionNew } from './new_question/NewQuestioNew'
+import { QuestionEditor } from './edit_question/QuestionEditor'
 
 export function QuestionsManager({quiz_id}) {
     const [quizName, setQuizName] = useState(null)
@@ -80,9 +79,9 @@ export function QuestionsManager({quiz_id}) {
               <div className='bg-gray-200 h-1/2'>
                 { (editMode || createMode) ? 
                 ( ( editMode ?
-                  <QuestionEditorNew id={questionEditId} parentFunc = {parentFunction} />
+                  <QuestionEditor id={questionEditId} parentFunc = {parentFunction} />
                   :
-                  <NewQuestionNew quiz_id={quiz_id} parentFunc = {parentFunction} />
+                  <span>CREATE inside table</span>
                 )
                 )
                   :

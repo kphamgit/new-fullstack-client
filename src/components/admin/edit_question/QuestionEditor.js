@@ -6,9 +6,8 @@ import EditRadio from './EditRadio';
 import { EditButtonSelect } from './EditButtonSelect';
 import EditWordsScramble from './EditWordsScramble';
 
-export function QuestionEditorNew({id, parentFunc}) {
+export function QuestionEditor({id, parentFunc}) {
     const [format, setFormat] = useState(null)
-    const [quizId, setQuizId] = useState(null)
     const [questionNumber, setQuestionNumber] = useState(null)
     const [prompt, setPrompt] = useState(null)
     const [questionContent, setQuestionContent] = useState('')
@@ -24,8 +23,6 @@ export function QuestionEditorNew({id, parentFunc}) {
     useEffect(() => {
         getAQuestion(id)
         .then((response) => {
-            
-            setQuizId(response.data.quizId)
             setFormat(response.data.format)
             setQuestionNumber(response.data.question_number)
             setInstruction(response.data.instruction)
@@ -42,10 +39,6 @@ export function QuestionEditorNew({id, parentFunc}) {
             }
         })
     },[id])
-
-    const get_answer_key = () => {
-        setAnswerKey(childRef.current.getAnswerKey(questionContent) )
-    }
        
     const updateAQuestion = () => {
         let params = {
