@@ -10,7 +10,7 @@ import {findCreateQuizAttempt} from './services/list.js'
 import ChatPageTailwind from "./chat/ChatPageTailwind.js";
 import { useIsMounted } from "./useIsMounted";
 
-export default function QuizAttempt({quizId}) {
+export default function QuizAttemptSave({quizId}) {
   const user = useSelector((state) => state.user.value) 
   //const livequizflag = useSelector((state) => state.livequizflag.value) 
 
@@ -91,7 +91,34 @@ export default function QuizAttempt({quizId}) {
     return ( 
         <>
         <div className="m-10 ">
-              Quiz Attempt quiz id = {quizId} user id = {user.id}
+         <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
+          <Link to='/' >Home</Link>
+         </div>
+         <br />
+         <div className="flex flex-row gap-2 bg-slate-200 justify-between">
+         <div>
+         {(showQuestion) ?
+          <QuestionAttempt 
+            question={question} 
+            setShowQuestion={setShowQuestionFlag}
+            setAttemptResponse={setTheAttemptResponse}
+            questionAttemptId={questionAttemptId}
+          />
+          :
+          <div>
+            {showAttemptResponse && <QuestionResponse question={question} response_content={attemptResponse} />}
+          <NextButton 
+              next_question_number={currentquestionnumber +1} 
+              setNextQuestion={setTheNextQuestion}
+              setShowQuestion={setShowQuestionFlag}
+              setQuestionAttemptId={setTheQuestionAttemptId}
+            />
+          <ChatPageTailwind layout="flex_column" />  
+          </div>
+        }
+         </div>
+  
+      </div>
       </div>
        </>
     )

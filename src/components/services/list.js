@@ -86,6 +86,7 @@ export async function getStudentsInClass(class_id) {
 ///api/questions/:id',
 export async function findCreateQuizAttempt(quiz_id, user_id) {
   const url = `${rootpath}/api/quiz_attempts/find_create_new/${quiz_id}/${user_id}`
+  console.log("in services list.js findCreateQuizAttempt url = ", url)
   const response = await axios.get(url)
   return response
 }
