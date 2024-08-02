@@ -8,10 +8,11 @@ import NextButton from "./NextButton.js";
 import useExitPrompt from './useExitPrompt.js'
 import {findCreateQuizAttempt} from './services/list.js'
 import ChatPageTailwind from "./chat/ChatPageTailwind.js";
+import { useIsMounted } from "./useIsMounted";
 
 export default function QuizAttempt({quizId}) {
   const user = useSelector((state) => state.user.value) 
-  const livequizflag = useSelector((state) => state.livequizflag.value) 
+  //const livequizflag = useSelector((state) => state.livequizflag.value) 
 
   const dispatch = useDispatch()  
     const [currentquestionnumber, setCurrentQuestionNumber] = useState(null)
@@ -20,8 +21,8 @@ export default function QuizAttempt({quizId}) {
     const [showAttemptResponse, setShowQuestionAttemptResponse] = useState(false)
     const [questionAttemptId, setQuestionAttemptId] = useState(null)
     const [attemptResponse, setAttemptResponse] = useState(null)
-    //const [showExitPrompt, setShowExitPrompt] = useExitPrompt(true);
-    const mounted = useRef(true);
+    const isMounted = useIsMounted()
+    const mounted = useRef(false);
     //const [livequizready, setLiveQuizReady] = useState(false)
     //mounted.current = true;
     //if(mounted.current) {
@@ -58,23 +59,22 @@ export default function QuizAttempt({quizId}) {
    }
 
    useEffect(() => {
-    mounted.current = true;
-    if (!livequizflag) {
       findCreateQuizAttempt(quizId, user.id)
       .then((response) => {
-        if(mounted.current) {
+        if(isMounted) {
           setTheNextQuestion(response.data.question)
           setShowQuestion(true)
           setQuestionAttemptId(response.data.question_attempt_id)
           dispatch(setQuizAttemptId(response.data.quiz_attempt_id))
         }
+        else {
+          console.log("component is not mounted yet")
+        }
       })
       .catch(error => {
           console.log(error)
       });
-    }
-    return () => mounted.current = false;
-   },[livequizflag, dispatch, quizId, user.id])
+   },[dispatch, quizId, isMounted, user.id])
 
   const setShowQuestionFlag = (value) => {
        setShowQuestion(value)
