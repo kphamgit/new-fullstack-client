@@ -7,6 +7,7 @@ import QuestionResponse from "./QuestionResponse.js";
 import NextButton from "./NextButton.js";
 import useExitPrompt from './useExitPrompt.js'
 import {findCreateQuizAttempt} from './services/list.js'
+import ChatPageTailwind from "./chat/ChatPageTailwind.js";
 
 export default function QuizAttempt({quizId}) {
   const user = useSelector((state) => state.user.value) 
@@ -110,7 +111,7 @@ export default function QuizAttempt({quizId}) {
               setShowQuestion={setShowQuestionFlag}
               setQuestionAttemptId={setTheQuestionAttemptId}
             />
-            
+          <ChatPageTailwind layout="flex_column" />  
           </div>
         }
          </div>

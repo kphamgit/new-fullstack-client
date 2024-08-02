@@ -208,7 +208,6 @@ function QuestionResponse({question, response_content}) {
             <div className='bg-cyan-300'>
                 <div>
                 <div>The correct answer is (Câu trả lời đúng là):</div>
-                {console.log("OOOOO",response_content)}
                 <pre className='bg-cyan-200 mt-2'>{displayCorrectAnswer(response_content) } </pre> 
                 <div>{question.help1}</div>
                 </div>
@@ -225,7 +224,7 @@ function QuestionResponse({question, response_content}) {
                       <p>&nbsp;</p>
                     <div><span className='text-cyan-700'>Time elapsed:</span>
                     <span>{displayElapsedTime()}</span>
-                    <ChatPageTailwind layout="flex_column" />
+                
               </div>
           </div>
       </div>
