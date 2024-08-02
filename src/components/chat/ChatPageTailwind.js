@@ -17,7 +17,7 @@ const ChatPageTailwind = ({layout}) => {
         socket.off("chat")
       }   
     }, [socket, messages]);
-
+    //flex_row or flex_column
     if (layout === "flex_row") {
     return (
       <>

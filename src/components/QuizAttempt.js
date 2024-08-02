@@ -87,7 +87,7 @@ export default function QuizAttempt({quizId}) {
 
     return ( 
         <>
-        <div style={{marginTop:"20px", marginLeft:"80px", marginRight:"50px"}}>
+        <div className="m-10 ">
          <div className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
           <Link to='/' >Home</Link>
          </div>

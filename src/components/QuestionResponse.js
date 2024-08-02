@@ -187,9 +187,9 @@ function QuestionResponse({question, response_content}) {
   }
   return (
     <>
-   <div> 
-            <div className='flex flex-col m-4'>
-                <div  className= 'bg-cyan-200'>
+    <div className='grid grid-cols-2'> 
+      <div className='flex flex-col m-4'>
+            <div  className= 'bg-cyan-200'>
                   <div>
                     <div>Question {response_content.question_number }</div>
                     <div>The question is (Câu hỏi là) :</div>
@@ -198,41 +198,40 @@ function QuestionResponse({question, response_content}) {
                     <pre>{displayQuestionContent() } </pre>
                   </div>
                 </div>
-                <div className='bg-orange-200'>
+                <div className='bg-orange-300'>
                 <div>
                 <div>Your answer is (Bạn trả lời là):</div>
-                <pre>{displayResponse() } </pre>
+                <pre className='mt-2 bg-orange-200'>{displayResponse() } </pre>
                 </div>
             </div>
             { response_content.question_attempt_results.error_flag &&
-            <div className='bg-cyan-200'>
+            <div className='bg-cyan-300'>
                 <div>
-                <br />
                 <div>The correct answer is (Câu trả lời đúng là):</div>
-                <br />
-                <pre>{displayCorrectAnswer(response_content) } </pre> 
+                {console.log("OOOOO",response_content)}
+                <pre className='bg-cyan-200 mt-2'>{displayCorrectAnswer(response_content) } </pre> 
                 <div>{question.help1}</div>
                 </div>
             </div>
             }
+
+      </div>
+      <div className='flex flex-col m-4'>
               <div>
-                  <div>
-                    <span>Score:
+                  <span className='text-orange-600'>Score:
                     &nbsp;{response_content.accumulated_score}</span>
-                    </div>
-                    <div>
+              </div>
+              <div>
                       <p>&nbsp;</p>
-                    <div>Time elapsed:<span>
-                    {displayElapsedTime()}</span>
-                    </div>
-                    <p>&nbsp;</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br />
-     <div><ChatPageTailwind layout = "flex_column"/></div>
-    
+                    <div><span className='text-cyan-700'>Time elapsed:</span>
+                    <span>{displayElapsedTime()}</span>
+                    <ChatPageTailwind layout="flex_column" />
+              </div>
+          </div>
+      </div>
+   
+    </div>
+   
     </>
   )
 }

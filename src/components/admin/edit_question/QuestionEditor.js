@@ -5,6 +5,7 @@ import 'react-quill/dist/quill.snow.css';
 import EditRadio from './EditRadio';
 import { EditButtonSelect } from './EditButtonSelect';
 import EditWordsScramble from './EditWordsScramble';
+import EditCloze from './EditCloze';
 
 export function QuestionEditor({id, parentFunc}) {
     const [format, setFormat] = useState(null)
@@ -97,6 +98,9 @@ export function QuestionEditor({id, parentFunc}) {
             </div>
         </div>
         </div>
+        { (format === 1) &&  
+        <EditCloze ref={childRef} question_content={questionContent} answer_key={answerKey} set_answer_key ={setAnswerKey} />
+        }
         { (format === 3) &&  
         <EditButtonSelect ref={childRef} question_content={questionContent} answer_key={answerKey} set_answer_key ={setAnswerKey} />
         }
