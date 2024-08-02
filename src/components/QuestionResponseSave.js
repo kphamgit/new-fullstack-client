@@ -4,9 +4,18 @@ import { faCheckSquare } from '@fortawesome/free-solid-svg-icons'
 import { faX } from '@fortawesome/free-solid-svg-icons'
 import ChatPageTailwind from './chat/ChatPageTailwind'
 
+/*
+function displayReinforcement(question) {
+  return ( 
+    <>
+    <br />
+    <div>{question.help1}</div>
+    </>
+  )
+}
+*/
 
-
-function QuestionResponse({question, response_content}) {
+function QuestionResponseSave({question, response_content}) {
   function formatClozeQuestion() {
     //var regExp = /\[.*?\]/g
     var content_with_new_lines = question.content.replace(/#/g,' ')
@@ -38,49 +47,49 @@ function QuestionResponse({question, response_content}) {
         case 1:
           //cloze
           return ( 
-            <div className='text-wrap'>
+            <>
               <pre>{formatClozeQuestion() } </pre>  
-            </div>
+            </>
           )
         case 3:
                   //ButtonSelect
             return ( 
-              <div className='text-wrap'>
+              <>
                 <div>
                     {question.content}
                 </div>
-              </div>
+              </>
             )
         case 4: 
                     //Radio
               return ( 
-                <div className='text-wrap'>
+                <>
  
                     <div>
                             {question.content}
                     </div>
-                </div>
+                </>
               )
         case 6:
                     //WordScramble
                     return ( 
-                      <div className='text-wrap'>
+                      <>
                           <div>
                                   {shuffle(question.content.split('/') ) }
                           </div>
-                      </div>
+                      </>
                     )
         case 8:
                      //WordsSelect
             return ( 
               <>
-                <div className='text-wrap'>
+                <div>
                     {question.content}
                 </div>
               </>
             )
         case 9:
-              return <div className='text-wrap'>{question.prompt}</div>
+              return <div>{question.prompt}</div>
         default:
           return null
       }
@@ -90,13 +99,13 @@ function QuestionResponse({question, response_content}) {
       return (
         <>
         
-        <div>
+        <div className='w-3/4'>
           
-          <div className='text-wrap'>{response_content.question_attempt_results.answer }</div>
-          { !response_content.question_attempt_results.error_flag ?
-                         <FontAwesomeIcon icon={faCheckSquare} size="lg" />
-                         :
-                         <FontAwesomeIcon icon={faX} size="lg" style={{ color: 'red' }} />
+          {response_content.question_attempt_results.answer }
+          &nbsp;&nbsp;{ !response_content.question_attempt_results.error_flag ?
+                    <FontAwesomeIcon icon={faCheckSquare} size="lg" />
+                    :
+                    <FontAwesomeIcon icon={faX} size="lg" style={{ color: 'red' }} />
          }
         </div>
         </>
@@ -121,7 +130,7 @@ function QuestionResponse({question, response_content}) {
       )
       else 
         return (
-          <div >
+          <div>
              {marr.map((item, index) =>  
                  (<span key = {index}>
                    { item } &nbsp;
@@ -148,9 +157,9 @@ function QuestionResponse({question, response_content}) {
     else {
     //window.speechSynthesis.speak(msg)
       return ( 
-        <div className='text-wrap'>
+        <>
         <div>{response_content.question_attempt_results.correct_answer}</div>
-        </div>
+        </>
       )
     }
     
@@ -179,7 +188,7 @@ function QuestionResponse({question, response_content}) {
   return (
     <>
     <div className='grid grid-cols-2'> 
-      <div>
+      <div className='flex flex-col m-4'>
             <div  className= 'bg-cyan-200'>
                   <div >
                     <div>Question {response_content.question_number }</div>
@@ -190,9 +199,9 @@ function QuestionResponse({question, response_content}) {
                   </div>
                 </div>
                 <div className='bg-orange-300'>
-                <div >
+                <div className='flex flex-row flex-wrap'>
                   <div>Your answer is (Bạn trả lời là):</div>
-                  <div><pre className='mt-2 bg-orange-200'>{displayResponse() } </pre></div>
+                  <div className='w-3/4'><pre className='mt-2 bg-orange-200'>{displayResponse() } </pre></div>
                 </div>
                </div>
             { response_content.question_attempt_results.error_flag &&
@@ -226,4 +235,4 @@ function QuestionResponse({question, response_content}) {
   )
 }
 
-export default QuestionResponse
+export default QuestionResponseSave
