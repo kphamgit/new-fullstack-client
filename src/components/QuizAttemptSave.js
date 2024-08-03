@@ -1,4 +1,4 @@
-import React, {useState, useContext, useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import QuestionAttempt from './QuestionAttempt.js'
 import { Link } from 'react-router-dom';
@@ -6,11 +6,12 @@ import {setQuizAttemptId} from "../redux/quiz_att_id.js"
 import QuestionResponse from "./QuestionResponse.js";
 import NextButton from "./NextButton.js";
 import useExitPrompt from './useExitPrompt.js'
+import { useLocation } from "react-router-dom";
 import {findCreateQuizAttempt} from './services/list.js'
 import ChatPageTailwind from "./chat/ChatPageTailwind.js";
 import { useIsMounted } from "./useIsMounted";
 
-export default function QuizAttemptSave({quizId}) {
+export default function QuizAttemptSave() {
   const user = useSelector((state) => state.user.value) 
   //const livequizflag = useSelector((state) => state.livequizflag.value) 
 
@@ -35,16 +36,11 @@ export default function QuizAttemptSave({quizId}) {
   https://dev.to/eons/detect-page-refresh-tab-close-and-route-change-with-react-router-v5-3pd
   */
   
-  /*
-  //NOTE: this similar to componentWillUnmount()
-  /*
-  useEffect(() => {
-    return () => {
-      setShowExitPrompt(false)
-    }
-    //eslint-disable-next-line
-  }, [])
-*/
+  const currentLocation = useLocation()
+  const arr = currentLocation.pathname.split('/')
+  const quizId = arr[arr.length-1]
+  
+
     const setTheNextQuestion = (value) => {
         setQuestion(value)
         setCurrentQuestionNumber(value.question_number)

@@ -74,8 +74,8 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
       }</div>
       <br />
       { !question.coding &&
-      <TextareaAutosize className='bg-cyan-100' id="prompt" cols="70" value={question.prompt} />
-    }
+      <TextareaAutosize className='bg-cyan-100 w-full mr-3 px-3' id="prompt"  value={question.prompt} />
+      }
     
       <div>
       {question.audio_src && <audio src={question.audio_src} controls />}

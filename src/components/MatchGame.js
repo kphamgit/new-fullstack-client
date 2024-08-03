@@ -1,13 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { getAGame } from './services/list'
 import { MatchGameNormal } from './MatchGameNormal'
 import { MatchGameContinuous } from './MatchGameContinuous'
 
-export function MatchGame({id}) {
+export function MatchGame() {
     const [leftCardsBank, setLeftCardsBank] = useState([])
     const [rightCardsBank, setRightCardsBank] = useState([])
     const [continuous, setContinuous] = useState(false)
     const mounted = useRef(true);
+
+     
+  const currentLocation = useLocation()
+  const arr = currentLocation.pathname.split('/')
+  const id = arr[arr.length-1]
+
     useEffect(() => {
      
         getAGame(id)

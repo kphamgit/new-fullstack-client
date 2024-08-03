@@ -5,7 +5,7 @@ import getQuestionFormatStr from '../getQuestionFormatStr'
 import { DragDropTable } from '../DragDropTable'
 import { QuestionEditor } from './edit_question/QuestionEditor'
 
-export function QuestionsManager({quiz_id}) {
+export function QuestionsManager() {
     const [quizName, setQuizName] = useState(null)
     const [subCatId, setSubCatId] = useState(null)
     const [rowsData, setRowsData] = useState([])
@@ -16,7 +16,10 @@ export function QuestionsManager({quiz_id}) {
     const [questionEditId, setQuestionEditId] = useState(null)
 
     const location = useLocation();
-    
+
+    const arr = location.pathname.split('/')
+    const quiz_id = arr[arr.length-1]
+  
     useEffect( () => {
         setSubCatId(location.state.subcat_id)
     },[location.state])
@@ -88,13 +91,13 @@ export function QuestionsManager({quiz_id}) {
                  (
                   <>  
                    <DragDropTable headers={headers} data_rows = {rowsData} data_type='questions' parentFunc ={parentFunction} />
-                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/1`}> Cloze Question</Link></div>
-                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/3`}> Button Select Question</Link></div>
-                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/4`}> Radio Question</Link></div>
-                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/6`}> Word Scramble Question</Link></div>
-                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/7`}> Speech Recognition Question</Link></div>
-                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/8`}> Words Select Question</Link></div>
-                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/9`}> Recording Question</Link></div></>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/${quiz_id}/1`}> Cloze Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/${quiz_id}/3`}> Button Select Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/${quiz_id}/4`}> Radio Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/${quiz_id}/6`}> Word Scramble Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/${quiz_id}/7`}> Speech Recognition Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/${quiz_id}/8`}> Words Select Question</Link></div>
+                   <div className='bg-blue-200 underline mt-5'><Link to={`/questions/create/${quiz_id}/9`}> Recording Question</Link></div></>
                    )
                 }
                 

@@ -1,16 +1,17 @@
 import React, {useState, useContext, useRef, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import QuestionAttemptLive from './QuestionAttemptLive.js'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import QuestionResponse from "./QuestionResponse.js";
 import NextButtonLive from "./NextButtonLive.js";
 import useExitPrompt from './useExitPrompt.js'
 import {getNextQuestion} from './services/list.js'
 import { SocketContext } from "./App.js";
 import LiveScoreBoard from "./LiveScoreBoard.js";
+import ChatPageTailwind from "./chat/ChatPageTailwind.js";
 
 
-export default function QuizAttempLive({quizId}) {
+export default function QuizAttempLive() {
   const user = useSelector((state) => state.user.value) 
   const livequizflag = useSelector((state) => state.livequizflag.value) 
 
@@ -25,14 +26,10 @@ export default function QuizAttempLive({quizId}) {
     //const [showExitPrompt, setShowExitPrompt] = useExitPrompt(true);
     const mounted = useRef(true);
     const socket = useContext(SocketContext);
-   /*
-   const handleClick = (e) => {
-    e.preventDefault();
-    setShowExitPrompt(!showExitPrompt)
-  }
-  //use a Button to toggle showExitPrompt. For now, showExitPrompt is always set to true
-  https://dev.to/eons/detect-page-refresh-tab-close-and-route-change-with-react-router-v5-3pd
-  */
+   
+    const currentLocation = useLocation()
+  const arr = currentLocation.pathname.split('/')
+  const quizId = arr[arr.length-1]
 
   useEffect(() => {
     socket.on('enable_next_button', (arg, callback) => {
@@ -147,11 +144,10 @@ export default function QuizAttempLive({quizId}) {
         }
          </div>
          <div className="bg-green-200">
-         { livequizflag &&
             <span><LiveScoreBoard class_id={user.classId} /></span>
-          }
          </div>
       </div>
+      <div><ChatPageTailwind layout = "flex_column"/></div>
       </div>
        </>
     )

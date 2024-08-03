@@ -68,10 +68,10 @@ export function App(props) {
     getIds()
     .then((response) => {
         setSubCategoryIds(response.data.sub_category_ids)
-        setQuizIds(response.data.quiz_ids)
-        setGameIds(response.data.game_ids)
+        //setQuizIds(response.data.quiz_ids)
+        //setGameIds(response.data.game_ids)
         setUnitIds(response.data.unit_ids)
-        setQuestionIds(response.data.question_ids)
+        //setQuestionIds(response.data.question_ids)
     })
     return () => mounted.current = false;
   },[auth])
@@ -81,7 +81,7 @@ export function App(props) {
   }
   return (
     <>
-     <SocketContext.Provider value={socket}>
+        <SocketContext.Provider value={socket}>
           <BrowserRouter>
             <Routes>
               <Route path="/" element = {<Home categories={categories} socket={socket}/>} />
@@ -100,31 +100,18 @@ export function App(props) {
                 </>
                   ))
               }
-              {
-                quizIds && quizIds.map(quiz_id => {
-                return (
-                  <>
-                  <Route key={quiz_id} path={`/quizzes/manage_questions/${quiz_id}`} element={<QuestionsManager quiz_id={quiz_id} />} />
-                  <Route key={quiz_id} path={`/quiz_attempts/take_quiz/${quiz_id}`} element={<QuizAttempt quizId={quiz_id} />} />
-                  <Route key={quiz_id} path={`/quiz_attempts/take_live_quiz/${quiz_id}`} element={<QuizAttemptLive quizId={quiz_id} />} />
-                  <Route key={quiz_id} path={`/questions/create/:format`} element={<NewQuestion quiz_id ={quiz_id} />} />
-                  </>
-                  )
-                })
-             }
-             { gameIds && gameIds.map(game_id => {
-              return (
-                <Route key={game_id} path={`/matching_games/play/${game_id}`} element={<MatchGame id={game_id} />} />
-              )
-              })
-            }
-            
-            <Route path="/matching_games" element = {<Games />} />
-            <Route path={`/manage_categories`} element={<CategoriesManager categories={categories} />} />
-            <Route path={`/manage_quiz_attempts`} element={<QuizAttemptsManager />} />
+
+              <Route path={`/quiz_attempts/take_quiz/:quiz_id`} element={<QuizAttempt />} />
+              <Route path={`/quiz_attempts/take_live_quiz/:quiz_id`} element={<QuizAttemptLive />} />
+              <Route path={`/questions/create/:quiz_id/:format`} element={<NewQuestion />} />
+              <Route path={`/quizzes/manage_questions/:quiz_id`} element={<QuestionsManager  />} />
+              <Route path={`/manage_categories`} element={<CategoriesManager categories={categories} />} />
+              <Route path={`/manage_quiz_attempts`} element={<QuizAttemptsManager />} />
+              <Route path="/matching_games" element = {<Games />} />
+              <Route path={`/matching_games/play/:id`} element={<MatchGame />} />
             </Routes>
-            </BrowserRouter>
-            </SocketContext.Provider>
+          </BrowserRouter>
+        </SocketContext.Provider>
     </>
   )
 }

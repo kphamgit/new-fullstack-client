@@ -91,8 +91,6 @@ useEffect(() => {
       {question.video_src && <ReactPlayer url={question.video_src} controls />}
     
      {  renderCurrentQA(question)  }
-     <br />
-     <div><ChatPageTailwind layout = "flex_column"/></div>
       </>
     )
 }
