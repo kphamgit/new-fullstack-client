@@ -7,6 +7,7 @@ if (process.env.NODE_ENV === "development") {
 }
 else if (process.env.NODE_ENV === "production") {
   rootpath = 'https://fullstack-kp-f6a689f4a15c.herokuapp.com'
+  //rootpath = 'https://www.tienganhtuyhoa.com'
 }
 else {
 console.log("invalid NODE_ENV ")

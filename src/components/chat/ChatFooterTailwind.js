@@ -33,7 +33,7 @@ const ChatFooterTailwind = ({socket}) => {
   
 
   return (
-    <div className='bg-red-300 m-2'>
+    <div className=' m-1 mt-0'>
       <form onSubmit={handleSendMessage}>
         <Textarea
           type="text"
@@ -43,7 +43,7 @@ const ChatFooterTailwind = ({socket}) => {
           onKeyDown={(e) => handleKeyDown(e)}
         />
          
-        <div><Button onClick={sendMessage}>Send</Button></div>
+        <div><Button className='bg-green-500' onClick={sendMessage}>Send</Button></div>
       </form>
     </div>
   );

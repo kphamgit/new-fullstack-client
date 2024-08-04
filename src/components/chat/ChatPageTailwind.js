@@ -21,7 +21,7 @@ const ChatPageTailwind = ({layout}) => {
     if (layout === "flex_row") {
     return (
       <>
-      <div>{layout}</div>
+     
         <div className='grid grid-cols-1'  >
             <ChatBodyTailwind messages={messages}  />
           <p></p>

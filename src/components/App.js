@@ -20,6 +20,8 @@ import { UnitsManager } from './admin/UnitsManager';
 import { QuizzesManager } from './admin/QuizzesManager';
 import { QuestionsManager } from './admin/QuestionsManager';
 import { NewQuestion } from './admin/new_question/NewQuestion';
+import FileUploaderS3 from './utils/FileUploaderS3';
+import { FileUploaderS31 } from './utils/FileUploaderS31';
 
 function setAuth(userToken) {
   //console.log(JSON.stringify({ x: 5, y: 6 }));
@@ -109,6 +111,7 @@ export function App(props) {
               <Route path={`/manage_quiz_attempts`} element={<QuizAttemptsManager />} />
               <Route path="/matching_games" element = {<Games />} />
               <Route path={`/matching_games/play/:id`} element={<MatchGame />} />
+              <Route path={`/upload_s3`} element={<FileUploaderS3 />} />
             </Routes>
           </BrowserRouter>
         </SocketContext.Provider>

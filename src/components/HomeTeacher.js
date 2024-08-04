@@ -6,6 +6,7 @@ import ChatPageTailwind from './chat/ChatPageTailwind.js';
 import { Button, TextInput } from 'flowbite-react';
 import { getStudentsInClass } from './services/list';
 import { Link } from 'react-router-dom';
+import { RecordViewTeacher } from './RecordViewTeacher.js';
 
 export function HomeTeacher(props) {
     const socket = useContext(SocketContext);
@@ -164,6 +165,7 @@ useEffect(() => {
                 </ul>
                 <Link to="/manage_categories" >Manage Categories</Link>
                 <Link to="/manage_quiz_attempts" >Manage Quiz Attempts</Link>
+                <Link to="/upload_s3" >Upload to Amazon s3</Link>
             </div>
             <div> 
             <div>Connected students list from server:</div>
@@ -175,8 +177,9 @@ useEffect(() => {
             }
             </ul>
             </div>
-
+           
         </div>
+        <div><RecordViewTeacher class_id={'1'}/></div>
     </>
     )
 }
