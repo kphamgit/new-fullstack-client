@@ -9,6 +9,16 @@ import { clearLiveQuizId } from '../redux/livequizid.js';
 import { Link } from 'react-router-dom';
 import { Button, TextInput } from "flowbite-react";
 import ChatPageTailwind from './chat/ChatPageTailwind.js';
+//import AudioPlayer from './AudioPlayer.js';
+//import AWS from 'aws-sdk'
+
+/*
+AWS.config.update ({
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+  region: process.env.REACT_APP_AWS_REGION
+})
+*/
 
 export function HomeStudent({user}) {
     const socket = useContext(SocketContext);
@@ -17,9 +27,26 @@ export function HomeStudent({user}) {
     const livequizflag = useSelector(state => state.livequizflag.value)
     const livequizid = useSelector(state => state.livequizid.value)
     
-    //const livescores = useSelector((state) => state.livescore.value)
-
-
+    const [audioFile, setAudioFile] = useState('')
+  /*
+    const convertTextToSpeech = () => {
+        polly.synthesizeSpeech({
+          Engine: "generative",
+          LanguageCode: "en-US",
+          Text: "hello there what a beautiful day. Learning English is challenging, but it can be done.",
+          OutputFormat: 'mp3',
+          VoiceId: "Ruth",
+        },
+        (error, data) => {
+            if (error) {
+              console.log(error);
+            } else {
+              //console.log(data)
+              setAudioFile(data)
+            }
+        })
+    }
+*/
     useEffect(() => {
       socket.on('enable_live_quiz', arg => {
           //console.log(" student receive scoreboard. arg.list: ",arg.list)
@@ -89,7 +116,6 @@ export function HomeStudent({user}) {
               <RecordViewStudent />
             </div>
             }
-            
         </div>
         </>
     )

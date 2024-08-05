@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useState} from 'react'
+import AudioPlayer from './AudioPlayer.js';
 
 const wordStyle = {
     fontSize: "18px",
@@ -13,12 +14,27 @@ const wordStyle = {
     userSelect: 'none'
 };
 
-export function TextCard({card, handleChoice}) {
-    const msg = new SpeechSynthesisUtterance()
-    msg.volume = 1; // From 0 to 1
-    msg.rate = .8; // From 0.1 to 10
-    //msg.pitch = 2; // From 0 to 2
-    msg.lang = 'en';
+export function TextCard({card, polly, handleChoice}) {
+  
+    const [audioFile, setAudioFile] = useState('')
+    
+    const convertTextToSpeech = () => {
+        polly.synthesizeSpeech({
+          Engine: "generative",
+          LanguageCode: "en-US",
+          Text: card.src,
+          OutputFormat: 'mp3',
+          VoiceId: "Ruth",
+        },
+        (error, data) => {
+            if (error) {
+              console.log(error);
+            } else {
+              //console.log(data)
+              setAudioFile(data)
+            }
+        })
+    }
 
     const handleClick = (target) => {
             
@@ -27,9 +43,12 @@ export function TextCard({card, handleChoice}) {
                 target.style.borderColor = "#c9cca3"
             }, [700])
             if (card.language === 'en') {
+                convertTextToSpeech()
+                /*
                 msg.text = card.src
                 msg.voice = window.speechSynthesis.getVoices()[1];
                 window.speechSynthesis.speak(msg)
+                */
             }
             handleChoice(card)
     }
@@ -45,6 +64,7 @@ export function TextCard({card, handleChoice}) {
                 &nbsp;
             </span>
             }
+            <AudioPlayer audioFile={audioFile} />
         </>
     )
 }

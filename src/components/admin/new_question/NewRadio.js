@@ -18,7 +18,7 @@ import { NewQuestion } from './NewQuestion';
     useEffect(() => {
         setQuestionContent(question_content)
         set_answer_key('choice1')
-    },[question_content])
+    },[question_content, set_answer_key])
 
     const handleChange = (value) => {
         //setAnswerKey(value)

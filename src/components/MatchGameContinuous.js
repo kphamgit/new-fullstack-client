@@ -14,6 +14,17 @@ const img_grid_style={
     }
 */
 
+
+import AWS from 'aws-sdk'
+
+AWS.config.update ({
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+  region: process.env.REACT_APP_AWS_REGION
+})
+
+const polly = new AWS.Polly()
+
 export function MatchGameContinuous({theLeftCards, theRightCards}) {
 
     const [leftCardsPile , setLeftCardsPile] = useState([])
@@ -73,7 +84,7 @@ export function MatchGameContinuous({theLeftCards, theRightCards}) {
                 rightCardsBank.current.splice(random_index, 1)
             })
             setRightCardsPile(tempArr1.sort(() => Math.random() - 0.5 ))
-            myTimeout.current = setTimeout(clearInt, 100000);
+            myTimeout.current = setTimeout(clearInt, 900000);
         
         return () => {
             clearTimeout(myTimeout.current)
@@ -211,7 +222,7 @@ export function MatchGameContinuous({theLeftCards, theRightCards}) {
                         { leftCardsPile.map (card => (
                                 <div key={card.match_index}>
                                 <div>
-                                <TextCard card={card} handleChoice={handleChoiceLeft} />
+                                <TextCard card={card} polly={polly} handleChoice={handleChoiceLeft} />
                                 </div>
                                 </div>
                             ))
@@ -223,7 +234,7 @@ export function MatchGameContinuous({theLeftCards, theRightCards}) {
                     { rightCardsPile.map (card => (
                                 <div key={card.match_index}>
                                 <div>
-                                <TextCard card={card} handleChoice={handleChoiceRight} />
+                                <TextCard card={card} polly = {polly} handleChoice={handleChoiceRight} />
                                 </div>
                                 </div>
                             ))
