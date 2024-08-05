@@ -41,6 +41,7 @@ export function MatchGameContinuous({theLeftCards, theRightCards}) {
     //rightCardsBank.current = theRightCards
     const counterRef = useRef();
     const myTimeout = useRef(null)
+    const flipTimeout = useRef(null)
     const testTimeout = useRef(null)
     const matchIndex = useRef(null)
 
@@ -109,8 +110,12 @@ export function MatchGameContinuous({theLeftCards, theRightCards}) {
         setChoiceRight(null)
         setTurns(prevTurns => prevTurns + 1)
     }
+
+    
+
     useEffect (() => {
         const addPair = () => {
+            //alert("add Pair")
             //console.log("left cards bank lenght:"+leftCardsBank.current.length)
             //console.log("addPair ENTRY left card pile", leftCardsPile)
             if (leftCardsBank.current.length > 0) {
@@ -138,46 +143,50 @@ export function MatchGameContinuous({theLeftCards, theRightCards}) {
                 rightCardsPileRef.current.splice(index_in_right_array, 1, right_random_card)
                 const tempArr1 = [...rightCardsPileRef.current]
                 setRightCardsPile(tempArr1)
-
+    
                 matchIndices.current.splice(0, 1)
                 
             }
         }
+       
+        const flipCard = () => {
+            setLeftCardsPile(prevCards => {
+                return prevCards.map(card => {
+                    if (card.match_index === choiceLeft.match_index) {
+                        return {...card, matched: true}
+                    }
+                    else {
+                        return card
+                    }
+                })
+            })
+            setRightCardsPile(prevCards => {
+                return prevCards.map(card => {
+                    if (card.match_index === choiceRight.match_index) {
+                        return {...card, matched: true}
+                    }
+                    else {
+                        return card
+                    }
+                })
+            })
+            //setMatched(true)
+            setNumMatches(prevNumMatches => prevNumMatches + 1)
+            matchIndex.current = choiceLeft.match_index
+            matchIndices.current.push(choiceLeft.match_index)
+            testTimeout.current = setTimeout(addPair, 3500)
+            resetTurn()
+        }
         if (choiceLeft && choiceRight ) {
                 if (choiceLeft.match_index === choiceRight.match_index) {
-                    setLeftCardsPile(prevCards => {
-                        return prevCards.map(card => {
-                            if (card.match_index === choiceLeft.match_index) {
-                                return {...card, matched: true}
-                            }
-                            else {
-                                return card
-                            }
-                        })
-                    })
-                    
-                    setRightCardsPile(prevCards => {
-                        return prevCards.map(card => {
-                            if (card.match_index === choiceRight.match_index) {
-                                return {...card, matched: true}
-                            }
-                            else {
-                                return card
-                            }
-                        })
-                    })
-                    //setMatched(true)
-                    setNumMatches(prevNumMatches => prevNumMatches + 1)
-                    matchIndex.current = choiceLeft.match_index
-                    matchIndices.current.push(choiceLeft.match_index)
-                    testTimeout.current = setTimeout(addPair, 2500)
-                    resetTurn()
+                    flipTimeout.current = setTimeout(flipCard, 1500)
+                    //flipCard()
                 }
                 else {
                     resetTurn()
                 }
         }
-    }, [choiceLeft, choiceRight, leftCardsPile, rightCardsPile])
+    }, [choiceLeft, choiceRight])
 
     useEffect(() => {
         if (numMatches) {
@@ -194,6 +203,7 @@ export function MatchGameContinuous({theLeftCards, theRightCards}) {
     },[numMatches, leftCardsBank.current.length, dataSize])
 
     const handleChoiceLeft = (card) => {
+        
         setChoiceLeft(card)
     }
 

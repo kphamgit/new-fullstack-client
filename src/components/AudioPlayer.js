@@ -1,16 +1,25 @@
-import { useEffect, useRef } from "react"
-const AudioPlayer = ({audioFile}) => {
+import { useEffect, forwardRef, useRef, useImperativeHandle } from "react"
+
+const AudioPlayer = forwardRef(function AudioPlayer({audioFile, setAudioEnded}, ref) {
+//const AudioPlayer = ({audioFile}) => {
     const audioRef = useRef()
     
+    useImperativeHandle(ref, () => ({
+        playAudio() {
+            audioRef.current.play()
+            audioRef.current.addEventListener("ended", (event) => {
+               setAudioEnded(true)
+            })
+        }
+      }));
+
     useEffect(() => {
         if (audioFile) {
             const audioArrayBuffer = audioFile.AudioStream.buffer;
             const audioURL = URL.createObjectURL(new Blob([audioArrayBuffer], {type: "audio/mpeg" }));
-
-            const audio = audioRef.current
-            audio.src = audioURL;
-            audio.play()
-
+            //const audio = audioRef.current
+            audioRef.current.src = audioURL
+            //audio.src = audioURL;
             return () => {
                 URL.revokeObjectURL(audioURL)
             }
@@ -22,6 +31,6 @@ const AudioPlayer = ({audioFile}) => {
             <audio ref = {audioRef} />
         </div>
     )
-}
+})
 
 export default AudioPlayer
