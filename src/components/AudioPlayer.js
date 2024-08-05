@@ -1,9 +1,7 @@
 import { useEffect, forwardRef, useRef, useImperativeHandle } from "react"
 
 const AudioPlayer = forwardRef(function AudioPlayer({audioFile, setAudioEnded}, ref) {
-//const AudioPlayer = ({audioFile}) => {
     const audioRef = useRef()
-    
     useImperativeHandle(ref, () => ({
         playAudio() {
             audioRef.current.play()

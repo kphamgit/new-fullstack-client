@@ -14,7 +14,7 @@ const img_grid_style={
     }
 */
 
-
+/*
 import AWS from 'aws-sdk'
 
 AWS.config.update ({
@@ -24,7 +24,7 @@ AWS.config.update ({
 })
 
 const polly = new AWS.Polly()
-
+*/
 export function MatchGameContinuous({theLeftCards, theRightCards}) {
 
     const [leftCardsPile , setLeftCardsPile] = useState([])
@@ -110,8 +110,6 @@ export function MatchGameContinuous({theLeftCards, theRightCards}) {
         setChoiceRight(null)
         setTurns(prevTurns => prevTurns + 1)
     }
-
-    
 
     useEffect (() => {
         const addPair = () => {
@@ -232,7 +230,7 @@ export function MatchGameContinuous({theLeftCards, theRightCards}) {
                         { leftCardsPile.map (card => (
                                 <div key={card.match_index}>
                                 <div>
-                                <TextCard card={card} polly={polly} handleChoice={handleChoiceLeft} />
+                                <TextCard card={card}  handleChoice={handleChoiceLeft} />
                                 </div>
                                 </div>
                             ))
@@ -244,7 +242,7 @@ export function MatchGameContinuous({theLeftCards, theRightCards}) {
                     { rightCardsPile.map (card => (
                                 <div key={card.match_index}>
                                 <div>
-                                <TextCard card={card} polly = {polly} handleChoice={handleChoiceRight} />
+                                <TextCard card={card} handleChoice={handleChoiceRight} />
                                 </div>
                                 </div>
                             ))

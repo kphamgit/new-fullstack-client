@@ -1,5 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useContext, useState} from 'react'
 import AudioPlayer from './AudioPlayer.js';
+import { PollyContext } from './App.js';
 
 const wordStyle = {
     fontSize: "18px",
@@ -14,11 +15,13 @@ const wordStyle = {
     userSelect: 'none'
 };
 
-export function TextCard({card, polly, handleChoice}) {
+export function TextCard({card, handleChoice}) {
   
     const [audioFile, setAudioFile] = useState('')
     const audioRef = useRef()
     const [audioEnded, setAudioEnded] = useState(false)
+    const polly = useContext(PollyContext);
+    //audioEnded flag is not being used now, but you may need it in the future. Kevin
     
     useEffect(() => {
         const convertTextToSpeech = () => {
@@ -33,7 +36,6 @@ export function TextCard({card, polly, handleChoice}) {
                 if (error) {
                   console.log(error);
                 } else {
-                  //console.log(data)
                   setAudioFile(data)
                 }
             })
@@ -41,24 +43,6 @@ export function TextCard({card, polly, handleChoice}) {
         convertTextToSpeech()
 
     },[polly, card])
-
-    /*
-    useEffect(() => {
-        if (audioFile) {
-            const audioArrayBuffer = audioFile.AudioStream.buffer;
-            const audioURL = URL.createObjectURL(new Blob([audioArrayBuffer], {type: "audio/mpeg" }));
-
-            const audio = audioRef.current
-            audio.src = audioURL;
-            audio.play()
-
-            return () => {
-                URL.revokeObjectURL(audioURL)
-            }
-        }
-    },[audioFile])
-*/
-
 
     const handleClick = (target) => {
             

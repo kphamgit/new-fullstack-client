@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef, useContext} from 'react'
 import ButtonSelectQuestionAttempt from './ButtonSelectQA';
 import ClozeQuestionAttempt from './ClozeQA';
 import { Radio } from './Radio';
@@ -11,13 +11,47 @@ import {processQuestionAttempt} from './services/list.js'
 //import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import CEditor from './code_editor/CEditor';
 import TextareaAutosize from 'react-textarea-autosize'
+import { FaPlayCircle } from "react-icons/fa";
+import { PollyContext } from './App.js';
+import AudioPlayer from './AudioPlayer.js';
 
 function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questionAttemptId  }) {
   const [user_answer, setUserAnswer] = useState(null)
   const [elapsedTime, setElapsedTime] = useState(null)
+  const [audioFile, setAudioFile] = useState('')
+  const [audioEnded, setAudioEnded] = useState(false)
   
   const setTheUserAnswer = (value) => {
     setUserAnswer(value)
+  }
+  
+  const polly = useContext(PollyContext)
+  const audioRef = useRef()
+
+  useEffect(() => {
+    if (question.audio_src ) {
+      const convertTextToSpeech = () => {
+          polly.synthesizeSpeech({
+            Engine: "generative",
+            LanguageCode: "en-US",
+            Text: question.audio_src,
+            OutputFormat: 'mp3',
+            VoiceId: "Ruth",
+          },
+          (error, data) => {
+              if (error) {
+                console.log(error);
+              } else {
+                setAudioFile(data)
+              }
+          })
+      }
+      convertTextToSpeech()
+    }
+  },[polly, question.audio_src])
+
+  const testClick = () => {
+      audioRef.current.playAudio()   
   }
 
   useEffect(() => {
@@ -66,6 +100,7 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
 
     return (
       <>
+         <AudioPlayer audioFile={audioFile} setAudioEnded={setAudioEnded} ref={audioRef} />
       <div>Question: <span>{question.question_number}</span></div>
       
       <div dangerouslySetInnerHTML={{ __html: question.instruction }}></div>
@@ -78,7 +113,7 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
       }
     
       <div>
-      {question.audio_src && <audio src={question.audio_src} controls />}
+      <FaPlayCircle onClick={testClick} className='text-xl m-3'/>
       </div> 
       {question.video_src && <ReactPlayer url={question.video_src} controls />}
     
@@ -88,3 +123,4 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
 }
 
 export default QuestionAttempt
+//{question.audio_src && <audio src={question.audio_src} controls />}

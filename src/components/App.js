@@ -21,7 +21,7 @@ import { QuizzesManager } from './admin/QuizzesManager';
 import { QuestionsManager } from './admin/QuestionsManager';
 import { NewQuestion } from './admin/new_question/NewQuestion';
 import FileUploaderS3 from './utils/FileUploaderS3';
-import { FileUploaderS31 } from './utils/FileUploaderS31';
+import AWS from 'aws-sdk'
 
 function setAuth(userToken) {
   //console.log(JSON.stringify({ x: 5, y: 6 }));
@@ -45,14 +45,24 @@ const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhos
 const socket = io.connect(URL, {
    autoConnect: false
 });
+
+AWS.config.update ({
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+  region: process.env.REACT_APP_AWS_REGION
+})
+
+const polly = new AWS.Polly()
+export const PollyContext = React.createContext();
+
 export function App(props) {
   const [token, setToken] = useState()
   const [categories, setCategories] = useState([])
   const [subCategoryIds, setSubCategoryIds] = useState([])
-  const [gameIds, setGameIds] = useState([])
+  //const [gameIds, setGameIds] = useState([])
   const [unitIds, setUnitIds] = useState([])
-  const [quizIds, setQuizIds] = useState([])
-  const [questionIds, setQuestionIds] = useState([])
+  //const [quizIds, setQuizIds] = useState([])
+  //const [questionIds, setQuestionIds] = useState([])
   const mounted = useRef(true);
 
   const auth = getAuth();
@@ -84,6 +94,7 @@ export function App(props) {
   return (
     <>
         <SocketContext.Provider value={socket}>
+         <PollyContext.Provider value={polly}>
           <BrowserRouter>
             <Routes>
               <Route path="/" element = {<Home categories={categories} socket={socket}/>} />
@@ -114,6 +125,7 @@ export function App(props) {
               <Route path={`/upload_s3`} element={<FileUploaderS3 />} />
             </Routes>
           </BrowserRouter>
+          </PollyContext.Provider>
         </SocketContext.Provider>
     </>
   )

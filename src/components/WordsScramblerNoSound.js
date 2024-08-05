@@ -2,13 +2,8 @@ import React from 'react'
 import { useState } from "react";
 import { Reorder } from "framer-motion"
 import SubmitButton from './SubmitButton';
-import { ReOrderSound } from './ReOrderSound';
 
-function WordsScrambler({question, setUserAnswer}) {
-  
-const testClick = () => {
-  console.log("here")
-}
+function WordsScramblerNoSound({question, setUserAnswer}) {
 
 const handleClick = () => {
   const uanswer = document.getElementsByClassName('word_scrambler_items')
@@ -60,7 +55,9 @@ const handleClick = () => {
           >
           {items.map((item) => (
             // Change the li to Reorder.Item and add value prop
-             <ReOrderSound  key={item.id} label={item.name} value={item} />
+            <Reorder.Item className="word_scrambler_items" style={ itemStyle}  key={item.id} value={item}>
+              {item.name}
+            </Reorder.Item>
           ))}
         </Reorder.Group>
         <div style={{width:"60px"}}>
@@ -100,10 +97,4 @@ const handleClick = () => {
    
 }
 
-export default WordsScrambler
-
-/*
-<Reorder.Item onMouseDown={testClick} className="word_scrambler_items" style={ itemStyle}  key={item.id} value={item}>
-              {item.name}
-            </Reorder.Item>
-*/
+export default WordsScramblerNoSound
