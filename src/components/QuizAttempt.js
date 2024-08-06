@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import QuestionAttempt from './QuestionAttempt.js'
 import { Link } from 'react-router-dom';
@@ -8,8 +8,8 @@ import NextButton from "./NextButton.js";
 import useExitPrompt from './useExitPrompt.js'
 import { useLocation } from "react-router-dom";
 import {findCreateQuizAttempt} from './services/list.js'
-import ChatPageTailwind from "./chat/ChatPageTailwind.js";
 import { useIsMounted } from "./useIsMounted";
+import { ScoreBoard } from "./ScoreBoard.js";
 
 export default function QuizAttempt() {
   const user = useSelector((state) => state.user.value) 
@@ -23,7 +23,7 @@ export default function QuizAttempt() {
     const [questionAttemptId, setQuestionAttemptId] = useState(null)
     const [attemptResponse, setAttemptResponse] = useState(null)
     const isMounted = useIsMounted()
-    const mounted = useRef(false);
+    
     //const [livequizready, setLiveQuizReady] = useState(false)
     //mounted.current = true;
     //if(mounted.current) {
@@ -92,7 +92,7 @@ export default function QuizAttempt() {
         </div>
          <br />
         <div className="grid grid-cols-8 gap-2 bg-slate-500">
-            <div className="bg-gray-100 col-span-6 p-3">
+            <div className="bg-gray-50 col-span-6 p-3">
             {(showQuestion) ?
               <QuestionAttempt 
                 question={question} 
@@ -104,16 +104,19 @@ export default function QuizAttempt() {
               <div>
                  {showAttemptResponse && <QuestionResponse question={question} response_content={attemptResponse} />}
                  <div> <NextButton 
-              next_question_number={currentquestionnumber +1} 
-              setNextQuestion={setTheNextQuestion}
-              setShowQuestion={setShowQuestionFlag}
-              setQuestionAttemptId={setTheQuestionAttemptId}
-            /></div>
+                  next_question_number={currentquestionnumber +1} 
+                  setNextQuestion={setTheNextQuestion}
+                  setShowQuestion={setShowQuestionFlag}
+                  setQuestionAttemptId={setTheQuestionAttemptId}
+                  /></div>
               </div>
             }
             </div>
+            
             <div className="bg-red-300 col-span-2">
-               Live Score Board
+              { showAttemptResponse && 
+                <ScoreBoard className='bg-red-400' response_content={attemptResponse} />
+              }
             </div>
         </div>
         

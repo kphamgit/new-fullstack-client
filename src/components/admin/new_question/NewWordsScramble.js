@@ -1,21 +1,13 @@
-import React, { forwardRef, useState, useEffect, useImperativeHandle } from 'react'
+import React, { forwardRef, useState, useImperativeHandle } from 'react'
 
-const NewWordsScramble= forwardRef(function NewWordsScramble({question_content, set_answer_key}, ref) {
-//export function NewWordsScramble({question_content, set_answer_key}) {
-        const [questionContent, setQuestionContent] = useState(null)
-        const [direction, setDirection] = useState([])
-
-        useEffect(() => {
-            setQuestionContent(question_content)
-        },[question_content])
+const NewWordsScramble= forwardRef(function NewWordsScramble({question_content, set_answer_key}, ref) { 
+        const [direction, setDirection] = useState('x')
 
         const handleChange = (value) => {
              setDirection(value)
         }
 
         const getAnswerKey = () => {
-            //const arr = questionContent.split('/')
-            //setChoices(arr)
             set_answer_key(question_content)
           }
           

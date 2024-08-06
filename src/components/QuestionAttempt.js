@@ -113,7 +113,9 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
       }
     
       <div>
+        { question.audio_src && 
       <FaPlayCircle onClick={testClick} className='text-xl m-3'/>
+        }
       </div> 
       {question.video_src && <ReactPlayer url={question.video_src} controls />}
     

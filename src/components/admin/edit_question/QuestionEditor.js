@@ -11,6 +11,8 @@ export function QuestionEditor({id, parentFunc}) {
     const [format, setFormat] = useState(null)
     const [questionNumber, setQuestionNumber] = useState(null)
     const [prompt, setPrompt] = useState(null)
+    const [audioSrc, setAudioSrc] = useState('')
+    const [audioStr, setAudioStr] = useState('')
     const [questionContent, setQuestionContent] = useState('')
     const [answerKey, setAnswerKey] = useState('')
     const [score, setScore] = useState(null)
@@ -28,6 +30,8 @@ export function QuestionEditor({id, parentFunc}) {
             setQuestionNumber(response.data.question_number)
             setInstruction(response.data.instruction)
             setPrompt(response.data.prompt)
+            setAudioSrc(response.data.audio_src)
+            setAudioStr(response.data.audio_str)
             setQuestionContent(response.data.content)
             setAnswerKey(response.data.answer_key)
             setScore(response.data.score)
@@ -46,6 +50,8 @@ export function QuestionEditor({id, parentFunc}) {
             format: format,
             instruction: instruction,
             prompt: prompt,
+            audio_src: audioSrc,
+            audio_str: audioStr,
             content: questionContent,
             answer_key: answerKey,
             score: score,
@@ -81,12 +87,22 @@ export function QuestionEditor({id, parentFunc}) {
             
                 <div className='mx-10 text-white'><span>Prompt:</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={prompt} onChange={e => setPrompt(e.target.value)} />
+               
+                <div className='mx-10 text-white'><span>Audio String:</span></div>
+                <input className='bg-slate-600 text-white' type="text" value={audioStr} onChange={e => setAudioStr(e.target.value)} />
+ 
+                <div className='mx-10 text-white'><span>Audio Src (mp3 file):</span></div>
+                <input className='bg-slate-600 text-white' type="text" value={audioSrc} onChange={e => setAudioSrc(e.target.value)} />
+
                 <div className='mx-10 text-white'><span>Content:</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={questionContent} onChange={e => setQuestionContent(e.target.value)} />
+               
                 <div className='mx-10 text-white'><span>Answer Key:</span><span>&nbsp;</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={answerKey} onChange={e => setAnswerKey(e.target.value)} />
+               
                 <div className='mx-10 text-white'><span>Score:</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={score} onChange={e => setScore(e.target.value)} />
+               
                 <div className='mx-10 text-white'><span>Help1:</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={help1} onChange={e => setHelp1(e.target.value)} />
 

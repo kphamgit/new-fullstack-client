@@ -9,9 +9,11 @@ import { NewButtonSelect } from './NewButtonSelect';
 import NewWordsScramble  from './NewWordsScramble';
 import getQuestionFormatStr from '../../getQuestionFormatStr';
 
-export function NewQuestion({quiz_id}) {
+export function NewQuestion() {
     const [questionNumber, setQuestionNumber] = useState(null)
     const [prompt, setPrompt] = useState('')
+    const [audioSrc, setAudioSrc] = useState('')
+    const [audioStr, setAudioStr] = useState('')
     const [questionContent, setQuestionContent] = useState('')
     const [answerKey, setAnswerKey] = useState('')
     const [score, setScore] = useState(5)
@@ -22,6 +24,11 @@ export function NewQuestion({quiz_id}) {
    
     const childRef = useRef();
 
+    //const location = useLocation();
+
+    //const arr = location.pathname.split('/')
+    
+
     const navigate = useNavigate()
     const goToQuizQuestions =()=>{
       navigate(-1);
@@ -31,6 +38,8 @@ export function NewQuestion({quiz_id}) {
     const currentLocation = useLocation()
     const arr = currentLocation.pathname.split('/')
     const format = arr[arr.length-1]
+    const quiz_id = arr[arr.length-2]
+
     useEffect(() => {
         setFormatStr(getQuestionFormatStr(parseInt(format)))
     },[format])
@@ -41,6 +50,8 @@ export function NewQuestion({quiz_id}) {
             question_number: questionNumber,
             instruction: instruction,
             prompt: prompt,
+            audio_str: audioStr,
+            audio_src: audioSrc,
             content: questionContent,
             answer_key: answerKey,
             score: score,
@@ -54,10 +65,12 @@ export function NewQuestion({quiz_id}) {
             params = childRef.current.addParams(params)
             
         }
+      
         createQuestion(params )
         .then(response => {
             goToQuizQuestions()
         })
+        
     }
 
     return (
@@ -73,14 +86,25 @@ export function NewQuestion({quiz_id}) {
                 
                 <div className='mx-10 text-white'><span>Question Number:</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={questionNumber} onChange={e => setQuestionNumber(e.target.value)} />
+  
                 <div className='mx-10 text-white'><span>Prompt:</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={prompt} onChange={e => setPrompt(e.target.value)} />
+ 
+                <div className='mx-10 text-white'><span>Audio String:</span></div>
+                <input className='bg-slate-600 text-white' type="text" value={audioStr} onChange={e => setAudioStr(e.target.value)} />
+ 
+                <div className='mx-10 text-white'><span>Audio Src (mp3 file):</span></div>
+                <input className='bg-slate-600 text-white' type="text" value={audioSrc} onChange={e => setAudioSrc(e.target.value)} />
+ 
                 <div className='mx-10 text-white'><span>Content:</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={questionContent} onChange={e => setQuestionContent(e.target.value)} />
+ 
                 <div className='mx-10 text-white'><span>Answer Key:</span><span>&nbsp;</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={answerKey} onChange={e => setAnswerKey(e.target.value)} />
+ 
                 <div className='mx-10 text-white'><span>Score:</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={score} onChange={e => setScore(e.target.value)} />
+
                 <div className='mx-10 text-white'><span>Help1:</span></div>
                 <input className='bg-slate-600 text-white' type="text" value={help1} onChange={e => setHelp1(e.target.value)} />
             <div>
