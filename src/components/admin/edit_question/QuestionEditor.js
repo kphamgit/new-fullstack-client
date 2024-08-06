@@ -64,7 +64,7 @@ export function QuestionEditor({id, parentFunc}) {
         if (format === 6) {
             params = childRef.current.addParams(params)
         }
-        console.log(params)
+        console.log("QuestionEditor params=", params)
         
         updateQuestion(id, params )
         .then(response => {

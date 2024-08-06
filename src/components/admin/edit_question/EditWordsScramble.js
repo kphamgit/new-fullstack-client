@@ -2,15 +2,16 @@ import React, { forwardRef, useState, useEffect, useImperativeHandle } from 'rea
 
 const EditWordsScramble= forwardRef(function EditWordsScramble({question_content, drag_direction, set_answer_key}, ref) {
 //export function NewWordsScramble({question_content, set_answer_key}) {
-        const [questionContent, setQuestionContent] = useState(null)
+        //const [questionContent, setQuestionContent] = useState(null)
         const [direction, setDirection] = useState(null)
 
         useEffect(() => {
-            setQuestionContent(question_content)
+            //setQuestionContent(question_content)
             setDirection(drag_direction)
-        },[question_content])
+        },[drag_direction])
 
         const handleChange = (value) => {
+            console.log("value =", value)
              setDirection(value)
         }
 

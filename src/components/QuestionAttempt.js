@@ -29,12 +29,12 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
   const audioRef = useRef()
 
   useEffect(() => {
-    if (question.audio_src ) {
+    if (question.audio_str ) {
       const convertTextToSpeech = () => {
           polly.synthesizeSpeech({
             Engine: "generative",
             LanguageCode: "en-US",
-            Text: question.audio_src,
+            Text: question.audio_str,
             OutputFormat: 'mp3',
             VoiceId: "Ruth",
           },
@@ -48,9 +48,9 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
       }
       convertTextToSpeech()
     }
-  },[polly, question.audio_src])
+  },[polly, question.audio_str])
 
-  const testClick = () => {
+  const playAudioString = () => {
       audioRef.current.playAudio()   
   }
 
@@ -113,8 +113,11 @@ function QuestionAttempt({question, setShowQuestion, setAttemptResponse, questio
       }
     
       <div>
-        { question.audio_src && 
-      <FaPlayCircle onClick={testClick} className='text-xl m-3'/>
+        { (question.audio_str && question.audio_str.trim().length > 0)  && 
+         <FaPlayCircle onClick={playAudioString} className='text-xl m-3'/>
+        }
+        { (question.audio_src && question.audio_src.trim().length > 0) &&
+           <audio src={question.audio_src} controls />
         }
       </div> 
       {question.video_src && <ReactPlayer url={question.video_src} controls />}
