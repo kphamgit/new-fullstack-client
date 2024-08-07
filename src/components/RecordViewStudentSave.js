@@ -6,12 +6,11 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import { Button, Checkbox } from "flowbite-react";
 import { SocketContext } from './App';
 import Form from 'react-bootstrap/Form';
-import { upload_form_data_to_s3 } from './services/list';
 import axios from 'axios';
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
-export default function RecordViewStudent()  {
+export default function RecordViewStudentSave()  {
  
   const socket = useContext(SocketContext);
   const [isBlocked, setIsBlocked] = useState(false)
@@ -119,35 +118,48 @@ export default function RecordViewStudent()  {
   }
 
   const send_to_s3 = () => {
-      const date = new Date();
-      let hour = addZero(date.getHours());
-      let minute = addZero(date.getMinutes());
-      let second = addZero(date.getSeconds());
-      const month = date.toLocaleString('default', { month: 'short' });
-      const formattedDate = `${date.getFullYear()}-${month}-${date.getDate()}-${hour}${minute}${second}`;
-      const fileName = `${formattedDate}-${user.user_name}`;
-      const myFile = new File([myblob], fileName, {
-             type: myblob.type,
-      });
-      const formData = new FormData();
-      const s3_file_path =  `audios/recordings/${user.user_name}`
-      formData.append("s3_file_path", s3_file_path)
-      formData.append("file", myFile);
-      const config = {
+    //socket.emit('recording', {blob: myblob, username: user.user_name});
+    const rootpath = 'http://localhost:5001'
+  const url = `${rootpath}/api/uploads/do_upload_single` 
+    //var file_name = 'test.mp3'
+//
+    const date = new Date();
+    //${date.getMonth() + 1}
+
+    let hour = addZero(date.getHours());
+    let minute = addZero(date.getMinutes());
+    let second = addZero(date.getSeconds());
+
+    //let time = h + ":" + m + ":" + s;
+    const month = date.toLocaleString('default', { month: 'short' });
+    const formattedDate = `${date.getFullYear()}-${month}-${date.getDate()}-${hour}${minute}${second}`;
+    const fileName = `${formattedDate}-${user.user_name}`;
+
+    //console.log(fileName)
+    const myFile = new File([myblob], fileName, {
+           type: myblob.type,
+    });
+    const formData = new FormData();
+    
+    const s3_file_path =  `audios/recordings/${user.user_name}`
+        formData.append("s3_file_path", s3_file_path)
+        formData.append("file", myFile);
+        const config = {
           headers: {
-              'content-type': 'multipart/form-data',
+            'content-type': 'multipart/form-data',
           },
-      };
-      upload_form_data_to_s3(formData, config)
-      .then((response) => {
-        setHasBeenSent(true)
-        //https://kevinphambucket.s3.amazonaws.com/audios/basic1/2024-Aug-3-170159-basic1
-        const full_s3_path = `https://kevinphambucket.s3.amazonaws.com/${s3_file_path}/${fileName}`
-        socket.emit('s3_received_recording', {
-          username: user.user_name,
-          path: full_s3_path
+        };
+        
+        axios.post(url, formData, config).then((response) => {
+          console.log(response.data);
+          setHasBeenSent(true)
+          //https://kevinphambucket.s3.amazonaws.com/audios/basic1/2024-Aug-3-170159-basic1
+          const full_s3_path = `https://kevinphambucket.s3.amazonaws.com/${s3_file_path}/${fileName}`
+          socket.emit('s3_received_recording', {
+            username: user.user_name,
+            path: full_s3_path
+          });
         });
-      })
   };
 
   const toggle_speech_recognition = () => {

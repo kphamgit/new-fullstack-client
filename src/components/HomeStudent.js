@@ -9,19 +9,16 @@ import { clearLiveQuizId } from '../redux/livequizid.js';
 import { Link } from 'react-router-dom';
 import { Button, TextInput } from "flowbite-react";
 import ChatPageTailwind from './chat/ChatPageTailwind.js';
-import AudioPlayer from './AudioPlayer.js';
-import AWS from 'aws-sdk'
+//import AWS from 'aws-sdk'
+import clsx from 'clsx';
 
+/*
 AWS.config.update ({
   accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
   region: process.env.REACT_APP_AWS_REGION
 })
-
-console.log("XXXXXXX REG ", process.env.REACT_APP_AWS_REGION)
-
-
-const polly = new AWS.Polly()
+*/
 
 export function HomeStudent({user}) {
     const socket = useContext(SocketContext);
@@ -30,27 +27,8 @@ export function HomeStudent({user}) {
     const livequizflag = useSelector(state => state.livequizflag.value)
     const livequizid = useSelector(state => state.livequizid.value)
     
-    const [audioFile, setAudioFile] = useState('')
+    //const classes = clsx('my-class', { 'active-class': isActive });
     
-
-    const convertTextToSpeech = () => {
-        polly.synthesizeSpeech({
-          Engine: "generative",
-          LanguageCode: "en-US",
-          Text: "hello there what a beautiful day. Learning English is challenging, but yes it can be done.",
-          OutputFormat: 'mp3',
-          VoiceId: "Ruth",
-        },
-        (error, data) => {
-            if (error) {
-              console.log(error);
-            } else {
-              //console.log(data)
-              setAudioFile(data)
-            }
-        })
-    }
-
     useEffect(() => {
       socket.on('enable_live_quiz', arg => {
           //console.log(" student receive scoreboard. arg.list: ",arg.list)
@@ -98,7 +76,7 @@ export function HomeStudent({user}) {
         <>
         
         <div className="flex flex-col  my-5 h-80 gap-5 bg-gray-200 rounded-md">
-            <div className='h-1 mx-10'>Live quiz: {livequizflag ? "ON" : "OFF"}<span> &nbsp; Quiz id: {livequizid}</span></div>
+            <div className='h-1 mx-10'>Live quiz: <span className='text-red-600 text-lg'> {livequizflag ? "ON" : "OFF"}</span><span> &nbsp; Quiz id: {livequizid}</span></div>
             <div className="flex flex-row h-72 gap-3 bg-gray-200 justify-between">
                 <div className="flex m-2 mx-10 h-11 flex-row gap-4 ">
                 <Button className='bg-cyan-600 md: w-full px-0' onClick={enableLiveQuiz} >Turn Live Quiz On</Button>
@@ -120,8 +98,7 @@ export function HomeStudent({user}) {
               <RecordViewStudent />
             </div>
             }
-            <div><button onClick={convertTextToSpeech}>Convert</button></div>
-            <AudioPlayer audioFile={audioFile} />
+            
         </div>
         </>
     )

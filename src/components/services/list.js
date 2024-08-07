@@ -156,18 +156,13 @@ export async function reOrderRows(item_type, item_ids) {
   return response
 }
 
-/*
-      type: "POST",
-                            url: "/api/questions/paginate",
-                            data: { question_ids: JSON.stringify(all_question_ids) },
-                            success: function(data) { console.log("Success!"); 
-                                var children = $("#questions").find(".td-question_num");
-                                $.each( children, function( index, value ){
-                                        $(this).text((index+1).toString());
-                                        //console.log(index.toString());
-                                });
-                            },    
-*/
+export async function upload_form_data_to_s3(formData, config) {
+  const url = `${rootpath}/api/uploads/do_upload_single` 
+  console.log(" in list upload..url =", url)
+  axios.post(url, formData, config).then((response) => {
+     return response;
+  });
+}
 
 export async function login(credentials) {
    if (credentials.username.length === 0) {
